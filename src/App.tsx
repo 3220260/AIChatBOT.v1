@@ -1,0 +1,260 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { useState, useRef, useEffect } from 'react';
+import { GoogleGenAI } from "@google/genai";
+import { Send, Bot, Loader2, Trash2, Info, Copy, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import ReactMarkdown from 'react-markdown';
+
+// ΑΡΧΙΚΟΠΟΙΗΣΗ ΤΟΥ GEMINI API
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+// ΟΔΗΓΙΕΣ
+const BOT_INSTRUCTIONS = `
+Είσαι ο επίσημος ψηφιακός βοηθός εξυπηρέτησης για τα μέλη του "Προμηθευτικού & Καταναλωτικού Συνεταιρισμού Αστυνομικών Αττικής".
+Ο ρόλος σου είναι να καθοδηγείς τα μέλη με ευγένεια, αμεσότητα και απόλυτη ακρίβεια σχετικά με τις διαδικασίες αιτήσεων για σταθερή/κινητή τηλεφωνία, τηλεόραση, και ασφαλιστικά προγράμματα.
+
+ΒΑΣΙΚΟΙ ΚΑΝΟΝΕΣ:
+1. Όταν ξεκινά το chat, χαιρέτησε ευγενικά.
+2. ΜΗΝ γράφεις τεράστια "σεντόνια" κειμένου. Χώρισε τα μηνύματά σου.
+3. Κάνε ερωτήσεις ανατροφοδότησης στο τέλος.
+4. Βασίσου ΑΥΣΤΗΡΑ στις παρεχόμενες πληροφορίες. 
+
+ΟΔΗΓΙΕΣ ΜΟΡΦΟΠΟΙΗΣΗΣ (MARKDOWN):
+- Όταν αναφέρεις λίστες με δικαιολογητικά ή βήματα, να χρησιμοποιείς ΟΠΩΣΔΗΠΟΤΕ ΠΙΝΑΚΕΣ (Markdown Tables).
+- Χρησιμοποίησε Έντονη Γραφή (Bold) για Τιμές (π.χ. **100€**), Τηλέφωνα (π.χ. **210 5245210**) και ονόματα παρόχων.
+- IBAN & Κωδικοί: Όταν γράφεις ένα IBAN (π.χ. της Πειραιώς ή της Eurobank), να τον βάζεις ΠΑΝΤΑ μέσα σε backticks ( \` ), π.χ. \`GR5801720500005050099524664\`.
+- Χρησιμοποίησε Emojis (π.χ. 💶, ☎️, 📍, ⚡).
+
+[ΒΑΛΕ ΕΔΩ ΤΙΣ ΠΛΗΡΟΦΟΡΙΕΣ ΓΙΑ ΤΑ ΠΑΚΕΤΑ ΣΟΥ (VODAFONE, NOVA, INTERAMERICAN, ΚΛΠ)]
+`;
+
+// QUICK REPLIES
+const QUICK_REPLIES: Record<string, string[]> = {
+  "Αρχική Σελίδα": ["Ποιες προσφορές είναι διαθέσιμες;", "Πώς μπορώ να γίνω μέλος;", "Τι είναι ο Συνεταιρισμός;"],
+  "Επιλογή Κινητής": ["Ποια είναι η διαφορά Vodafone με Nova;", "Πόσο κοστίζει το ετήσιο πακέτο;"],
+  "Vodafone CU (100€)": ["Τι δικαιολογητικά χρειάζομαι;", "Σε ποιο IBAN πρέπει να βάλω τα χρήματα;", "Είναι για φορητότητα ή νέο αριθμό;"],
+  "NOVA Q (100€)": ["Τι δικαιολογητικά χρειάζομαι;", "Πόσα GB μου δίνει η Nova Q;", "Σε ποιο email στέλνω τα χαρτιά;"],
+  "Σταθερή & Internet NOVA": ["Ποια είναι η τιμή του παγίου;", "Χρειάζεται να έχω ήδη γραμμή;", "Τι γίνεται αν είμαι εκτός σχεδίου;"],
+  "Nova EON TV": ["Τι κανάλια περιλαμβάνει;", "Χρειάζεται πιάτο ή είναι μέσω Internet;"],
+  "Ρεύμα Enerwave": ["Πόσο κοστίζει η κιλοβατώρα;", "Πόσο είναι το πάγιο;", "Πού παίρνω τηλέφωνο για σύνδεση;"],
+  "Υγεία & Περίθαλψη": ["Τι ακριβώς καλύπτει η Interamerican;", "Πόσο κοστίζει για τα παιδιά;"],
+  "Κάρτα GProtasis": ["Είναι εντελώς δωρεάν;", "Σε ποια νοσοκομεία μπορώ να πάω;"]
+};
+
+export default function App() {
+  const [messages, setMessages] = useState<{role: 'user'|'model', text: string}[]>([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const [contextLabel, setContextLabel] = useState<string>('Αρχική Σελίδα');
+  const [contextInstruction, setContextInstruction] = useState<string>('Ο χρήστης βρίσκεται στην αρχική σελίδα και βλέπει γενικά τις προσφορές.');
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data === 'focus-input') inputRef.current?.focus();
+      if (event.data && event.data.type === 'UPDATE_PAGE_CONTEXT') {
+        setContextLabel(event.data.payload.label);
+        setContextInstruction(event.data.payload.instruction);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(text);
+    setTimeout(() => setCopiedText(null), 2000);
+  };
+
+  const handleClearChat = () => {
+    if (window.confirm("Είστε σίγουροι ότι θέλετε να διαγράψετε το ιστορικό της συνομιλίας;")) {
+      setMessages([]);
+      setInput('');
+    }
+  };
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+
+    const userMessage = input.trim();
+    setInput('');
+    setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
+    setIsLoading(true);
+
+    try {
+      const dynamicInstructions = BOT_INSTRUCTIONS + 
+        (contextInstruction ? `\n\n--- CURRENT USER CONTEXT --- \n${contextInstruction}\nΧρησιμοποίησε αυτή την πληροφορία αν ο χρήστης ρωτήσει αόριστα "πώς το κάνω;", "τι χρειάζομαι;", κλπ.` : "");
+
+      const chatHistory = messages.map(m => ({
+        role: m.role,
+        parts: [{ text: m.text }]
+      }));
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: [...chatHistory, { role: 'user', parts: [{ text: userMessage }] }],
+        config: { systemInstruction: dynamicInstructions }
+      });
+
+      if (response.text) {
+        setMessages(prev => [...prev, { role: 'model', text: response.text }]);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessages(prev => [...prev, { role: 'model', text: "Υπήρξε ένα σφάλμα. Παρακαλώ δοκιμάστε ξανά." }]);
+    } finally {
+      setIsLoading(false);
+      window.parent.postMessage('message-sent', '*'); 
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-screen bg-white font-sans text-slate-800">
+      
+      <header className="bg-white border-b border-slate-100 p-3 flex justify-between items-center shrink-0">
+        <div className="flex items-center gap-2 text-[#0f2b5c]">
+          <Bot className="w-5 h-5" />
+          <span className="font-bold text-sm">Ψηφιακός Βοηθός AI</span>
+        </div>
+        
+        {messages.length > 0 && (
+          <button
+            onClick={handleClearChat}
+            className="flex items-center gap-1.5 text-xs text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full transition-colors border border-red-100"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Καθαρισμός</span>
+          </button>
+        )}
+      </header>
+
+      <main className="flex-1 overflow-y-auto p-4 space-y-5 bg-white custom-scroll">
+        {messages.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-4 text-slate-500 opacity-80">
+            <div className="w-16 h-16 bg-[#0f2b5c]/10 text-[#0f2b5c] rounded-full flex items-center justify-center">
+              <Bot className="w-8 h-8" />
+            </div>
+            <div>
+              <p className="font-bold text-slate-700 text-lg">Γεια σας!</p>
+              <p className="text-sm max-w-[250px] mx-auto mt-1">Είμαι ο βοηθός του Συνεταιρισμού. Πώς μπορώ να σας εξυπηρετήσω σήμερα;</p>
+            </div>
+          </div>
+        )}
+
+        {messages.map((message, index) => (
+          <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            {message.role === 'model' && (
+              <div className="w-8 h-8 rounded-full bg-[#0f2b5c] flex items-center justify-center shrink-0 shadow-sm mr-2 mt-1">
+                <Bot className="w-4 h-4 text-white" />
+              </div>
+            )}
+            
+            <div className={`max-w-[85%] ${
+              message.role === 'user' 
+                ? 'bg-[#0f2b5c] text-white p-4 rounded-2xl rounded-tr-none shadow-md' 
+                : 'bg-[#f8fafc] text-slate-800 p-4 rounded-2xl rounded-tl-none border border-slate-200'
+            }`}>
+              {message.role === 'user' ? (
+                <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{message.text}</p>
+              ) : (
+                <div className="markdown-body text-[14px] leading-relaxed">
+                  <ReactMarkdown
+                    components={{
+                      code(props) {
+                        const {children, className, ...rest} = props;
+                        const text = String(children).replace(/\n$/, '');
+                        const match = /language-(\w+)/.exec(className || '');
+                        
+                        if (!match) {
+                          return (
+                            <span 
+                              onClick={() => handleCopy(text)}
+                              className="group relative inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md font-mono text-[13px] font-bold border border-blue-200 cursor-pointer hover:bg-blue-100 transition-colors shadow-sm mx-0.5"
+                            >
+                              {children}
+                              {copiedText === text ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5 text-blue-400 group-hover:text-blue-600 transition-colors" />}
+                            </span>
+                          );
+                        }
+                        return <code className={className} {...rest}>{children}</code>;
+                      }
+                    }}
+                  >
+                    {message.text}
+                  </ReactMarkdown>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="w-8 h-8 rounded-full bg-[#0f2b5c] flex items-center justify-center shrink-0 shadow-sm mr-2">
+              <Bot className="w-4 h-4 text-white" />
+            </div>
+            <div className="bg-[#f8fafc] p-4 rounded-2xl rounded-tl-none border border-slate-200 flex items-center">
+              <Loader2 className="w-4 h-4 animate-spin text-[#0f2b5c]" />
+              <span className="ml-2 text-xs text-slate-500 font-medium tracking-wide animate-pulse">Επεξεργασία...</span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </main>
+
+      <footer className="p-4 bg-white border-t border-slate-200 shrink-0">
+        <AnimatePresence>
+          {contextLabel && contextLabel !== "Αρχική Σελίδα" && (
+            <motion.div initial={{ opacity: 0, y: 10, height: 0 }} animate={{ opacity: 1, y: 0, height: 'auto' }} exit={{ opacity: 0, y: 10, height: 0 }} className="mb-2.5 flex items-center overflow-hidden">
+              <div className="bg-blue-50 text-blue-700 text-[11px] px-3 py-1.5 rounded-full font-bold flex items-center border border-blue-100 shadow-sm w-fit uppercase tracking-wide">
+                <Info className="w-3.5 h-3.5 mr-1.5 text-blue-500" />
+                Σχετικά με: {contextLabel}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-3 mb-1">
+          {(QUICK_REPLIES[contextLabel || "Αρχική Σελίδα"] || QUICK_REPLIES["Αρχική Σελίδα"]).map((reply, index) => (
+            <button key={index} onClick={() => { setInput(reply); inputRef.current?.focus(); }} className="whitespace-nowrap bg-slate-50 hover:bg-slate-100 text-slate-700 text-[13px] py-2 px-4 rounded-full transition-colors border border-slate-200 shrink-0 shadow-sm font-medium">
+              {reply}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative flex items-center">
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+            placeholder="Πληκτρολογήστε το μήνυμά σας..."
+            style={{ fontSize: '16px' }} 
+            className="w-full bg-slate-100 border border-slate-200 rounded-2xl py-3 pl-5 pr-12 text-base focus:ring-2 focus:ring-[#0f2b5c] focus:border-transparent transition-all outline-none"
+          />
+          <button
+            onClick={handleSend}
+            disabled={!input.trim() || isLoading}
+            className="absolute right-1.5 p-2 bg-[#0f2b5c] text-white rounded-xl hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md"
+          >
+            <Send className="w-5 h-5" />
+          </button>
+        </div>
+      </footer>
+    </div>
+  );
+}
