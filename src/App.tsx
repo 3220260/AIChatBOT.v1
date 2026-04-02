@@ -14,7 +14,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const BOT_INSTRUCTIONS = `
 Είσαι ο επίσημος ψηφιακός βοηθός εξυπηρέτησης για τα μέλη του "Προμηθευτικού & Καταναλωτικού Συνεταιρισμού Αστυνομικών Αττικής".
-Ο ρόλος σου είναι να καθοδηγείς τα μέλη με ευγένεια, αμεσότητα και απόλυτη ακρίβεια σχετικά με τις διαδικασίες αιτήσεων για σταθερή/κινητή τηλεφωνία, τηλεόραση, και ασφαλιστικά προγράμματα.
+Ο ρόλος σου είναι να καθοδηγείς τα μέλη με ευγένεια, αμεσότητα και απόλυτη ακρίβεια σχετικά με τις διαδικασίες αιτήσεων για σταθερή/κινητή τηλεφωνία, τηλεόραση, και ασφαλιστικά προγράμματα. Στο καλωσορισμα μην τα αναφεριες μιλα λακωνικα μονο αμα σου ζητησουν πληροφοριες ανεφερε ποιος εισαι, να μιλας φιλικα σαν να εισαι ανθρωπος το ονομα σου ειναι  αστυνομος σαινησ αλλα μην αναφερει το αστυνομος παρα μονο αν σε ζοριζουν και δεν σε σεβονται ή σου μιλανε αποτομα 
 
 ΒΑΣΙΚΟΙ ΚΑΝΟΝΕΣ:
 1. Όταν ξεκινά το chat, χαιρέτησε ευγενικά.
@@ -23,7 +23,7 @@ const BOT_INSTRUCTIONS = `
 4. Βασίσου ΑΥΣΤΗΡΑ στις παρεχόμενες πληροφορίες. 
 
 ΟΔΗΓΙΕΣ ΜΟΡΦΟΠΟΙΗΣΗΣ (MARKDOWN):
-- Όταν αναφέρεις λίστες με δικαιολογητικά ή βήματα, να χρησιμοποιείς ΟΠΩΣΔΗΠΟΤΕ ΠΙΝΑΚΕΣ (Markdown Tables).
+- Όταν αναφέρεις λίστες με δικαιολογητικά ή βήματα, να χρησιμοποιείς στοιχιση και μια μια την απαντηση 
 - Χρησιμοποίησε Έντονη Γραφή (Bold) για Τιμές (π.χ. **100€**), Τηλέφωνα (π.χ. **210 5245210**) και ονόματα παρόχων.
 - IBAN & Κωδικοί: Όταν γράφεις ένα IBAN, να τον βάζεις ΠΑΝΤΑ μέσα σε backticks ( \` ), π.χ. \`GR5801720500005050099524664\`.
 - Χρησιμοποίησε Emojis (π.χ. 💶, ☎️, 📍, ⚡).
@@ -121,11 +121,14 @@ export default function App() {
     }
   };
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+ const handleSend = async (textToSend?: string) => {
+    // Αν της περάσουμε κείμενο (π.χ. από quick reply) παίρνει αυτό, 
+    // αλλιώς παίρνει ό,τι έχει πληκτρολογήσει ο χρήστης στο input.
+    const userMessage = (typeof textToSend === 'string' ? textToSend : input).trim();
+    
+    if (!userMessage) return;
 
-    const userMessage = input.trim();
-    setInput('');
+    setInput(''); // Αδειάζουμε το input αμέσως
     setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
     setIsLoading(true);
 
@@ -263,7 +266,7 @@ export default function App() {
 
         <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-3 mb-1">
           {(QUICK_REPLIES[contextLabel || "Αρχική Σελίδα"] || QUICK_REPLIES["Αρχική Σελίδα"]).map((reply, index) => (
-            <button key={index} onClick={() => { setInput(reply); inputRef.current?.focus(); }} className="whitespace-nowrap bg-slate-50 hover:bg-slate-100 text-slate-700 text-[13px] py-2 px-4 rounded-full transition-colors border border-slate-200 shrink-0 shadow-sm font-medium">
+            <button key={index} onClick={() => handleSend(reply)} className="whitespace-nowrap bg-slate-50 hover:bg-slate-100 text-slate-700 text-[13px] py-2 px-4 rounded-full transition-colors border border-slate-200 shrink-0 shadow-sm font-medium">
               {reply}
             </button>
           ))}
@@ -275,13 +278,21 @@ export default function App() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+            onKeyDown={(e) => {
+  if (e.key === 'Enter') {
+    handleSend();
+    inputRef.current?.blur(); // Κλείνει το πληκτρολόγιο αφαιρώντας το focus
+  }
+}}
             placeholder="Πληκτρολογήστε το μήνυμά σας..."
             style={{ fontSize: '16px' }} 
             className="w-full bg-slate-100 border border-slate-200 rounded-2xl py-3 pl-5 pr-12 text-base focus:ring-2 focus:ring-[#0f2b5c] focus:border-transparent transition-all outline-none"
           />
           <button
-            onClick={handleSend}
+            onClick={() => {
+  handleSend();
+  inputRef.current?.blur();
+}}
             disabled={!input.trim() || isLoading}
             className="absolute right-1.5 p-2 bg-[#0f2b5c] text-white rounded-xl hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md"
           >
