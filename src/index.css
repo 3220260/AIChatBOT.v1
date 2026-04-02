@@ -22,3 +22,23 @@
 .custom-scroll::-webkit-scrollbar-track { background: transparent; }
 .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+/* Αποτροπή scroll του ολόκληρου του body στα κινητά για να μην κρύβεται το UI */
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Κλειδώνει το body, το scroll γίνεται μόνο στο <main> */
+  overscroll-behavior-y: none; /* Αποτρέπει το pull-to-refresh στα κινητά */
+  -webkit-text-size-adjust: 100%; /* Αποτρέπει το auto-resizing στο rotation */
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ομαλότερη συμπεριφορά στο input σε iOS */
+input, textarea, button {
+  font-family: inherit;
+  appearance: none; /* Αφαιρεί τα default styles του iOS */
+}

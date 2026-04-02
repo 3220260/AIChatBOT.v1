@@ -157,8 +157,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white font-sans text-slate-800">
-      
+    <div className="flex flex-col h-[100dvh] bg-white font-sans text-slate-800 overflow-hidden">  
       <header className="bg-white border-b border-slate-100 p-3 flex justify-between items-center shrink-0">
         <div className="flex items-center gap-2 text-[#0f2b5c]">
           <Bot className="w-5 h-5" />
@@ -250,7 +249,7 @@ export default function App() {
         <div ref={messagesEndRef} />
       </main>
 
-      <footer className="p-4 bg-white border-t border-slate-200 shrink-0">
+      <footer className="p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] bg-white border-t border-slate-200 shrink-0">
         <AnimatePresence>
           {contextLabel && contextLabel !== "Αρχική Σελίδα" && (
             <motion.div initial={{ opacity: 0, y: 10, height: 0 }} animate={{ opacity: 1, y: 0, height: 'auto' }} exit={{ opacity: 0, y: 10, height: 0 }} className="mb-2.5 flex items-center overflow-hidden">
