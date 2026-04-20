@@ -336,10 +336,7 @@ export default function App() {
   return (
     <div className="flex flex-col h-[100dvh] bg-white font-sans text-slate-800 overflow-hidden">  
       <header className="bg-white border-b border-slate-100 p-3 flex justify-between items-center shrink-0">
-        <div className="flex items-center gap-2 text-[#0f2b5c]">
-          <Bot className="w-5 h-5" />
-          <span className="font-bold text-sm">Ψηφιακός Βοηθός AI</span>
-        </div>
+        
         
         {messages.length > 0 && (
           <button
@@ -360,7 +357,7 @@ export default function App() {
             </div>
             <div>
               <p className="font-bold text-slate-700 text-lg">Γεια σας!</p>
-              <p className="text-sm max-w-[250px] mx-auto mt-1">Είμαι ο βοηθός του Συνεταιρισμού. Πώς μπορώ να σας εξυπηρετήσω σήμερα;</p>
+              <p className="text-sm max-w-[250px] mx-auto mt-1">Είμαι το ΑΙ του Συνεταιρισμού. Πώς μπορώ να σας εξυπηρετήσω σήμερα;</p>
             </div>
           </div>
         )}
