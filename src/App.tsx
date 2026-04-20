@@ -4,13 +4,11 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI } from "@google/genai";
 import { Send, Bot, Loader2, Trash2, Info, Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ReactMarkdown from 'react-markdown';
 
-// ΑΡΧΙΚΟΠΟΙΗΣΗ ΤΟΥ GEMINI API
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
 
 const BOT_INSTRUCTIONS = `
 Είσαι ο επίσημος ψηφιακός βοηθός εξυπηρέτησης για τα μέλη του "Προμηθευτικού & Καταναλωτικού Συνεταιρισμού Αστυνομικών Αττικής".
@@ -184,18 +182,29 @@ export default function App() {
         parts: [{ text: m.text }]
       }));
 
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: [...chatHistory, { role: 'user', parts: [{ text: userMessage }] }],
-        config: { systemInstruction: dynamicInstructions }
+      // --- ΝΕΟ: Κλήση στο δικό μας ασφαλές API (Vercel Serverless Function) ---
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          chatHistory, 
+          userMessage, 
+          dynamicInstructions 
+        })
       });
 
-      if (response.text) {
-        setMessages(prev => [...prev, { role: 'model', text: response.text }]);
+      if (!res.ok) {
+        throw new Error(`Σφάλμα δικτύου: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      if (data.text) {
+        setMessages(prev => [...prev, { role: 'model', text: data.text }]);
       }
     } catch (error) {
-      console.error(error);
-      setMessages(prev => [...prev, { role: 'model', text: "Υπήρξε ένα σφάλμα. Παρακαλώ δοκιμάστε ξανά." }]);
+      console.error("Σφάλμα κατά την αποστολή:", error);
+      setMessages(prev => [...prev, { role: 'model', text: "Υπήρξε ένα σφάλμα κατά την επικοινωνία. Παρακαλώ δοκιμάστε ξανά." }]);
     } finally {
       setIsLoading(false);
       window.parent.postMessage('message-sent', '*'); 
