@@ -8,7 +8,7 @@ from google.genai import types
 import json
 import os
 
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("AIzaSyBxoiZecmqszOWK-rEPHrT6M4Ekyp-vhBw")
 client = genai.Client(api_key=api_key) if api_key else None
 
 app = FastAPI()
@@ -50,7 +50,7 @@ async def chat_endpoint(request: ChatRequest):
 
     if sid not in CHAT_HISTORIES:
         CHAT_HISTORIES[sid] = client.chats.create(
-            model="gemini-1.5-flash", # Διόρθωση μοντέλου
+            model="gemini-2.0-flash", 
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 response_mime_type="application/json",
