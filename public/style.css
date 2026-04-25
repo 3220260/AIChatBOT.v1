@@ -23,10 +23,15 @@
   box-sizing: border-box;
 }
 
+/* Ενοποιημένο Body & HTML για απόλυτο κλείδωμα του παραθύρου */
+html, body {
+  height: 100dvh; /* Το μαγικό 100dvh για τα κινητά */
+  overflow: hidden; /* Κλείδωμα εξωτερικού scroll */
+}
+
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,7 +50,7 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 85vh;
+  height: 85dvh; /* Προσαρμοσμένο σε dvh */
   max-height: 800px;
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -147,13 +152,14 @@ body {
 }
 
 .chat-messages {
-  flex: 1;
-  overflow-y: auto;
+  flex-grow: 1;
+  overflow-y: auto; /* Επιτρέπει το scroll μόνο εδώ */
   padding: 24px 28px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   scroll-behavior: smooth;
+  height: 100%;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -309,7 +315,7 @@ body {
   border: none;
   background: transparent;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 16px; /* Ο χρυσός κανόνας για να μην ζουμάρουν τα iPhone! */
   color: var(--text);
   resize: none;
   outline: none;
@@ -410,8 +416,12 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+  body {
+    padding: 0; /* Αφαιρούμε το padding στο κινητό για να πιάσει όλη την οθόνη */
+  }
+
   .container {
-    height: 100vh;
+    height: 100dvh; /* Το container γίνεται ακριβώς όσο η οθόνη του κινητού */
     max-height: none;
     border-radius: 0;
   }
