@@ -192,3 +192,13 @@ class ChatBot {
 document.addEventListener('DOMContentLoaded', () => {
   new ChatBot();
 });
+
+
+
+function closeChat() {
+    // Αντικατέστησε το 'chat-container' με το πραγματικό ID του παραθύρου του τσατ σου
+    const chatWindow = document.getElementById('chat-container');
+    if (chatWindow) {
+        chatWindow.style.display = 'none'; // Κρύβει το τσατ
+    }
+}
