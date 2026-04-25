@@ -202,3 +202,13 @@ function closeChat() {
         chatWindow.style.display = 'none'; // Κρύβει το τσατ
     }
 }
+// Βρίσκουμε το κουμπί κλεισίματος και ολόκληρο το container
+const closeBtn = document.getElementById('close-chat-btn');
+const chatContainer = document.querySelector('.container');
+
+// Όταν γίνει κλικ στο κουμπί, κρύβουμε όλο το widget
+if (closeBtn && chatContainer) {
+    closeBtn.addEventListener('click', () => {
+        chatContainer.style.display = 'none';
+    });
+}
