@@ -13,7 +13,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    // Το API key διαβάζεται από environment variable για ασφάλεια
     const apiKey = process.env.GEMINI_API_KEY;
     
     if (!apiKey) {
@@ -24,29 +23,30 @@ export default async function handler(req, res) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
-    // Δημιουργούμε system prompt για τον chatbot
-    const systemPrompt = `Είσαι ένας εξυπηρετικός chatbot για μια επιχείρηση.
+    // 1. Το System Prompt ορίζεται ΞΕΧΩΡΙΣΤΑ ως configuration του μοντέλου
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-3-flash-preview',
+      systemInstruction: `Είσαι ένας εξυπηρετικός chatbot για μια επιχείρηση.
 Απάντα με φιλικό και επαγγελματικό τρόπο στα ελληνικά.
 Δίνε σύντομες και χρήσιμες απαντήσεις.
-Αν δεν ξέρεις κάτι, πες ότι μπορούν να επικοινωνήσουν με το τμήμα εξυπηρέτησης πελατών.`;
+Αν δεν ξέρεις κάτι, πες ότι μπορούν να επικοινωνήσουν με το τμήμα εξυπηρέτησης πελατών.`
+    });
 
-    // Δημιουργούμε το πλήρες prompt με το ιστορικό
-    let fullPrompt = systemPrompt + '\n\n';
-    
-    if (conversationHistory.length > 0) {
-      fullPrompt += 'Προηγούμενη συζήτηση:\n';
-      conversationHistory.forEach(msg => {
-        fullPrompt += `${msg.role === 'user' ? 'Χρήστης' : 'Bot'}: ${msg.content}\n`;
-      });
-      fullPrompt += '\n';
-    }
-    
-    fullPrompt += `Χρήστης: ${message}\nBot:`;
+    // 2. Μετατρέπουμε το ιστορικό στο format που περιμένει το API
+    // Οι ρόλοι πρέπει να είναι αυστηρά 'user' (ο χρήστης) και 'model' (το bot)
+    const formattedHistory = conversationHistory.map(msg => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.content }]
+    }));
 
-    // Καλούμε το Gemini API
-    const result = await model.generateContent(fullPrompt);
+    // 3. Ξεκινάμε ένα επίσημο "Chat Session" με το ιστορικό φορτωμένο
+    const chat = model.startChat({
+      history: formattedHistory,
+    });
+
+    // 4. Στέλνουμε ΜΟΝΟ το νέο μήνυμα
+    const result = await chat.sendMessage(message);
     const response = await result.response;
     const text = response.text();
 
