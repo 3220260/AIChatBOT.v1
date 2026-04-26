@@ -1,17 +1,8 @@
 {
   "name": "smart-chatbot",
   "version": "1.0.0",
-  "description": "Chatbot με προκαθορισμένες απαντήσεις και Gemini fallback",
-  "main": "index.js",
-  "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'No build needed'",
-    "deploy": "vercel --prod"
-  },
+  "type": "module",
   "dependencies": {
     "@google/generative-ai": "^0.21.0"
-  },
-  "devDependencies": {
-    "vercel": "^33.0.0"
   }
 }
