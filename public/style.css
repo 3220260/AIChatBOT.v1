@@ -1,16 +1,19 @@
 /* =====================
    BASE
 ===================== */
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Κλειδώνει το σκρολ ολόκληρης της σελίδας, επιτρέπει σκρολ ΜΟΝΟ στα μηνύματα */
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background: #0f172a;
+  background: #929eb2;
 }
 
 .container {
   max-width: 500px;
   margin: 0 auto;
-  height: 100vh;
+  height: 100dvh; /* Το dvh είναι το μυστικό για να προσαρμόζεται στο πληκτρολόγιο! */
   display: flex;
   flex-direction: column;
   background: #0f172a;
@@ -129,8 +132,9 @@ textarea {
   background: transparent;
   color: white;
   outline: none;
-  font-size: 14px;
+  font-size: 16px; /* Υποχρεωτικά 16px για να μην κάνει ζουμ το iOS! */
   max-height: 120px;
+  padding-top: 8px; /* Μικρή διόρθωση για να φαίνεται κεντραρισμένο το κείμενο */
 }
 
 .send-button {
