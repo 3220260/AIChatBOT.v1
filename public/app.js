@@ -50,20 +50,35 @@ async function sendMessage() {
   addMessage(message, "user");
   inputEl.value = "";
 
+  // --- ΛΟΓΙΚΗ ΓΙΑ ΧΑΙΡΕΤΙΣΜΟΥΣ (ΧΩΡΙΣ ΤΟΚΕΝS) ---
+  const greetings = [
+    "γεια", "geia", "hi", "hello", "καλημέρα", "kalimera", 
+    "καλησπέρα", "kalispera", "χαίρετε", "xaierete", "hey"
+  ];
+  
+  // Έλεγχος αν το μήνυμα είναι μόνο ένας χαιρετισμός (1-2 λέξεις)
+  const words = message.toLowerCase().split(" ");
+  if (words.length <= 2 && greetings.some(g => words.includes(g))) {
+    addMessage("Γεια σας! Πώς μπορώ να σας βοηθήσω με τις υπηρεσίες τηλεφωνίας και τηλεόρασης;", "bot");
+    return; // Σταματάει εδώ, δεν καλεί το API
+  }
+  // ----------------------------------------------
+
   showTyping();
 
-  const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message, userId })
-  });
-
-  const data = await res.json();
-
-  hideTyping();
-  addMessage(data.reply, "bot");
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, userId })
+    });
+    const data = await res.json();
+    hideTyping();
+    addMessage(data.reply, "bot");
+  } catch (err) {
+    hideTyping();
+    addMessage("Παρουσιάστηκε ένα πρόβλημα. Δοκιμάστε ξανά.", "bot");
+  }
 }
 
 sendBtn.onclick = sendMessage;
