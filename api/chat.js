@@ -1,39 +1,8 @@
-export default async function handler(req, res) {
-  try {
-    const apiKey = process.env.GEMINI_API_KEY;
-    
-    // Ζητάμε από την Google να μας δώσει τη λίστα με τα διαθέσιμα μοντέλα
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    const data = await response.json();
-
-    if (!data.models) {
-      return res.json({ reply: "Σφάλμα ανάγνωσης: " + JSON.stringify(data) });
-    }
-
-    // Κρατάμε μόνο τα μοντέλα που κάνουν generate text (όχι embeddings)
-    const availableModels = data.models
-      .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent"))
-      .map(m => m.name.replace("models/", ""))
-      .join(",\n");
-
-    // Το bot θα σου απαντήσει με τη λίστα!
-    res.json({ reply: "Τα διαθέσιμα μοντέλα σου είναι:\n" + availableModels });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
-  }
-}
-
-
-
-
-/*
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { faqs } from "../faqs.js";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 // const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // 🧠 memory per user
@@ -106,5 +75,3 @@ ${message}
   }
 }
 
-
-*/
