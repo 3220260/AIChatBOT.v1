@@ -1,8 +1,17 @@
 {
-  "name": "smart-chatbot",
+  "name": "verbot-synetelas",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
+  "description": "Synetelas FAQ chatbot with Gemini backend and static chat UI.",
+  "scripts": {
+    "dev": "vercel dev",
+    "check": "node --check api/chat.js"
+  },
   "dependencies": {
     "@google/generative-ai": "latest"
+  },
+  "devDependencies": {
+    "vercel": "latest"
   }
 }

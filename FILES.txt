@@ -1,0 +1,6 @@
+.gitignore
+README.md
+api/chat.js
+faqs.js
+index.html
+package.json
