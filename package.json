@@ -5,13 +5,10 @@
   "type": "module",
   "description": "Synetelas FAQ chatbot with Gemini backend and static chat UI.",
   "scripts": {
-    "dev": "vercel dev",
-    "check": "node --check api/chat.js"
+    "dev": "node scripts/dev-server.js",
+    "check": "node --check api/chat.js && node --check scripts/dev-server.js"
   },
   "dependencies": {
-    "@google/generative-ai": "latest"
-  },
-  "devDependencies": {
-    "vercel": "latest"
+    "@google/generative-ai": "0.24.1"
   }
 }

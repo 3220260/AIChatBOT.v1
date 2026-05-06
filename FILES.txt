@@ -1,6 +1,9 @@
 .gitignore
+.env.example
 README.md
 api/chat.js
 faqs.js
-index.html
+scripts/dev-server.js
+public/index.html
 package.json
+package-lock.json

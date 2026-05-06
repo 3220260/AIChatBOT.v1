@@ -5,20 +5,45 @@ import { faqs } from "../faqs.js";
    1. SETTINGS
    ========================================= */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 
-const MAX_MESSAGE_LENGTH = 700;
+const MAX_MESSAGE_LENGTH = 500;
 const MAX_MESSAGES_PER_WINDOW = 8;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const MAX_ACTIVE_REQUESTS = 20;
-const MAX_HISTORY_MESSAGES = 8;
-const MAX_RELEVANT_FAQS_FOR_GEMINI = 6;
+const MAX_HISTORY_MESSAGES = 4;
+const MAX_RELEVANT_FAQS_FOR_GEMINI = 3;
+const MAX_FAQ_ANSWER_CHARS_FOR_GEMINI = 420;
+const MAX_HISTORY_CHARS_FOR_GEMINI = 360;
+const MAX_OUTPUT_TOKENS = readIntEnv("GEMINI_MAX_OUTPUT_TOKENS", 220, 80, 600);
+const GEMINI_THINKING_BUDGET = readIntEnv("GEMINI_THINKING_BUDGET", 0, -1, 24576);
 
 // Αν direct FAQ score >= αυτό, απαντάμε χωρίς Gemini.
-const DIRECT_FAQ_SCORE = 8;
+const DIRECT_FAQ_SCORE = 7;
+const DIRECT_FAQ_SCORE_GAP = 2;
 
 // Αν έχει σχετικό FAQ αλλά όχι αρκετά καθαρό match, τότε πάμε Gemini.
 const MIN_RELEVANT_SCORE_FOR_GEMINI = 2;
+
+const GEMINI_GENERATION_CONFIG = {
+  temperature: 0.15,
+  topP: 0.8,
+  maxOutputTokens: MAX_OUTPUT_TOKENS,
+  thinkingConfig: {
+    thinkingBudget: GEMINI_THINKING_BUDGET
+  }
+};
+
+const UNKNOWN_REPLY = "Δεν έχω σίγουρη πληροφορία γι’ αυτό. Καλύτερα να επικοινωνήσετε με εκπρόσωπο του Συνεταιρισμού.";
+const SCOPE_REPLY = "Μπορώ να βοηθήσω μόνο με πληροφορίες για τηλεφωνία, τηλεόραση και σταθερό internet.";
+
+const GEMINI_SYSTEM_RULES = [
+  "You are Synetelas support bot.",
+  "Reply in Greek, concise, max 80 words.",
+  "Use only KB facts about telephony, TV and fixed internet.",
+  `If KB is insufficient, say exactly: "${UNKNOWN_REPLY}"`,
+  "Never show IDs, scores or internal notes."
+].join(" ");
 
 const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
 const model = genAI ? genAI.getGenerativeModel({ model: GEMINI_MODEL }) : null;
@@ -26,6 +51,12 @@ const model = genAI ? genAI.getGenerativeModel({ model: GEMINI_MODEL }) : null;
 const memory = new Map();
 const rateLimitStore = new Map();
 let activeRequests = 0;
+
+function readIntEnv(name, fallback, min, max) {
+  const raw = Number.parseInt(process.env[name] || "", 10);
+  if (!Number.isFinite(raw)) return fallback;
+  return Math.min(max, Math.max(min, raw));
+}
 
 /* =========================================
    2. GREEK / GREEKLISH NORMALIZATION
@@ -95,23 +126,73 @@ function toSearchKey(text = "") {
   return normalizeGreeklish(latin);
 }
 
+function toSmallTalkKey(text = "") {
+  return stripGreekTones(String(text).toLowerCase())
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const STOP_WORDS = new Set([
+  "τι",
+  "ποια",
+  "ποιο",
+  "ποιος",
+  "πως",
+  "που",
+  "για",
+  "και",
+  "να",
+  "το",
+  "τη",
+  "την",
+  "τον",
+  "τα",
+  "στο",
+  "στη",
+  "στην",
+  "με",
+  "σε",
+  "απο",
+  "είναι",
+  "ειναι",
+  "χρειάζεται",
+  "χρειαζεται",
+  "χρειάζονται",
+  "χρειαζονται",
+  "the",
+  "what",
+  "how",
+  "where",
+  "for",
+  "and"
+].map(toSearchKey));
+
 /* =========================================
    3. LOCAL FILTERS — 0 TOKENS
    ========================================= */
 const LOCAL_SMALL_TALK = [
   {
-    patterns: ["γεια", "γειά", "καλημερα", "καλησπερα", "καληνυχτα", "hello", "hi", "geia", "kalimera", "kalispera"],
-    reply: "Γεια σας! Μπορώ να σας βοηθήσω με πληροφορίες για κινητή, σταθερή, internet, EON TV, ασφάλιση υγείας, αιτήσεις και δικαιολογητικά."
+    patterns: ["γεια", "γειά", "καλημερα", "καλησπερα", "καληνυχτα", "hello", "geia", "kalimera", "kalispera"],
+    reply: "Γεια σας! Μπορώ να σας βοηθήσω με πληροφορίες για τηλεφωνία, τηλεόραση, σταθερό internet, αιτήσεις και δικαιολογητικά."
   },
   {
     patterns: ["ευχαριστω", "ευχαριστώ", "thanks", "thank you", "euxaristo", "efxaristo"],
-    reply: "Παρακαλώ! Είμαι στη διάθεσή σας για πληροφορίες σχετικά με τις προσφορές και τις διαδικασίες του Συνεταιρισμού."
+    reply: "Παρακαλώ! Είμαι στη διάθεσή σας για πληροφορίες σχετικά με τηλεφωνία, τηλεόραση και σταθερό internet."
   },
   {
     patterns: ["ποιος εισαι", "τι εισαι", "ανθρωπος", "ρομποτ", "bot", "poios eisai", "ti eisai", "robot"],
-    reply: "Είμαι ο ψηφιακός βοηθός του Synetelas και απαντώ σε ερωτήσεις για προσφορές, αιτήσεις, δικαιολογητικά, κινητή, σταθερή, EON TV και ασφάλιση υγείας."
+    reply: "Είμαι ο ψηφιακός βοηθός του Synetelas και απαντώ σε ερωτήσεις για τηλεφωνία, τηλεόραση, σταθερό internet, αιτήσεις και δικαιολογητικά."
   }
 ];
+
+const ALLOWED_FAQ_CATEGORIES = new Set([
+  "Σταθερή τηλεφωνία / Internet",
+  "EON TV",
+  "Κινητή / Καρτοκινητή",
+  "Vodafone CU",
+  "Nova Q"
+]);
 
 const BUSINESS_KEYWORDS = [
   "vodafone",
@@ -120,6 +201,16 @@ const BUSINESS_KEYWORDS = [
   "q",
   "eon",
   "tv",
+  "τηλεφωνία",
+  "τηλεφωνια",
+  "tilefonia",
+  "τηλέφωνο",
+  "τηλεφωνο",
+  "tilefono",
+  "κινητή",
+  "κινητη",
+  "kinhth",
+  "kinito",
   "σταθερή",
   "σταθερο",
   "statheri",
@@ -164,26 +255,12 @@ const BUSINESS_KEYWORDS = [
   "katathesi",
   "pliromi",
   "iban",
-  "ασφάλιση",
-  "ασφαλιση",
-  "asfalisi",
-  "υγεία",
-  "υγεια",
-  "igeia",
-  "interamerican",
-  "anytime",
   "προσφορά",
   "προσφορα",
   "prosfora",
   "τιμή",
   "τιμη",
-  "timi",
-  "συνεταιρισμός",
-  "συνεταιρισμος",
-  "sinetairismos",
-  "synetelas",
-  "πκσαα",
-  "pksaa"
+  "timi"
 ];
 
 const OUT_OF_SCOPE_KEYWORDS = [
@@ -214,6 +291,36 @@ const OUT_OF_SCOPE_KEYWORDS = [
   "πολιτική",
   "πολιτικη",
   "politiki",
+  "ασφάλιση",
+  "ασφαλιση",
+  "asfalisi",
+  "ασφάλεια",
+  "ασφαλεια",
+  "asfaleia",
+  "υγεία",
+  "υγεια",
+  "igeia",
+  "interamerican",
+  "anytime",
+  "νοσοκομείο",
+  "νοσοκομειο",
+  "nosokomeio",
+  "κλινική",
+  "κλινικη",
+  "kliniki",
+  "συνεταιρισμός",
+  "συνεταιρισμος",
+  "sinetairismos",
+  "synetelas",
+  "πκσαα",
+  "pksaa",
+  "επικοινωνία",
+  "επικοινωνια",
+  "επικοινων",
+  "επικοινωνώ",
+  "επικοινωνω",
+  "epikoinonia",
+  "epikoinon",
   "minecraft",
   "fortnite",
   "instagram",
@@ -222,10 +329,16 @@ const OUT_OF_SCOPE_KEYWORDS = [
 ];
 
 function getLocalSmallTalkReply(message) {
-  const normalized = toSearchKey(message);
+  const normalized = toSmallTalkKey(message);
+  const words = new Set(normalized.split(" ").filter(Boolean));
 
   for (const item of LOCAL_SMALL_TALK) {
-    if (item.patterns.some((pattern) => normalized.includes(toSearchKey(pattern)))) {
+    if (item.patterns.some((pattern) => {
+      const normalizedPattern = toSmallTalkKey(pattern);
+      if (!normalizedPattern) return false;
+      if (normalizedPattern.includes(" ")) return normalized.includes(normalizedPattern);
+      return words.has(normalizedPattern);
+    })) {
       return item.reply;
     }
   }
@@ -240,11 +353,6 @@ function hasBusinessKeyword(message) {
 
 function isClearlyOutOfScope(message) {
   const normalizedMessage = toSearchKey(message);
-
-  if (hasBusinessKeyword(message)) {
-    return false;
-  }
-
   return OUT_OF_SCOPE_KEYWORDS.some((keyword) => normalizedMessage.includes(toSearchKey(keyword)));
 }
 
@@ -254,17 +362,20 @@ function isClearlyOutOfScope(message) {
 function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
   const normalizedMessage = toSearchKey(message);
 
-  const messageWords = normalizedMessage
-    .split(" ")
-    .filter((word) => word.length >= 3);
+  const messageWords = [...new Set(
+    normalizedMessage
+      .split(" ")
+      .filter((word) => word.length >= 3 && !STOP_WORDS.has(word))
+  )];
 
-  const scored = faqs.map((faq) => {
+  const scored = faqs.filter(isAllowedFaq).map((faq) => {
     const searchableText = toSearchKey([
       faq.category,
       faq.question,
       faq.answer,
       ...(faq.keywords || [])
     ].join(" "));
+    const normalizedQuestion = toSearchKey(faq.question);
 
     let score = 0;
 
@@ -275,9 +386,14 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     }
 
     for (const keyword of faq.keywords || []) {
-      if (normalizedMessage.includes(toSearchKey(keyword))) {
-        score += 4;
+      const normalizedKeyword = toSearchKey(keyword);
+      if (normalizedKeyword.length >= 3 && normalizedMessage.includes(normalizedKeyword)) {
+        score += normalizedKeyword.includes(" ") ? 6 : 4;
       }
+    }
+
+    if (normalizedQuestion.includes(normalizedMessage) || normalizedMessage.includes(normalizedQuestion)) {
+      score += 8;
     }
 
     // Ενισχύσεις για πολύ συχνές προθέσεις.
@@ -285,6 +401,21 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     if (normalizedMessage.includes("katathesi") && searchableText.includes("katathesi")) score += 3;
     if (normalizedMessage.includes("foritotita") && searchableText.includes("foritotita")) score += 3;
     if (normalizedMessage.includes("energopoi") && searchableText.includes("energopoi")) score += 3;
+
+    const wantsPrice = /(prosfora|timi|times|poso|kostos|pagio)/.test(normalizedMessage);
+    const isPriceFaq = /(price|program|offer)/.test(faq.id)
+      || /(prosfora|timi|times|kostos|pagio|17 90|20 90)/.test(searchableText);
+
+    if (wantsPrice && isPriceFaq) {
+      score += 12;
+    } else if (wantsPrice && /(prosfora|timi|times|kostos|pagio|17 90|20 90)/.test(searchableText)) {
+      score += 7;
+    }
+
+    if (/(dikaiologitika|xartia|eggrafa)/.test(normalizedMessage)
+      && /(dikaiologitika|tautotita|eggrafa|apodeiktiko|dilosi)/.test(searchableText)) {
+      score += 5;
+    }
 
     return { faq, score };
   });
@@ -295,15 +426,90 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     .slice(0, limit);
 }
 
+function isAllowedFaq(faq) {
+  return ALLOWED_FAQ_CATEGORIES.has(faq.category);
+}
+
 function shouldAnswerDirectly(scoredFaqs) {
   if (!scoredFaqs.length) return false;
-  return scoredFaqs[0].score >= DIRECT_FAQ_SCORE;
+  const [best, second] = scoredFaqs;
+  const scoreGap = best.score - (second?.score || 0);
+  return best.score >= DIRECT_FAQ_SCORE && scoreGap >= DIRECT_FAQ_SCORE_GAP;
 }
 
 function buildFaqContext(relevantFaqs) {
   return relevantFaqs
-    .map((f) => `Κατηγορία: ${f.category}\nΕρώτηση: ${f.question}\nΑπάντηση: ${f.answer}`)
-    .join("\n\n---\n\n");
+    .map((f, index) => {
+      const answer = compactText(f.answer, MAX_FAQ_ANSWER_CHARS_FOR_GEMINI);
+      return `${index + 1}. ${f.category}\nQ: ${f.question}\nA: ${answer}`;
+    })
+    .join("\n\n");
+}
+
+function compactText(text = "", maxChars = 420) {
+  const compact = String(text).replace(/\s+/g, " ").trim();
+  if (compact.length <= maxChars) return compact;
+  const clipped = compact.slice(0, maxChars - 1);
+  const lastSentence = Math.max(
+    clipped.lastIndexOf("."),
+    clipped.lastIndexOf(";"),
+    clipped.lastIndexOf("!")
+  );
+  if (lastSentence > maxChars * 0.55) {
+    return `${clipped.slice(0, lastSentence + 1).trim()}`;
+  }
+  return `${clipped.trim()}…`;
+}
+
+function shouldIncludeHistory(message) {
+  const normalizedMessage = toSearchKey(message);
+  const words = normalizedMessage.split(" ").filter(Boolean);
+
+  if (words.length <= 4) return true;
+
+  return [
+    "αυτο",
+    "αυτό",
+    "εκεινο",
+    "εκείνο",
+    "τουτο",
+    "αυτη",
+    "αυτή",
+    "αυτα",
+    "αυτά",
+    "επισης",
+    "επίσης",
+    "και για",
+    "τιμη",
+    "τιμή",
+    "ποσο",
+    "πόσο",
+    "διαρκεια",
+    "διάρκεια"
+  ].some((term) => normalizedMessage.includes(toSearchKey(term)));
+}
+
+function buildHistoryContext(history, message) {
+  if (!history.length || !shouldIncludeHistory(message)) return "";
+
+  return history
+    .slice(-2)
+    .map((item) => {
+      const role = item.role === "model" ? "Bot" : "User";
+      const text = compactText(item.parts?.[0]?.text || "", Math.floor(MAX_HISTORY_CHARS_FOR_GEMINI / 2));
+      return `${role}: ${text}`;
+    })
+    .join("\n")
+    .slice(0, MAX_HISTORY_CHARS_FOR_GEMINI);
+}
+
+function buildGeminiPrompt({ faqContext, historyContext, message }) {
+  return [
+    GEMINI_SYSTEM_RULES,
+    historyContext ? `Previous turn:\n${historyContext}` : "",
+    `KB:\n${faqContext}`,
+    `Customer: ${message}`
+  ].filter(Boolean).join("\n\n");
 }
 
 function cleanReply(text = "") {
@@ -355,20 +561,36 @@ function checkRateLimit(req, userId) {
    ========================================= */
 function calculateCostEstimate(usage = {}) {
   const inputTokens = usage.promptTokenCount || 0;
-  const outputTokens = usage.candidatesTokenCount || 0;
+  const visibleOutputTokens = usage.candidatesTokenCount || 0;
+  const thinkingTokens = usage.thoughtsTokenCount || 0;
+  const outputTokens = visibleOutputTokens + thinkingTokens;
   const totalTokens = usage.totalTokenCount || inputTokens + outputTokens;
+  const pricing = getGeminiPricing(GEMINI_MODEL);
 
-  // Ενδεικτικές τιμές για Gemini 2.5 Flash paid tier:
-  // input: $0.30 / 1M tokens, output: $2.50 / 1M tokens
-  const inputCostUsd = (inputTokens / 1_000_000) * 0.30;
-  const outputCostUsd = (outputTokens / 1_000_000) * 2.50;
+  const inputCostUsd = (inputTokens / 1_000_000) * pricing.inputUsdPerMillion;
+  const outputCostUsd = (outputTokens / 1_000_000) * pricing.outputUsdPerMillion;
 
   return {
     inputTokens,
     outputTokens,
+    thinkingTokens,
     totalTokens,
     estimatedCostUsd: Number((inputCostUsd + outputCostUsd).toFixed(8))
   };
+}
+
+function getGeminiPricing(modelName = "") {
+  const normalizedModel = String(modelName).toLowerCase();
+
+  if (normalizedModel.includes("flash-lite")) {
+    return { inputUsdPerMillion: 0.10, outputUsdPerMillion: 0.40 };
+  }
+
+  if (normalizedModel.includes("flash")) {
+    return { inputUsdPerMillion: 0.30, outputUsdPerMillion: 2.50 };
+  }
+
+  return { inputUsdPerMillion: 1.25, outputUsdPerMillion: 10.00 };
 }
 
 /* =========================================
@@ -417,7 +639,7 @@ export default async function handler(req, res) {
 
     if (isClearlyOutOfScope(safeMessage)) {
       return res.status(200).json({
-        reply: "Μπορώ να βοηθήσω μόνο με πληροφορίες για τις προσφορές, τις αιτήσεις, τα δικαιολογητικά, την κινητή, τη σταθερή, την EON TV και την ασφάλιση υγείας του Συνεταιρισμού.",
+        reply: SCOPE_REPLY,
         source: "blocked_out_of_scope",
         usedGemini: false,
         estimatedTokensUsed: 0
@@ -428,7 +650,7 @@ export default async function handler(req, res) {
 
     if (!scoredFaqs.length || scoredFaqs[0].score < MIN_RELEVANT_SCORE_FOR_GEMINI) {
       return res.status(200).json({
-        reply: "Δεν έχω σίγουρη πληροφορία γι’ αυτό μέσα στα διαθέσιμα στοιχεία. Καλύτερα να επικοινωνήσετε με εκπρόσωπο του Συνεταιρισμού.",
+        reply: UNKNOWN_REPLY,
         source: "no_relevant_faq",
         usedGemini: false,
         estimatedTokensUsed: 0
@@ -466,35 +688,24 @@ export default async function handler(req, res) {
 
       const relevantFaqs = scoredFaqs.map((item) => item.faq);
       const faqContext = buildFaqContext(relevantFaqs);
-
-      const contextMessage = `
-Είσαι φιλικό chatbot εξυπηρέτησης πελατών για τον Συνεταιρισμό Synetelas.
-
-Απάντησε πάντα στα ελληνικά, σύντομα και κατανοητά.
-
-Χρησιμοποίησε ΜΟΝΟ τις παρακάτω πληροφορίες όταν η ερώτηση αφορά υπηρεσίες, τιμές, δικαιολογητικά, διαδικασίες ή προσφορές.
-
-Αν οι πληροφορίες δεν επαρκούν, μην μαντεύεις. Πες:
-"Δεν έχω σίγουρη πληροφορία γι’ αυτό. Καλύτερα να επικοινωνήσετε με εκπρόσωπο του Συνεταιρισμού."
-
-Μην εμφανίζεις τεχνικούς όρους, IDs, scores ή αναφορές εσωτερικού συστήματος.
-
-ΠΛΗΡΟΦΟΡΙΕΣ:
-${faqContext}
-
-ΜΗΝΥΜΑ ΠΕΛΑΤΗ:
-${safeMessage}
-`;
+      const historyContext = buildHistoryContext(history, safeMessage);
+      const contextMessage = buildGeminiPrompt({
+        faqContext,
+        historyContext,
+        message: safeMessage
+      });
 
       const currentChat = [
-        ...history,
         {
           role: "user",
           parts: [{ text: contextMessage }]
         }
       ];
 
-      const result = await model.generateContent({ contents: currentChat });
+      const result = await model.generateContent({
+        contents: currentChat,
+        generationConfig: GEMINI_GENERATION_CONFIG
+      });
       const reply = cleanReply(result.response.text());
       const usage = result.response.usageMetadata || {};
       const cost = calculateCostEstimate(usage);
@@ -518,8 +729,11 @@ ${safeMessage}
       console.log("BOT_USAGE", {
         userId,
         source: "gemini",
+        model: GEMINI_MODEL,
         matchedFaqIds: scoredFaqs.map((item) => item.faq.id),
         bestScore: scoredFaqs[0]?.score || 0,
+        sentFaqs: relevantFaqs.length,
+        sentHistory: Boolean(historyContext),
         messagePreview: safeMessage.slice(0, 80),
         ...cost
       });
@@ -528,6 +742,7 @@ ${safeMessage}
         reply,
         source: "gemini",
         usedGemini: true,
+        model: GEMINI_MODEL,
         matchedFaqIds: scoredFaqs.map((item) => item.faq.id),
         ...cost
       });
