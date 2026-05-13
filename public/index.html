@@ -1405,13 +1405,30 @@
     function renderWelcome() {
       const card = document.createElement("div");
       card.className = "welcome-card";
-      card.innerHTML = `
-        <p class="welcome-title">Γεια σας! Πώς μπορώ να βοηθήσω;</p>
-        <p class="welcome-text">Ρωτήστε για κινητή, φορητότητα, σταθερή, internet, EON TV ή IBAN.</p>
-        <div class="topic-grid">
-          ${topicButtons.map((item) => `<button class="topic-btn" type="button" data-welcome-prompt="${escapeHtml(item.prompt)}">${escapeHtml(item.label)}</button>`).join("")}
-        </div>
-      `;
+
+      const title = document.createElement("p");
+      title.className = "welcome-title";
+      title.textContent = "Γεια σας! Πώς μπορώ να βοηθήσω;";
+
+      const text = document.createElement("p");
+      text.className = "welcome-text";
+      text.textContent = "Ρωτήστε για κινητή, φορητότητα, σταθερή, internet, EON TV ή IBAN.";
+
+      const grid = document.createElement("div");
+      grid.className = "topic-grid";
+
+      topicButtons.forEach((item) => {
+        const button = document.createElement("button");
+        button.className = "topic-btn";
+        button.type = "button";
+        button.dataset.welcomePrompt = item.prompt;
+        button.textContent = item.label;
+        grid.appendChild(button);
+      });
+
+      card.appendChild(title);
+      card.appendChild(text);
+      card.appendChild(grid);
       messagesEl.appendChild(card);
 
       card.querySelectorAll("[data-welcome-prompt]").forEach((button) => {
@@ -1515,10 +1532,23 @@
       removeTyping();
       typingRow = document.createElement("div");
       typingRow.className = "message-row bot";
-      typingRow.innerHTML = `
-        <div class="mini-avatar">🤖</div>
-        <div class="bubble"><span class="typing"><span></span><span></span><span></span></span></div>
-      `;
+
+      const avatar = document.createElement("div");
+      avatar.className = "mini-avatar";
+      avatar.textContent = "🤖";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+
+      const typing = document.createElement("span");
+      typing.className = "typing";
+      typing.appendChild(document.createElement("span"));
+      typing.appendChild(document.createElement("span"));
+      typing.appendChild(document.createElement("span"));
+
+      bubble.appendChild(typing);
+      typingRow.appendChild(avatar);
+      typingRow.appendChild(bubble);
       messagesEl.appendChild(typingRow);
       scrollToBottom();
     }
@@ -1739,14 +1769,6 @@
       } catch (_) {}
     }
 
-    function escapeHtml(value) {
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
   </script>
 </body>
 </html>

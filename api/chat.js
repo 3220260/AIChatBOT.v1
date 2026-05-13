@@ -308,6 +308,14 @@ const OUT_OF_SCOPE_KEYWORDS = [
   "κλινική",
   "κλινικη",
   "kliniki",
+  "minecraft",
+  "fortnite",
+  "instagram",
+  "tiktok",
+  "facebook"
+];
+
+const AMBIGUOUS_SCOPE_KEYWORDS = [
   "συνεταιρισμός",
   "συνεταιρισμος",
   "sinetairismos",
@@ -320,12 +328,7 @@ const OUT_OF_SCOPE_KEYWORDS = [
   "επικοινωνώ",
   "επικοινωνω",
   "epikoinonia",
-  "epikoinon",
-  "minecraft",
-  "fortnite",
-  "instagram",
-  "tiktok",
-  "facebook"
+  "epikoinon"
 ];
 
 function getLocalSmallTalkReply(message) {
@@ -354,6 +357,16 @@ function hasBusinessKeyword(message) {
 function isClearlyOutOfScope(message) {
   const normalizedMessage = toSearchKey(message);
   return OUT_OF_SCOPE_KEYWORDS.some((keyword) => normalizedMessage.includes(toSearchKey(keyword)));
+}
+
+function hasAmbiguousScopeKeyword(message) {
+  const normalizedMessage = toSearchKey(message);
+  return AMBIGUOUS_SCOPE_KEYWORDS.some((keyword) => normalizedMessage.includes(toSearchKey(keyword)));
+}
+
+function shouldBlockForScope(message) {
+  if (isClearlyOutOfScope(message)) return true;
+  return hasAmbiguousScopeKeyword(message) && !hasBusinessKeyword(message);
 }
 
 /* =========================================
@@ -415,6 +428,11 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     if (/(dikaiologitika|xartia|eggrafa)/.test(normalizedMessage)
       && /(dikaiologitika|tautotita|eggrafa|apodeiktiko|dilosi)/.test(searchableText)) {
       score += 5;
+    }
+
+    const wantsSubmissionEmail = /(email|emel|mail|mel|apostol|steln|steil)/.test(normalizedMessage);
+    if (wantsSubmissionEmail && faq.id === "mobile-submit-email") {
+      score += 30;
     }
 
     return { faq, score };
@@ -637,7 +655,7 @@ export default async function handler(req, res) {
       });
     }
 
-    if (isClearlyOutOfScope(safeMessage)) {
+    if (shouldBlockForScope(safeMessage)) {
       return res.status(200).json({
         reply: SCOPE_REPLY,
         source: "blocked_out_of_scope",
