@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#ffffff" />
-  <title>Βοηθός Synetelas</title>
+  <title>Sofia</title>
   <style>
     :root {
       --primary: #12315f;
@@ -947,11 +947,11 @@
       min-height: 54px;
       grid-template-columns: 1fr auto auto;
       gap: 6px;
-      border: 1px solid var(--border);
+      border: 1px solid #0b2148;
       border-radius: 28px;
-      background: #ffffff;
+      background: #0f2b5c;
       padding: 6px 6px 6px 16px;
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 8px 22px rgba(8, 23, 51, 0.28);
     }
 
     .input-box {
@@ -962,7 +962,8 @@
     #chatInput {
       min-height: 28px;
       max-height: min(32vh, 180px);
-      color: var(--text);
+      color: #ffffff;
+      caret-color: #ffffff;
       font-size: 16px;
       line-height: 1.5;
       padding: 8px 0;
@@ -970,14 +971,14 @@
     }
 
     #chatInput::placeholder {
-      color: #8e8ea0;
+      color: rgba(255, 255, 255, 0.75);
     }
 
     .composer-footer {
       margin: 0;
       min-height: 0;
       overflow: visible;
-      color: var(--muted);
+      color: rgba(219, 234, 254, 0.88);
     }
 
     .char-counter {
@@ -987,7 +988,7 @@
     .char-counter.warning {
       height: auto;
       line-height: 1.2;
-      color: #d93025;
+      color: #fde68a;
     }
 
     .send-btn,
@@ -999,12 +1000,13 @@
     }
 
     .send-btn {
-      background: var(--primary);
+      background: #ffffff;
+      color: #0f2b5c;
     }
 
     .mic-btn {
       background: transparent;
-      color: #6e6e80;
+      color: #ffffff;
     }
 
     .mic-btn.is-listening {
@@ -1018,8 +1020,8 @@
     }
 
     .send-btn:disabled {
-      color: #ffffff;
-      background: #d9d9e3;
+      color: #0f2b5c;
+      background: rgba(255, 255, 255, 0.5);
       opacity: 1;
     }
 
@@ -1213,12 +1215,12 @@
 </head>
 <body>
   <main class="chat-shell">
-    <section class="chat-window" aria-label="Βοηθός Synetelas">
+    <section class="chat-window" aria-label="Sofia">
       <header class="chat-header" id="chatHeader">
         <div class="header-row">
           <div class="bot-avatar" aria-hidden="true">🤖</div>
           <div class="header-copy">
-            <h1 class="header-title"><span>Βοηθός Synetelas</span><span class="online-dot" aria-label="Online"></span></h1>
+            <h1 class="header-title"><span>Sofia</span><span class="online-dot" aria-label="Online"></span></h1>
             <p class="header-subtitle">Τηλεφωνία, τηλεόραση & σταθερό internet</p>
           </div>
           <div class="header-actions">
@@ -1281,7 +1283,7 @@
     <button class="minimized-launcher" type="button" id="restoreChatBtn" aria-label="Άνοιγμα συνομιλίας">
       <span class="launcher-avatar" aria-hidden="true">🤖</span>
       <span class="launcher-copy">
-        <strong>Βοηθός Synetelas</strong>
+        <strong>Sofia</strong>
         <span>Πατήστε για άνοιγμα</span>
       </span>
     </button>
@@ -1357,10 +1359,9 @@
       });
 
       inputEl.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && !event.shiftKey && !isMobile()) {
-          event.preventDefault();
-          submitCurrentMessage();
-        }
+        if (event.key !== "Enter" || event.shiftKey) return;
+        event.preventDefault();
+        submitCurrentMessage();
       });
 
       document.querySelectorAll("[data-prompt]").forEach((button) => {
@@ -1450,6 +1451,10 @@
       updateComposerState();
 
       await sendMessage(message);
+
+      if (isMobile()) {
+        inputEl.blur();
+      }
     }
 
     async function sendPrompt(prompt) {

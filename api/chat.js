@@ -38,7 +38,7 @@ const UNKNOWN_REPLY = "Δεν έχω σίγουρη πληροφορία γι’
 const SCOPE_REPLY = "Μπορώ να βοηθήσω μόνο με πληροφορίες για τηλεφωνία, τηλεόραση και σταθερό internet.";
 
 const GEMINI_SYSTEM_RULES = [
-  "You are Synetelas support bot.",
+  "You are Sofia, the official Synetelas support bot.",
   "Reply in Greek, concise, max 80 words.",
   "Use only KB facts about telephony, TV and fixed internet.",
   `If KB is insufficient, say exactly: "${UNKNOWN_REPLY}"`,
@@ -182,7 +182,7 @@ const LOCAL_SMALL_TALK = [
   },
   {
     patterns: ["ποιος εισαι", "τι εισαι", "ανθρωπος", "ρομποτ", "bot", "poios eisai", "ti eisai", "robot"],
-    reply: "Είμαι ο ψηφιακός βοηθός του Synetelas και απαντώ σε ερωτήσεις για τηλεφωνία, τηλεόραση, σταθερό internet, αιτήσεις και δικαιολογητικά."
+    reply: "Είμαι η Sofia, η ψηφιακή βοηθός του Synetelas, και απαντώ σε ερωτήσεις για τηλεφωνία, τηλεόραση, σταθερό internet, αιτήσεις και δικαιολογητικά."
   }
 ];
 
