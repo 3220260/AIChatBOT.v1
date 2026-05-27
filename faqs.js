@@ -6,6 +6,389 @@
 
 export const faqs = [
   {
+    "id": "site-pksaa-overview",
+    "category": "Γενικές πληροφορίες Π.Κ.Σ.Α.Α.",
+    "source": "FAQ / Πληροφορίες Συνεταιρισμού",
+    "keywords": [
+      "ΠΚΣΑΑ",
+      "Π.Κ.Σ.Α.Α.",
+      "συνεταιρισμός",
+      "συνεταιρισμος",
+      "synetairismos",
+      "sinetairismos",
+      "synetairismos astynomikon",
+      "sinetairismos astinomikon",
+      "τι είναι ο συνεταιρισμός",
+      "ti einai o sinetairismos",
+      "τι είναι ο ΠΚΣΑΑ",
+      "τι ειναι ο ΠΚΣΑΑ",
+      "ti einai o pksaa"
+    ],
+    "question": "Τι είναι ο Π.Κ.Σ.Α.Α.;",
+    "answer": "Ο Π.Κ.Σ.Α.Α. είναι ο Προμηθευτικός και Καταναλωτικός Συνεταιρισμός Αστυνομικών Αττικής. Η ιστοσελίδα συγκεντρώνει επίσημες προσφορές και παροχές για τα μέλη, όπως κινητή, σταθερή, internet, τηλεόραση, υγεία και συνεργαζόμενες υπηρεσίες."
+  },
+  {
+    "id": "site-offers-overview",
+    "category": "Προσφορές",
+    "source": "Ενεργές προσφορές / Κεντρική σελίδα",
+    "keywords": [
+      "προσφορές",
+      "προσφορες",
+      "prosfores",
+      "ποιες προσφορές υπάρχουν",
+      "poies prosfores yparxoun",
+      "τι προσφορές έχει",
+      "ti prosfores exei",
+      "κινητή",
+      "σταθερή",
+      "internet",
+      "τηλεόραση",
+      "υγεία",
+      "Vodafone",
+      "Nova",
+      "EON"
+    ],
+    "question": "Ποιες προσφορές εμφανίζονται στη σελίδα;",
+    "answer": "Στη σελίδα εμφανίζονται προσφορές για κινητή τηλεφωνία Vodafone CU και NOVA Q, σταθερή και internet Vodafone, Nova 5G Home Internet, EON + Cosmote TV, καθώς και παροχές υγείας/περίθαλψης. Για κάθε προσφορά πατάτε την αντίστοιχη κάρτα ή κουμπί προβολής για να δείτε λεπτομέρειες και δικαιολογητικά."
+  },
+  {
+    "id": "site-offer-prices-summary",
+    "category": "Προσφορές",
+    "source": "Κάρτες προσφορών",
+    "keywords": [
+      "πόσο κάνει η προσφορά",
+      "ποσο κανει η προσφορα",
+      "poso kanei i prosfora",
+      "τιμή προσφοράς",
+      "τιμη προσφορας",
+      "timi prosforas",
+      "τιμές",
+      "times",
+      "κόστος",
+      "kostos",
+      "πάγιο",
+      "pagio"
+    ],
+    "question": "Πόσο κάνουν οι προσφορές που φαίνονται στη σελίδα;",
+    "answer": "Στη σελίδα φαίνονται ενδεικτικά: κινητή Vodafone CU/NOVA Q με 100€ για 12 μήνες, Vodafone σταθερή/internet από 16,00€/μήνα, Nova 5G Home Internet 17,90€/μήνα, EON + Cosmote TV Full Pack 20,90€/μήνα και παροχές υγείας με τιμές που εμφανίζονται στην ενότητα Υγεία. Για ακριβείς όρους επιλέξτε την αντίστοιχη προσφορά στη σελίδα."
+  },
+  {
+    "id": "site-use-page",
+    "category": "Χρήση ιστοσελίδας",
+    "source": "Μενού επιλογών / Κάρτες προσφορών",
+    "keywords": [
+      "πώς χρησιμοποιώ τη σελίδα",
+      "πως χρησιμοποιω τη σελιδα",
+      "pos xrisimopoio ti selida",
+      "πού πατάω",
+      "που παταω",
+      "pou patao",
+      "να δω προσφορά",
+      "να δω προσφορα",
+      "προβολή προσφοράς",
+      "provoli prosforas",
+      "μενού επιλογών",
+      "menu"
+    ],
+    "question": "Πώς χρησιμοποιώ τη σελίδα για να δω μια προσφορά;",
+    "answer": "Πατήστε την κάρτα της προσφοράς που σας ενδιαφέρει ή ανοίξτε το Μενού Επιλογών. Από εκεί επιλέγετε Κινητή Τηλεφωνία, Σταθερή & Internet, Nova & Cosmote TV ή Υγεία & Περίθαλψη. Στα παράθυρα λεπτομερειών εμφανίζονται τα βήματα, τα έντυπα, τα δικαιολογητικά και τα στοιχεία αποστολής."
+  },
+  {
+    "id": "site-application-steps",
+    "category": "Χρήση ιστοσελίδας",
+    "source": "Οδηγοί αιτήσεων",
+    "keywords": [
+      "πώς κάνω αίτηση",
+      "πως κανω αιτηση",
+      "pos kano aitisi",
+      "βήμα βήμα",
+      "vima vima",
+      "ολοκληρώσω αίτηση",
+      "olokliroso aitisi",
+      "τι κάνω για αίτηση",
+      "ti kano gia aitisi"
+    ],
+    "question": "Τι πρέπει να κάνω βήμα-βήμα για να ολοκληρώσω αίτηση;",
+    "answer": "1. Επιλέξτε την προσφορά στη σελίδα. 2. Διαβάστε τον οδηγό και κατεβάστε τα έντυπα που εμφανίζονται. 3. Συμπληρώστε τα στοιχεία και κάντε την απαιτούμενη υπογραφή/επικύρωση μέσω gov.gr ή ΚΕΠ. 4. Συγκεντρώστε τα δικαιολογητικά. 5. Στείλτε τα έγγραφα και το αποδεικτικό κατάθεσης στο email που εμφανίζεται στον οδηγό της προσφοράς."
+  },
+  {
+    "id": "site-contact-current",
+    "category": "Επικοινωνία",
+    "source": "Πληροφορίες Συνεταιρισμού / Επικοινωνία",
+    "keywords": [
+      "επικοινωνία",
+      "επικοινωνια",
+      "epikoinonia",
+      "τηλέφωνα",
+      "τηλεφωνα",
+      "tilefona",
+      "poioi einai oi tropoi epikoinonias",
+      "τηλέφωνο επικοινωνίας",
+      "tilefono epikoinonias",
+      "email",
+      "διεύθυνση",
+      "διευθυνση",
+      "dieuthinsi",
+      "viber",
+      "community"
+    ],
+    "question": "Ποια είναι τα στοιχεία επικοινωνίας του Συνεταιρισμού;",
+    "answer": "Στη σελίδα αναφέρονται: διεύθυνση Καρύστου 3, Αθήνα 115 23, τηλέφωνο γραφείου 210 5245210, κινητό 6936799908 και email synetelas2011@gmail.com. Υπάρχει επίσης Viber Community για ενημέρωση για νέες προσφορές."
+  },
+  {
+    "id": "site-location-map",
+    "category": "Επικοινωνία",
+    "source": "Πληροφορίες Συνεταιρισμού / google map",
+    "keywords": [
+      "πού βρίσκεται",
+      "που βρισκεται",
+      "pou brisketai",
+      "πού είναι ο συνεταιρισμός",
+      "που ειναι ο συνεταιρισμος",
+      "pou einai o synetairismos",
+      "διεύθυνση",
+      "διευθυνση",
+      "diefthinsi",
+      "dieuthinsi",
+      "χάρτης",
+      "χαρτης",
+      "xartis",
+      "google maps",
+      "map",
+      "Καρύστου 3"
+    ],
+    "question": "Πού βρίσκεται ο Συνεταιρισμός;",
+    "answer": "Ο Συνεταιρισμός βρίσκεται στην Καρύστου 3, Αθήνα 115 23. Στη σελίδα υπάρχει ενότητα Πληροφορίες / google map για να δείτε την τοποθεσία στον χάρτη."
+  },
+  {
+    "id": "site-viber-community",
+    "category": "Επικοινωνία",
+    "source": "Viber Community",
+    "keywords": [
+      "viber",
+      "community",
+      "viber community",
+      "κοινότητα viber",
+      "koinotita viber",
+      "νέες προσφορές",
+      "nees prosfores",
+      "ενημέρωση προσφορών",
+      "enimerosi prosforon"
+    ],
+    "question": "Υπάρχει Viber Community;",
+    "answer": "Ναι. Στη σελίδα υπάρχει Viber Community με μήνυμα “Μάθε πρώτος τις νέες μας προσφορές!”. Μπορείτε να πατήσετε τον σύνδεσμο της ενότητας Viber Community για να συνδεθείτε."
+  },
+  {
+    "id": "site-privacy-cookies",
+    "category": "Cookies / Προσωπικά δεδομένα",
+    "source": "Προσωπικά Δεδομένα / Cookies",
+    "keywords": [
+      "προσωπικά δεδομένα",
+      "προσωπικα δεδομενα",
+      "prosopika dedomena",
+      "cookies",
+      "cookie",
+      "gdpr",
+      "τι στοιχεία κρατάτε",
+      "ti stoixeia kratate"
+    ],
+    "question": "Τι ισχύει για προσωπικά δεδομένα και cookies;",
+    "answer": "Η σελίδα αναφέρει ότι τα στοιχεία που αποστέλλονται χρησιμοποιούνται αποκλειστικά για την εξυπηρέτηση της διαδικασίας που επιλέγετε. Στέλνετε μόνο τα απαραίτητα δικαιολογητικά. Χρησιμοποιούνται απαραίτητα cookies για τη λειτουργία της σελίδας και μπορεί να χρησιμοποιούνται ανώνυμα στατιστικά για βελτίωση της εμπειρίας."
+  },
+  {
+    "id": "documents-general-checklist",
+    "category": "Δικαιολογητικά",
+    "source": "Οδηγοί δικαιολογητικών",
+    "keywords": [
+      "τι δικαιολογητικά χρειάζονται",
+      "τι δικαιολογητικα χρειαζονται",
+      "ti dikaiologitika xreiazontai",
+      "δικαιολογητικά",
+      "dikaiologitika",
+      "χαρτιά",
+      "χαρτια",
+      "xartia",
+      "έγγραφα",
+      "eggrafa",
+      "checklist"
+    ],
+    "question": "Τι δικαιολογητικά χρειάζονται γενικά;",
+    "answer": "Τα δικαιολογητικά εξαρτώνται από την προσφορά. Συνήθως η σελίδα ζητά: ταυτότητα μπρος-πίσω, συμπληρωμένο έντυπο/αίτηση, υπεύθυνη δήλωση με επικύρωση μέσω gov.gr ή ΚΕΠ όπου απαιτείται, αποδεικτικό κατάθεσης όταν υπάρχει πληρωμή και επιπλέον έντυπα όπως φορητότητα ή προσωπικά δεδομένα ανά πάροχο."
+  },
+  {
+    "id": "mobile-offer-summary",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "Κινητή Τηλεφωνία",
+    "keywords": [
+      "κινητή προσφορά",
+      "κινητη προσφορα",
+      "kinita prosfora",
+      "Vodafone CU",
+      "NOVA Q",
+      "100 ευρώ",
+      "100€",
+      "12 μήνες",
+      "απεριόριστη ομιλία",
+      "ατελείωτα data",
+      "δωρεάν sms"
+    ],
+    "question": "Τι προσφορά υπάρχει για κινητή τηλεφωνία;",
+    "answer": "Η σελίδα εμφανίζει προσφορά κινητής για Vodafone CU και NOVA Q με 100€ για 12 μήνες. Αναφέρονται απεριόριστη ομιλία προς όλους, ατελείωτα data/internet και δωρεάν SMS προς όλους. Για αίτηση επιλέγετε πάροχο και μετά νέο αριθμό ή φορητότητα."
+  },
+  {
+    "id": "mobile-documents-overview",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "Δικαιολογητικά σύνδεσης Vodafone CU / NOVA Q",
+    "keywords": [
+      "δικαιολογητικά κινητής",
+      "δικαιολογητικα κινητης",
+      "dikaiologitika kinitis",
+      "τι δικαιολογητικά χρειάζονται για κινητή",
+      "ti dikaiologitika xreiazontai gia kinito",
+      "χαρτιά για κινητή",
+      "xartia gia kinito",
+      "έγγραφα κινητής",
+      "eggrafa kinitis",
+      "Vodafone CU",
+      "NOVA Q"
+    ],
+    "question": "Τι δικαιολογητικά χρειάζονται για κινητή;",
+    "answer": "Για κινητή Vodafone CU ή NOVA Q χρειάζονται συνήθως: υπεύθυνη δήλωση καρτοκινητής με επικύρωση μέσω gov.gr ή ΚΕΠ, φωτοτυπία ταυτότητας μπρος-πίσω, αποδεικτικό κατάθεσης 100€ και στοιχεία/φωτογραφία SIM. Αν κρατάτε τον αριθμό σας, χρειάζεται και αίτηση/έντυπο φορητότητας. Για Vodafone CU αναφέρεται και έντυπο προσωπικών δεδομένων."
+  },
+  {
+    "id": "vodafone-cu-documents-overview",
+    "category": "Vodafone CU",
+    "source": "Δικαιολογητικά σύνδεσης Vodafone CU",
+    "keywords": [
+      "Τι δικαιολογητικά χρειάζονται για Vodafone CU",
+      "τι δικαιολογητικα χρειαζονται για vodafone cu",
+      "ti dikaiologitika xreiazontai gia vodafone cu",
+      "Vodafone CU δικαιολογητικά",
+      "Vodafone CU έγγραφα",
+      "Vodafone CU χαρτιά",
+      "προσωπικά δεδομένα Vodafone",
+      "αίτημα ενεργοποίησης Vodafone"
+    ],
+    "question": "Τι δικαιολογητικά χρειάζονται για Vodafone CU;",
+    "answer": "Για Vodafone CU χρειάζονται: υπεύθυνη δήλωση καρτοκινητής με επικύρωση μέσω gov.gr ή ΚΕΠ, έντυπο/παράρτημα προσωπικών δεδομένων, κατάθεση 100€, φωτοτυπία ταυτότητας μπρος-πίσω, αποδεικτικό κατάθεσης και η SIM. Αν κάνετε φορητότητα, χρειάζεται επιπλέον αίτημα/έντυπο ενεργοποίησης φορητότητας."
+  },
+  {
+    "id": "vodafone-fixed-offer-current",
+    "category": "Vodafone σταθερή / Internet",
+    "source": "Αποκλειστική Προσφορά Vodafone",
+    "keywords": [
+      "Vodafone σταθερή",
+      "Vodafone σταθερο",
+      "Vodafone internet",
+      "σταθερή Vodafone",
+      "FTTH",
+      "ADSL",
+      "FTTC",
+      "16,00",
+      "18,00",
+      "300 Mbps",
+      "2 μήνες δωρεάν"
+    ],
+    "question": "Τι προσφορά υπάρχει για Vodafone σταθερή και Internet;",
+    "answer": "Η σελίδα αναφέρει Vodafone σταθερή & Internet από 16,00€/μήνα, με ADSL/FTTC, FTTH 100 Mbps και FTTH 300 Mbps. Στα FTTH πακέτα εμφανίζονται 2 μήνες δωρεάν, δωρεάν router Wi-Fi, εγκατάσταση/ενεργοποίηση και απεριόριστα σταθερά με 300 λεπτά προς κινητά."
+  },
+  {
+    "id": "fixed-internet-offers-overview",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "Επιλογή Internet",
+    "keywords": [
+      "σταθερό internet",
+      "σταθερο internet",
+      "stathero internet",
+      "σταθερή internet",
+      "internet προσφορά",
+      "internet prosfora",
+      "έχει προσφορά για internet",
+      "exei prosfora gia internet",
+      "προσφορά για σταθερό",
+      "Vodafone",
+      "Nova"
+    ],
+    "question": "Έχει προσφορά για σταθερό internet;",
+    "answer": "Ναι. Η σελίδα εμφανίζει δύο επιλογές για σταθερό/internet: Vodafone σταθερή & Internet από 16,00€/μήνα με ADSL/FTTC και FTTH πακέτα, και Nova 5G Home Internet στα 17,90€/μήνα με ταχύτητες έως 100 Mbps και δωρεάν τέλη."
+  },
+  {
+    "id": "fixed-internet-application-steps",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "Προσφορά Nova Σταθερό & Internet / Vodafone σταθερή",
+    "keywords": [
+      "πώς κάνω αίτηση για σταθερό internet",
+      "πως κανω αιτηση για σταθερο internet",
+      "pos kano aitisi gia stathero internet",
+      "αίτηση σταθερό",
+      "αιτηση σταθερο",
+      "σταθερή αίτηση",
+      "σταθερη αιτηση",
+      "βήματα για σταθερό",
+      "vhmata gia stathero"
+    ],
+    "question": "Πώς κάνω αίτηση για σταθερό internet;",
+    "answer": "1. Επιλέξτε στη σελίδα Σταθερή & Internet και μετά Vodafone ή Nova. 2. Κατεβάστε/συμπληρώστε την αίτηση της προσφοράς. 3. Υπογράψτε μέσω gov.gr ή ΚΕΠ όπου ζητείται. 4. Ετοιμάστε ταυτότητα μπρος-πίσω και απόδειξη διεύθυνσης εγκατάστασης. 5. Στείλτε τα απαραίτητα έγγραφα στο synetelas2011@gmail.com."
+  },
+  {
+    "id": "nova-fixed-offer-current",
+    "category": "Nova σταθερό / Internet",
+    "source": "Nova 5G Home Internet",
+    "keywords": [
+      "Nova σταθερό",
+      "Nova σταθερο",
+      "Nova internet",
+      "5G Home",
+      "17,90",
+      "100 Mbps",
+      "δωρεάν τέλη",
+      "μηδενικό κόστος έναρξης"
+    ],
+    "question": "Τι προσφορά υπάρχει για Nova σταθερό και Internet;",
+    "answer": "Η σελίδα εμφανίζει Nova 5G Home Internet με δωρεάν τέλη, μηδενικό κόστος έναρξης, ταχύτητες έως 100 Mbps, απεριόριστα προς όλους και τιμή 17,90€/μήνα."
+  },
+  {
+    "id": "eon-cosmote-tv-offer-current",
+    "category": "Τηλεόραση",
+    "source": "EON + Cosmote TV",
+    "keywords": [
+      "Nova EON",
+      "EON",
+      "Cosmote TV",
+      "τηλεόραση",
+      "tileorasi",
+      "20,90",
+      "Full Pack",
+      "2 πάγια δώρο",
+      "αθλητικά",
+      "ταινίες"
+    ],
+    "question": "Υπάρχει προσφορά για Nova EON ή τηλεόραση;",
+    "answer": "Ναι. Η σελίδα εμφανίζει προσφορά EON + Cosmote TV Full Pack στα 20,90€/μήνα, με 2 πάγια δώρο, αθλητικά και ταινίες. Αναφέρονται επίσης αθλητικό θέαμα και πάνω από 6.000 ταινίες και σειρές on demand."
+  },
+  {
+    "id": "health-offer-current",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "Παροχές Υγείας",
+    "keywords": [
+      "υγεία",
+      "υγεια",
+      "igeia",
+      "περίθαλψη",
+      "perithalpsi",
+      "Interamerican",
+      "ασφάλιση υγείας",
+      "παροχές υγείας",
+      "νοσοκομειακή κάλυψη",
+      "50.000",
+      "32,18",
+      "36,64",
+      "37,40"
+    ],
+    "question": "Υπάρχει προσφορά υγείας στη σελίδα;",
+    "answer": "Ναι. Η σελίδα εμφανίζει παροχές υγείας/περίθαλψης, όπως ομαδικό συμβόλαιο Interamerican με νοσοκομειακή περίθαλψη 50.000€ ετησίως, παροχή βοήθειας 24ωρο με 20€/έτος για όλα τα μέλη της οικογένειας και κάρτα προνομίων υγείας. Στην ενότητα εμφανίζονται τιμές ανά κατηγορία ασφαλιζόμενου."
+  },
+  {
     "id": "fixed-documents-required",
     "category": "Σταθερή τηλεφωνία / Internet",
     "keywords": [
@@ -139,7 +522,7 @@ export const faqs = [
   },
   {
     "id": "eon-documents-required",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "EON",
       "τηλεόραση",
@@ -155,7 +538,7 @@ export const faqs = [
   },
   {
     "id": "eon-address-no-street",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "EON",
       "διεύθυνση",
@@ -170,7 +553,7 @@ export const faqs = [
   },
   {
     "id": "eon-programs",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "EON Entry",
       "EON+",
@@ -184,7 +567,7 @@ export const faqs = [
   },
   {
     "id": "eon-price-offer",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "20,90",
       "δύο πάγια δώρο",
@@ -198,7 +581,7 @@ export const faqs = [
   },
   {
     "id": "eon-list-prices",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "18,18",
       "27,27",
@@ -214,7 +597,7 @@ export const faqs = [
   },
   {
     "id": "eon-contract-duration",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "διάρκεια",
       "24 μήνες",
@@ -226,7 +609,7 @@ export const faqs = [
   },
   {
     "id": "eon-cancellation-fees",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "τέλος διακοπής",
       "διακοπή",
@@ -243,7 +626,7 @@ export const faqs = [
   },
   {
     "id": "eon-equipment",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "Smart Box",
       "δορυφορικός",
@@ -256,7 +639,7 @@ export const faqs = [
   },
   {
     "id": "eon-bill-address",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "λογαριασμός",
       "αποστολή λογαριασμού",
@@ -270,7 +653,7 @@ export const faqs = [
   },
   {
     "id": "eon-adult-pack",
-    "category": "EON TV",
+    "category": "Τηλεόραση",
     "keywords": [
       "Adult Pack",
       "ενηλίκων",
@@ -290,6 +673,8 @@ export const faqs = [
       "νεος αριθμος",
       "νέο νούμερο",
       "νεο νουμερο",
+      "thelo neo arithmo",
+      "thelo neo noumero",
       "δικαιολογητικά",
       "δικαιολογητικα",
       "καρτοκινητή",
@@ -307,6 +692,9 @@ export const faqs = [
       "φορητοτητα",
       "μεταφορά αριθμού",
       "μεταφορα αριθμου",
+      "θέλω να κρατήσω τον αριθμό μου",
+      "θελω να κρατησω τον αριθμο μου",
+      "thelo na kratiso ton arithmo mou",
       "δικαιολογητικά",
       "δικαιολογητικα",
       "καρτοκινητή",
@@ -333,11 +721,14 @@ export const faqs = [
   },
   {
     "id": "mobile-deposit-iban",
-    "category": "Κινητή / Καρτοκινητή",
+    "category": "Πληρωμές / IBAN",
     "keywords": [
       "100",
       "κατάθεση",
+      "katathesi",
       "IBAN",
+      "poio einai to iban",
+      "ποιο είναι το iban",
       "Πειραιώς",
       "Eurobank",
       "South Attica",
@@ -458,10 +849,12 @@ export const faqs = [
       "αποστολή",
       "δικαιολογητικά",
       "συνεταιρισμός",
-      "synetelas2025"
+      "synetelas2011",
+      "pou stelno ta dikaiologitika",
+      "pou stelno ta eggrafa"
     ],
     "question": "Πού στέλνω τα δικαιολογητικά για νέα SIM ή φορητότητα;",
-    "answer": "Στα έντυπα αναφέρεται αποστολή των δικαιολογητικών στον Συνεταιρισμό και email επικοινωνίας synetelas2025@gmail.com."
+    "answer": "Στείλτε όλα τα έγγραφα και το αποδεικτικό κατάθεσης σε ένα email στο synetelas2011@gmail.com, όπως αναφέρεται στους οδηγούς της σελίδας."
   },
   {
     "id": "mobile-when-to-change-sim",
@@ -504,7 +897,7 @@ export const faqs = [
   },
   {
     "id": "insurance-health-overview",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "ασφάλιση υγείας",
       "ασφαλιση υγειας",
@@ -521,7 +914,7 @@ export const faqs = [
   },
   {
     "id": "insurance-general-not-contract",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "ασφάλιση",
       "Interamerican",
@@ -534,7 +927,7 @@ export const faqs = [
   },
   {
     "id": "insurance-life",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "ασφάλεια ζωής",
       "ζωής",
@@ -547,7 +940,7 @@ export const faqs = [
   },
   {
     "id": "insurance-hospital-limit",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "νοσοκομειακή",
       "κάλυψη",
@@ -561,7 +954,7 @@ export const faqs = [
   },
   {
     "id": "insurance-deductible",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "απαλλαγή",
       "απαλλασσόμενο",
@@ -574,7 +967,7 @@ export const faqs = [
   },
   {
     "id": "insurance-room",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "θέση νοσηλείας",
       "δωμάτιο",
@@ -587,7 +980,7 @@ export const faqs = [
   },
   {
     "id": "insurance-attica-athinaiki",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "Αθηναϊκή Κλινική",
       "Athinaiki",
@@ -601,7 +994,7 @@ export const faqs = [
   },
   {
     "id": "insurance-special-network",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "ειδικά συμβεβλημένα",
       "νοσοκομεία",
@@ -615,7 +1008,7 @@ export const faqs = [
   },
   {
     "id": "insurance-outside-attica",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "εκτός Αττικής",
       "εκτός Ελλάδας",
@@ -628,7 +1021,7 @@ export const faqs = [
   },
   {
     "id": "insurance-outpatient-athinaiki-medifirst",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "εξωνοσοκομειακή",
       "Medifirst",
@@ -643,7 +1036,7 @@ export const faqs = [
   },
   {
     "id": "insurance-euroclinic-children",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "Ευρωκλινική Παίδων",
       "παιδιά",
@@ -657,7 +1050,7 @@ export const faqs = [
   },
   {
     "id": "insurance-affidea-outside-attica",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "Affidea",
       "εκτός Αττικής",
@@ -671,7 +1064,7 @@ export const faqs = [
   },
   {
     "id": "insurance-maternity",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "μητρότητα",
       "τοκετός",
@@ -686,7 +1079,7 @@ export const faqs = [
   },
   {
     "id": "insurance-daily-benefit",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "ημερήσιο νοσοκομειακό επίδομα",
       "60",
@@ -700,7 +1093,7 @@ export const faqs = [
   },
   {
     "id": "insurance-network-documents",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "αστυνομική ταυτότητα",
       "ομαδικό ασφαλιστήριο",
@@ -713,7 +1106,7 @@ export const faqs = [
   },
   {
     "id": "insurance-hospital-network",
-    "category": "Ομαδική ασφάλιση Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "νοσοκομεία",
       "συμβεβλημένα",
@@ -728,7 +1121,7 @@ export const faqs = [
   },
   {
     "id": "health-line-1010",
-    "category": "Γραμμές υγείας",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "1010",
       "γραμμή υγείας",
@@ -742,7 +1135,7 @@ export const faqs = [
   },
   {
     "id": "health-line-affidea",
-    "category": "Γραμμές υγείας",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "Affidea",
       "2160000013",
@@ -756,7 +1149,7 @@ export const faqs = [
   },
   {
     "id": "medical-assistance-services",
-    "category": "Γραμμές υγείας",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "άμεση ιατρική βοήθεια",
       "ασθενοφόρο",
@@ -769,7 +1162,7 @@ export const faqs = [
   },
   {
     "id": "medical-assistance-phones",
-    "category": "Γραμμές υγείας",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "1010",
       "2109461999",
@@ -783,7 +1176,7 @@ export const faqs = [
   },
   {
     "id": "anytime-discount",
-    "category": "Anytime / Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "Anytime",
       "έκπτωση",
@@ -799,7 +1192,7 @@ export const faqs = [
   },
   {
     "id": "anytime-who-benefits",
-    "category": "Anytime / Interamerican",
+    "category": "Υγεία / Περίθαλψη",
     "keywords": [
       "Anytime",
       "συνταξιούχοι",
@@ -820,10 +1213,16 @@ export const faqs = [
       "email",
       "συνεταιρισμός",
       "ΠΚΣΑΑ",
-      "synetelas"
+      "synetelas",
+      "viber",
+      "community",
+      "διεύθυνση",
+      "Καρύστου",
+      "6936799908",
+      "synetelas2011"
     ],
     "question": "Πώς επικοινωνώ με τον Συνεταιρισμό;",
-    "answer": "Στα έντυπα αναφέρεται για τον ΠΚΣΑΑ η διεύθυνση Καρόλου 3, Αθήνα, Τ.Κ. 11523, τηλέφωνο 210.5245210 και email info@synetelas.gr. Για αποστολή δικαιολογητικών κινητής στα σχετικά έντυπα αναφέρεται και το synetelas2025@gmail.com."
+    "answer": "Στη σελίδα αναφέρονται: διεύθυνση Καρύστου 3, Αθήνα 115 23, τηλέφωνο γραφείου 210 5245210, κινητό 6936799908 και email synetelas2011@gmail.com. Υπάρχει επίσης Viber Community για ενημέρωση για νέες προσφορές."
   },
   {
     "id": "unknown-answer-policy",

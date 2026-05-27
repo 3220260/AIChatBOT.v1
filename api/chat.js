@@ -6,13 +6,14 @@ import { faqs } from "../faqs.js";
    ========================================= */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+const DEBUG = process.env.DEBUG === "true";
 
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_MESSAGES_PER_WINDOW = 8;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const MAX_ACTIVE_REQUESTS = 20;
 const MAX_HISTORY_MESSAGES = 4;
-const MAX_RELEVANT_FAQS_FOR_GEMINI = 3;
+const MAX_RELEVANT_FAQS_FOR_GEMINI = 5;
 const MAX_FAQ_ANSWER_CHARS_FOR_GEMINI = 420;
 const MAX_HISTORY_CHARS_FOR_GEMINI = 360;
 const MAX_OUTPUT_TOKENS = readIntEnv("GEMINI_MAX_OUTPUT_TOKENS", 220, 80, 600);
@@ -25,25 +26,23 @@ const DIRECT_FAQ_SCORE_GAP = 2;
 // Αν έχει σχετικό FAQ αλλά όχι αρκετά καθαρό match, τότε πάμε Gemini.
 const MIN_RELEVANT_SCORE_FOR_GEMINI = 2;
 
-const GEMINI_GENERATION_CONFIG = {
-  temperature: 0.15,
-  topP: 0.8,
-  maxOutputTokens: MAX_OUTPUT_TOKENS,
-  thinkingConfig: {
-    thinkingBudget: GEMINI_THINKING_BUDGET
-  }
-};
-
-const UNKNOWN_REPLY = "Δεν έχω σίγουρη πληροφορία γι’ αυτό. Καλύτερα να επικοινωνήσετε με εκπρόσωπο του Συνεταιρισμού.";
-const SCOPE_REPLY = "Μπορώ να βοηθήσω μόνο με πληροφορίες για τηλεφωνία, τηλεόραση και σταθερό internet.";
+const UNKNOWN_REPLY = "Δεν έχω σίγουρη πληροφορία γι’ αυτό. Καλύτερα να επικοινωνήσετε με τον Συνεταιρισμό.";
+const SCOPE_REPLY = "Μπορώ να βοηθήσω με πληροφορίες για τις προσφορές και τις διαδικασίες της ιστοσελίδας.";
 
 const GEMINI_SYSTEM_RULES = [
-  "You are Sofia, the official Synetelas support bot.",
-  "Reply in Greek, concise, max 80 words.",
-  "Use only KB facts about telephony, TV and fixed internet.",
-  `If KB is insufficient, say exactly: "${UNKNOWN_REPLY}"`,
-  "Never show IDs, scores or internal notes."
+  "You are Sofia, the official digital assistant for the Π.Κ.Σ.Α.Α. website.",
+  "Reply only in Greek.",
+  "Use only the provided website knowledge base.",
+  "Do not invent prices, terms, offers, phone numbers, emails, IBANs, or procedures.",
+  `If the provided context is insufficient, reply exactly with: "${UNKNOWN_REPLY}"`,
+  `If the question is unrelated to the website, reply exactly with: "${SCOPE_REPLY}"`,
+  "Be concise and helpful, normally 50-90 Greek words.",
+  "When the user asks for a process, answer with short numbered steps.",
+  "When the user asks for documents, answer with a compact checklist.",
+  "Never show IDs, scores, token counts, costs or internal notes."
 ].join(" ");
+
+const GEMINI_GENERATION_CONFIG = buildGenerationConfig(GEMINI_MODEL);
 
 const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
 const model = genAI ? genAI.getGenerativeModel({ model: GEMINI_MODEL }) : null;
@@ -56,6 +55,39 @@ function readIntEnv(name, fallback, min, max) {
   const raw = Number.parseInt(process.env[name] || "", 10);
   if (!Number.isFinite(raw)) return fallback;
   return Math.min(max, Math.max(min, raw));
+}
+
+function sendJson(res, statusCode, payload, debugPayload = {}) {
+  const responsePayload = DEBUG
+    ? { ...payload, ...debugPayload }
+    : payload;
+
+  return res.status(statusCode).json(responsePayload);
+}
+
+function buildGenerationConfig(modelName = GEMINI_MODEL) {
+  const normalizedModel = String(modelName).toLowerCase();
+  const baseConfig = {
+    temperature: 0.15,
+    topP: 0.8,
+    maxOutputTokens: MAX_OUTPUT_TOKENS
+  };
+
+  if (normalizedModel.startsWith("gemini-2.5")) {
+    return {
+      ...baseConfig,
+      thinkingConfig: {
+        thinkingBudget: GEMINI_THINKING_BUDGET
+      }
+    };
+  }
+
+  // Keep Gemini 3 configuration conservative for SDK compatibility.
+  if (normalizedModel.startsWith("gemini-3")) {
+    return baseConfig;
+  }
+
+  return baseConfig;
 }
 
 /* =========================================
@@ -174,25 +206,19 @@ const STOP_WORDS = new Set([
 const LOCAL_SMALL_TALK = [
   {
     patterns: ["γεια", "γειά", "καλημερα", "καλησπερα", "καληνυχτα", "hello", "geia", "kalimera", "kalispera"],
-    reply: "Γεια σας! Μπορώ να σας βοηθήσω με πληροφορίες για τηλεφωνία, τηλεόραση, σταθερό internet, αιτήσεις και δικαιολογητικά."
+    reply: "Γεια σας! Είμαι η Sofia και μπορώ να βοηθήσω με προσφορές, δικαιολογητικά, διαδικασίες και στοιχεία επικοινωνίας του Π.Κ.Σ.Α.Α."
   },
   {
     patterns: ["ευχαριστω", "ευχαριστώ", "thanks", "thank you", "euxaristo", "efxaristo"],
-    reply: "Παρακαλώ! Είμαι στη διάθεσή σας για πληροφορίες σχετικά με τηλεφωνία, τηλεόραση και σταθερό internet."
+    reply: "Παρακαλώ! Είμαι στη διάθεσή σας για πληροφορίες της ιστοσελίδας του Π.Κ.Σ.Α.Α."
   },
   {
     patterns: ["ποιος εισαι", "τι εισαι", "ανθρωπος", "ρομποτ", "bot", "poios eisai", "ti eisai", "robot"],
-    reply: "Είμαι η Sofia, η ψηφιακή βοηθός του Synetelas, και απαντώ σε ερωτήσεις για τηλεφωνία, τηλεόραση, σταθερό internet, αιτήσεις και δικαιολογητικά."
+    reply: "Είμαι η Sofia, η ψηφιακή βοηθός του Π.Κ.Σ.Α.Α., και απαντώ με πληροφορίες από την ιστοσελίδα για προσφορές, διαδικασίες και επικοινωνία."
   }
 ];
 
-const ALLOWED_FAQ_CATEGORIES = new Set([
-  "Σταθερή τηλεφωνία / Internet",
-  "EON TV",
-  "Κινητή / Καρτοκινητή",
-  "Vodafone CU",
-  "Nova Q"
-]);
+const INTERNAL_FAQ_CATEGORIES = new Set(["Οδηγίες bot"]);
 
 const BUSINESS_KEYWORDS = [
   "vodafone",
@@ -260,7 +286,41 @@ const BUSINESS_KEYWORDS = [
   "prosfora",
   "τιμή",
   "τιμη",
-  "timi"
+  "timi",
+  "συνεταιρισμός",
+  "συνεταιρισμος",
+  "synetairismos",
+  "sinetairismos",
+  "πκσαα",
+  "pksaa",
+  "προσφορές",
+  "προσφορες",
+  "prosfores",
+  "υγεία",
+  "υγεια",
+  "igeia",
+  "ασφάλιση",
+  "ασφαλιση",
+  "asfalisi",
+  "ασφάλεια",
+  "ασφαλεια",
+  "asfaleia",
+  "interamerican",
+  "anytime",
+  "επικοινωνία",
+  "επικοινωνια",
+  "epikoinonia",
+  "viber",
+  "χάρτης",
+  "χαρτης",
+  "xartis",
+  "maps",
+  "google maps",
+  "cosmote",
+  "cookies",
+  "δεδομένα",
+  "δεδομενα",
+  "dedomena"
 ];
 
 const OUT_OF_SCOPE_KEYWORDS = [
@@ -291,23 +351,6 @@ const OUT_OF_SCOPE_KEYWORDS = [
   "πολιτική",
   "πολιτικη",
   "politiki",
-  "ασφάλιση",
-  "ασφαλιση",
-  "asfalisi",
-  "ασφάλεια",
-  "ασφαλεια",
-  "asfaleia",
-  "υγεία",
-  "υγεια",
-  "igeia",
-  "interamerican",
-  "anytime",
-  "νοσοκομείο",
-  "νοσοκομειο",
-  "nosokomeio",
-  "κλινική",
-  "κλινικη",
-  "kliniki",
   "minecraft",
   "fortnite",
   "instagram",
@@ -365,8 +408,7 @@ function hasAmbiguousScopeKeyword(message) {
 }
 
 function shouldBlockForScope(message) {
-  if (isClearlyOutOfScope(message)) return true;
-  return hasAmbiguousScopeKeyword(message) && !hasBusinessKeyword(message);
+  return isClearlyOutOfScope(message);
 }
 
 /* =========================================
@@ -410,10 +452,33 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     }
 
     // Ενισχύσεις για πολύ συχνές προθέσεις.
-    if (normalizedMessage.includes("dikaiologitika") && searchableText.includes("dikaiologitika")) score += 3;
+    if (/(dikaiologitika|dikeologitika)/.test(normalizedMessage)
+      && /(dikaiologitika|dikeologitika)/.test(searchableText)) {
+      score += 3;
+    }
     if (normalizedMessage.includes("katathesi") && searchableText.includes("katathesi")) score += 3;
     if (normalizedMessage.includes("foritotita") && searchableText.includes("foritotita")) score += 3;
     if (normalizedMessage.includes("energopoi") && searchableText.includes("energopoi")) score += 3;
+    if (/(epikoinonia|tilefono|kinito|email|dieuth|diefth|dieth|dith|viber|xartis|maps|brisketai)/.test(normalizedMessage)
+      && /(epikoinonia|tilefono|kinito|email|dieuth|diefth|dieth|dith|viber|xartis|maps|karistou|brisketai)/.test(searchableText)) {
+      score += 8;
+    }
+    if (/(aitisi|vima|diadikasia|xrisimopoi|pato|anoigo|stelno|steln|apostol)/.test(normalizedMessage)
+      && /(aitisi|vima|diadikasia|xrisimopoi|pato|apostoli|steln|email)/.test(searchableText)) {
+      score += 6;
+    }
+    if (/(pksaa|sinetairismos|synetairismos|poios eisai|ti einai)/.test(normalizedMessage)
+      && /(pksaa|sinetairismos|synetairismos|promitheftikos|katanalotikos)/.test(searchableText)) {
+      score += 10;
+    }
+    if (/(cookies|dedomena|prosopika)/.test(normalizedMessage)
+      && /(cookies|dedomena|prosopika)/.test(searchableText)) {
+      score += 10;
+    }
+    if (/(igeia|asfalisi|interamerican|nosokomeiaki|perithalpsi)/.test(normalizedMessage)
+      && /(igeia|asfalisi|interamerican|nosokomeiaki|perithalpsi)/.test(searchableText)) {
+      score += 8;
+    }
 
     const wantsPrice = /(prosfora|timi|times|poso|kostos|pagio)/.test(normalizedMessage);
     const isPriceFaq = /(price|program|offer)/.test(faq.id)
@@ -425,12 +490,18 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
       score += 7;
     }
 
-    if (/(dikaiologitika|xartia|eggrafa)/.test(normalizedMessage)
-      && /(dikaiologitika|tautotita|eggrafa|apodeiktiko|dilosi)/.test(searchableText)) {
+    if (/(dikaiologitika|dikeologitika|xartia|eggrafa)/.test(normalizedMessage)
+      && /(dikaiologitika|dikeologitika|tautotita|eggrafa|apodeiktiko|dilosi)/.test(searchableText)) {
       score += 5;
     }
+    if (/vodafone/.test(normalizedMessage)
+      && /cu/.test(normalizedMessage)
+      && /(dikaiologitika|dikeologitika|xartia|eggrafa)/.test(normalizedMessage)
+      && faq.id === "vodafone-cu-documents-overview") {
+      score += 20;
+    }
 
-    const wantsSubmissionEmail = /(email|emel|mail|mel|apostol|steln|steil)/.test(normalizedMessage);
+    const wantsSubmissionEmail = /(email|emel|mail|mel|apostol|steln|stelno|steil)/.test(normalizedMessage);
     if (wantsSubmissionEmail && faq.id === "mobile-submit-email") {
       score += 30;
     }
@@ -445,7 +516,7 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
 }
 
 function isAllowedFaq(faq) {
-  return ALLOWED_FAQ_CATEGORIES.has(faq.category);
+  return !INTERNAL_FAQ_CATEGORIES.has(faq.category);
 }
 
 function shouldAnswerDirectly(scoredFaqs) {
@@ -540,19 +611,27 @@ function cleanReply(text = "") {
 /* =========================================
    5. RATE LIMITS
    ========================================= */
-function getClientKey(req, userId) {
+function getClientIp(req) {
   const forwardedFor = req.headers["x-forwarded-for"];
-  const ip = typeof forwardedFor === "string"
-    ? forwardedFor.split(",")[0].trim()
-    : req.socket?.remoteAddress || "unknown";
+  if (typeof forwardedFor === "string" && forwardedFor.trim()) {
+    return forwardedFor.split(",")[0].trim();
+  }
 
-  return String(userId || ip || "unknown").slice(0, 120);
+  const realIp = req.headers["x-real-ip"];
+  if (typeof realIp === "string" && realIp.trim()) {
+    return realIp.trim();
+  }
+
+  return req.socket?.remoteAddress || "unknown";
 }
 
-function checkRateLimit(req, userId) {
-  const key = getClientKey(req, userId);
-  const now = Date.now();
+function normalizeRateLimitPart(value) {
+  return String(value || "unknown")
+    .replace(/[^\w:.-]/g, "_")
+    .slice(0, 120);
+}
 
+function checkRateLimitBucket(key, now) {
   const current = rateLimitStore.get(key) || {
     count: 0,
     resetAt: now + RATE_LIMIT_WINDOW_MS
@@ -567,11 +646,25 @@ function checkRateLimit(req, userId) {
   rateLimitStore.set(key, current);
 
   if (current.count > MAX_MESSAGES_PER_WINDOW) {
-    const retryAfterSeconds = Math.ceil((current.resetAt - now) / 1000);
-    return { allowed: false, retryAfterSeconds };
+    return Math.ceil((current.resetAt - now) / 1000);
   }
 
-  return { allowed: true, retryAfterSeconds: 0 };
+  return 0;
+}
+
+function checkRateLimit(req, userId) {
+  const ip = normalizeRateLimitPart(getClientIp(req));
+  const safeUserId = normalizeRateLimitPart(userId);
+  const userAgent = normalizeRateLimitPart(req.headers["user-agent"] || "unknown").slice(0, 80);
+  const now = Date.now();
+  const key = `${ip}:${safeUserId}:${userAgent}`;
+  const retryAfterSeconds = checkRateLimitBucket(key, now);
+
+  return {
+    allowed: retryAfterSeconds === 0,
+    retryAfterSeconds,
+    key
+  };
 }
 
 /* =========================================
@@ -621,7 +714,7 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "GET") {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         ok: true,
         service: "Sofia Chat API",
         message: "Χρησιμοποίησε POST /api/chat με { message, userId }."
@@ -629,18 +722,18 @@ export default async function handler(req, res) {
     }
 
     if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed. Use POST /api/chat." });
+      return sendJson(res, 405, { error: "Method not allowed. Use POST /api/chat." });
     }
 
     const { message, userId } = req.body || {};
     const safeMessage = typeof message === "string" ? message.trim() : "";
 
     if (!safeMessage || !userId) {
-      return res.status(400).json({ error: "Λείπει μήνυμα ή αναγνωριστικό χρήστη." });
+      return sendJson(res, 400, { error: "Λείπει μήνυμα ή αναγνωριστικό χρήστη." });
     }
 
     if (safeMessage.length > MAX_MESSAGE_LENGTH) {
-      return res.status(400).json({
+      return sendJson(res, 400, {
         error: `Το μήνυμα είναι πολύ μεγάλο. Παρακαλώ γράψτε μέχρι ${MAX_MESSAGE_LENGTH} χαρακτήρες.`
       });
     }
@@ -648,26 +741,31 @@ export default async function handler(req, res) {
     const rateLimit = checkRateLimit(req, userId);
 
     if (!rateLimit.allowed) {
-      return res.status(429).json({
-        error: `Πολλά μηνύματα σε μικρό χρόνο. Δοκιμάστε ξανά σε ${rateLimit.retryAfterSeconds} δευτερόλεπτα.`
+      return sendJson(res, 429, {
+        error: "Πολλά μηνύματα σε μικρό χρόνο. Δοκιμάστε ξανά σε λίγο."
+      }, {
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+        rateLimitKey: rateLimit.key
       });
     }
 
     const localReply = getLocalSmallTalkReply(safeMessage);
     if (localReply) {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         reply: localReply,
+        usedGemini: false
+      }, {
         source: "local_small_talk",
-        usedGemini: false,
         estimatedTokensUsed: 0
       });
     }
 
     if (shouldBlockForScope(safeMessage)) {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         reply: SCOPE_REPLY,
+        usedGemini: false
+      }, {
         source: "blocked_out_of_scope",
-        usedGemini: false,
         estimatedTokensUsed: 0
       });
     }
@@ -675,19 +773,21 @@ export default async function handler(req, res) {
     const scoredFaqs = getRelevantFaqs(safeMessage);
 
     if (!scoredFaqs.length || scoredFaqs[0].score < MIN_RELEVANT_SCORE_FOR_GEMINI) {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         reply: UNKNOWN_REPLY,
+        usedGemini: false
+      }, {
         source: "no_relevant_faq",
-        usedGemini: false,
         estimatedTokensUsed: 0
       });
     }
 
     if (shouldAnswerDirectly(scoredFaqs)) {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         reply: scoredFaqs[0].faq.answer,
+        usedGemini: false
+      }, {
         source: "direct_faq",
-        usedGemini: false,
         estimatedTokensUsed: 0,
         matchedFaqId: scoredFaqs[0].faq.id,
         score: scoredFaqs[0].score
@@ -695,13 +795,13 @@ export default async function handler(req, res) {
     }
 
     if (!model) {
-      return res.status(500).json({
+      return sendJson(res, 500, {
         error: "Το chatbot δεν έχει ρυθμιστεί σωστά. Λείπει το GEMINI_API_KEY στο Vercel."
       });
     }
 
     if (activeRequests >= MAX_ACTIVE_REQUESTS) {
-      return res.status(503).json({
+      return sendJson(res, 503, {
         error: "Υπάρχει μεγάλη κίνηση αυτή τη στιγμή. Δοκιμάστε ξανά σε λίγο."
       });
     }
@@ -732,7 +832,7 @@ export default async function handler(req, res) {
         contents: currentChat,
         generationConfig: GEMINI_GENERATION_CONFIG
       });
-      const reply = cleanReply(result.response.text());
+      const reply = cleanReply(result.response.text()) || UNKNOWN_REPLY;
       const usage = result.response.usageMetadata || {};
       const cost = calculateCostEstimate(usage);
 
@@ -764,10 +864,11 @@ export default async function handler(req, res) {
         ...cost
       });
 
-      return res.status(200).json({
+      return sendJson(res, 200, {
         reply,
+        usedGemini: true
+      }, {
         source: "gemini",
-        usedGemini: true,
         model: GEMINI_MODEL,
         matchedFaqIds: scoredFaqs.map((item) => item.faq.id),
         ...cost
@@ -777,7 +878,7 @@ export default async function handler(req, res) {
     }
   } catch (err) {
     console.error("Σφάλμα στο backend:", err);
-    return res.status(500).json({
+    return sendJson(res, 500, {
       error: "Παρουσιάστηκε σφάλμα. Δοκιμάστε ξανά σε λίγο."
     });
   }

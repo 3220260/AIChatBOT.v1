@@ -1,26 +1,29 @@
 # VerBot Synetelas
 
-Έτοιμο Vercel chatbot για Synetelas.
+Mobile-first chatbot για το `synetairismos-astynomikon.gr`. Η Sofia απαντά μόνο με πληροφορίες της ιστοσελίδας για προσφορές, δικαιολογητικά, διαδικασίες, επικοινωνία, προσωπικά δεδομένα και cookies.
 
-## Αρχεία
+## Τοπική Εκκίνηση
 
-```text
-.env.example
-.gitignore
-README.md
-api/chat.js
-faqs.js
-scripts/dev-server.js
-public/index.html
-package.json
-package-lock.json
+```bash
+npm install
+npm run dev
 ```
 
-## Deploy στο Vercel
+Το chat ανοίγει στο `http://localhost:3000` και το backend παραμένει στο `POST /api/chat`.
 
-1. Ανέβασε όλα τα αρχεία στο GitHub repo.
-2. Σύνδεσε το repo στο Vercel.
-3. Στο Vercel βάλε Environment Variable:
+Για στατικό έλεγχο και tests:
+
+```bash
+npm run check
+```
+
+## Deploy Στο Vercel
+
+1. Συνδέστε το GitHub repo στο Vercel.
+2. Ορίστε τα Environment Variables στο Vercel.
+3. Κάντε deploy. Το frontend σερβίρεται από το `public/index.html` και το API από το `/api/chat`.
+
+Απαραίτητο:
 
 ```text
 GEMINI_API_KEY=το_api_key_σου
@@ -32,61 +35,51 @@ GEMINI_API_KEY=το_api_key_σου
 GEMINI_MODEL=gemini-2.5-flash-lite
 GEMINI_MAX_OUTPUT_TOKENS=220
 GEMINI_THINKING_BUDGET=0
+DEBUG=false
 ```
 
-Υπάρχει και αρχείο `.env.example` με τις ίδιες μεταβλητές για τοπικό στήσιμο.
-
-4. Κάνε Deploy.
-
-## Τοπική εκκίνηση
-
-```bash
-npm install
-npm run dev
-```
-
-Το local chat ανοίγει στο:
+Προτεινόμενες τιμές παραγωγής:
 
 ```text
-http://localhost:3000
+GEMINI_MODEL=gemini-2.5-flash-lite
+GEMINI_MAX_OUTPUT_TOKENS=220
+GEMINI_THINKING_BUDGET=0
+DEBUG=false
 ```
 
-## URL
+Το backend υποστηρίζει αλλαγή μοντέλου από `GEMINI_MODEL`. Το default μένει `gemini-2.5-flash-lite` για σταθερότητα και χαμηλό κόστος. Για μοντέλα `gemini-2.5*` στέλνεται `thinkingBudget=0`; για `gemini-3*` δεν στέλνεται thinking budget ώστε να μην υπάρξει ασυμβατότητα SDK.
 
-Το chat frontend ανοίγει στο root:
+Το `GEMINI_API_KEY` δεν μπαίνει ποτέ στο frontend. Μένει μόνο στα Vercel Environment Variables ή σε τοπικό περιβάλλον για ανάπτυξη.
 
-```text
-https://το-project.vercel.app/
-```
+## Βάση Γνώσης
 
-Το backend endpoint είναι:
+Η γνώση βρίσκεται στο `faqs.js`. Κάθε εγγραφή είναι δομημένη με:
 
-```text
-https://το-project.vercel.app/api/chat
-```
-
-## Τι κάνει
-
-- Απαντά τοπικά σε απλές ερωτήσεις και καθαρά FAQ matches με 0 Gemini tokens.
-- Αναγνωρίζει ελληνικά και greeklish.
-- Κόβει άσχετες ερωτήσεις πριν πάνε στο Gemini.
-- Απαντά μόνο για τηλεφωνία, τηλεόραση και σταθερό internet. Οι παλιές πληροφορίες για ασφάλιση/υγεία/Anytime δεν χρησιμοποιούνται από το API.
-- Χρησιμοποιεί compact FAQ context, μέχρι 3 σχετικά FAQ και μικρό output budget για χαμηλότερο κόστος Gemini.
-- Χρησιμοποιεί ως default το `gemini-2.5-flash-lite`, που είναι το οικονομικό Flash-Lite μοντέλο.
-- Περιορίζει μηνύματα ανά χρήστη/IP.
-- Έχει mobile-first UI για iPhone/Android με safe-area, αποθήκευση συνομιλίας στη συσκευή, διακοπή απάντησης και φωνητική εισαγωγή όπου υποστηρίζεται από το browser.
-
-
-## Σημείωση για Vercel Output Directory
-
-Το frontend βρίσκεται στο `public/index.html`.
-Το `vercel.json` ορίζει:
-
-```json
+```js
 {
-  "buildCommand": null,
-  "outputDirectory": "public"
+  id: "unique-id",
+  category: "Κατηγορία",
+  question: "Ερώτηση",
+  answer: "Απάντηση",
+  keywords: ["λέξεις", "greeklish"],
+  source: "Προαιρετική ενότητα σελίδας"
 }
 ```
 
-Άρα στο Vercel δεν χρειάζεται build για το frontend. Τα API functions παραμένουν στο `/api`.
+Για ενημέρωση, προσθέστε ή αλλάξτε εγγραφές στο `faqs.js` με πραγματικές πληροφορίες από τη σελίδα. Μην βάζετε εικασίες για τιμές, όρους, πακέτα ή δικαιολογητικά.
+
+## Συμπεριφορά
+
+- Πρώτα γίνεται τοπικό FAQ matching, χωρίς Gemini.
+- Αναγνωρίζονται ελληνικά, χωρίς τόνους και greeklish.
+- Αν υπάρχει σχετική αλλά όχι καθαρή πληροφορία, στέλνονται στο Gemini μόνο τα 3-5 πιο σχετικά αποσπάσματα.
+- Δεν χρησιμοποιείται Google Search grounding. Οι απαντήσεις βασίζονται μόνο στο `faqs.js`.
+- Οι απαντήσεις Gemini κρατιούνται σύντομες με μικρό output budget.
+- Αν δεν υπάρχει σίγουρη πληροφορία, η Sofia προτείνει επικοινωνία με τον Συνεταιρισμό.
+- Άσχετες ερωτήσεις απαντώνται με μήνυμα περιορισμού στο περιεχόμενο της ιστοσελίδας.
+- Σε production το API επιστρέφει `{ reply, usedGemini }`, χωρίς scores, matched IDs ή κόστος tokens. Αυτά εμφανίζονται μόνο με `DEBUG=true`.
+- Το rate limit είναι 8 μηνύματα ανά λεπτό ανά client key που συνδυάζει IP, `userId` και user-agent.
+
+## Ασφάλεια
+
+Το `vercel.json` περιορίζει το `frame-ancestors` στο επίσημο site, το GitHub Pages origin και τα local origins ανάπτυξης. Το frontend δεν στέλνει προσωπικά δεδομένα μέσω `postMessage`.

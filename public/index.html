@@ -84,9 +84,29 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.94rem;
-      font-weight: 640;
-      letter-spacing: 0.01em;
+    }
+
+    .brand-text {
+      min-width: 0;
+      display: grid;
+      gap: 1px;
+    }
+
+    .brand-title {
+      font-size: 0.95rem;
+      line-height: 1.1;
+      font-weight: 680;
+      color: #f5f5f5;
+    }
+
+    .brand-subtitle {
+      font-size: 0.74rem;
+      line-height: 1.2;
+      font-weight: 500;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .status-dot {
@@ -406,7 +426,7 @@
     .composer-meta {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 10px;
       color: var(--muted);
       font-size: 0.76rem;
@@ -565,7 +585,7 @@
       }
 
       .header-copy {
-        font-size: 0.9rem;
+        max-width: calc(100vw - 128px);
       }
 
       .icon-btn {
@@ -596,12 +616,28 @@
     <header class="chat-header">
       <div class="header-copy">
         <span class="status-dot" aria-hidden="true"></span>
-        <span>Sofia</span>
+        <span class="brand-text">
+          <span class="brand-title">Sofia</span>
+          <span class="brand-subtitle">Ψηφιακή βοηθός Π.Κ.Σ.Α.Α.</span>
+        </span>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" id="clearBtn" type="button" title="Καθαρισμός" aria-label="Καθαρισμός συνομιλίας">↺</button>
-        <button class="icon-btn" id="minBtn" type="button" title="Ελαχιστοποίηση" aria-label="Ελαχιστοποίηση">−</button>
-        <button class="icon-btn" id="closeBtn" type="button" title="Κλείσιμο" aria-label="Κλείσιμο">×</button>
+        <button class="icon-btn" id="clearBtn" type="button" title="Καθαρισμός" aria-label="Καθαρισμός συνομιλίας">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7V4H1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M4.7 4.7A9 9 0 1 1 3 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </button>
+        <button class="icon-btn" id="minBtn" type="button" title="Ελαχιστοποίηση" aria-label="Ελαχιστοποίηση">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </button>
+        <button class="icon-btn" id="closeBtn" type="button" title="Κλείσιμο" aria-label="Κλείσιμο">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 7L17 17M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </button>
       </div>
     </header>
 
@@ -615,7 +651,6 @@
       <form id="chatForm" class="composer" autocomplete="off">
         <textarea id="chatInput" rows="1" maxlength="500" placeholder="Στείλε μήνυμα στη Sofia" aria-label="Μήνυμα"></textarea>
         <div class="composer-meta">
-          <span class="hint">`Enter` αποστολή · `Shift + Enter` νέα γραμμή</span>
           <div class="composer-actions">
             <span id="charCounter" class="counter">0 / 500</span>
             <button id="sendBtn" class="send-btn" type="submit" aria-label="Αποστολή">
@@ -643,6 +678,15 @@
     const USER_ID_KEY = "sofia_chat_user_id";
     const MAX_CHARS = 500;
     const MAX_STORED_MESSAGES = 80;
+    const ALLOWED_PARENT_ORIGINS = new Set([
+      "https://synetairismos-astynomikon.gr",
+      "https://www.synetairismos-astynomikon.gr",
+      "https://3220260.github.io",
+      "http://localhost:5500",
+      "http://127.0.0.1:5500",
+      "http://localhost:3000",
+      "http://127.0.0.1:3000"
+    ]);
 
     const messagesEl = document.getElementById("messages");
     const formEl = document.getElementById("chatForm");
@@ -657,10 +701,14 @@
     const toastEl = document.getElementById("toast");
 
     const quickPrompts = [
-      "Τι δικαιολογητικά χρειάζομαι για Vodafone CU φορητότητα;",
-      "Ποια είναι τα βήματα για νέο αριθμό NOVA Q;",
-      "Πού στέλνω τα δικαιολογητικά και ποια IBAN υπάρχουν;",
-      "Πώς ενεργοποιείται η SIM μετά την παραλαβή;"
+      "Ποιες προσφορές υπάρχουν;",
+      "Τι είναι ο Π.Κ.Σ.Α.Α.;",
+      "Πού βρίσκεται ο Συνεταιρισμός;",
+      "Ποια είναι τα τηλέφωνα επικοινωνίας;",
+      "Τι δικαιολογητικά χρειάζονται;",
+      "Πώς κάνω αίτηση;",
+      "Πού στέλνω τα έγγραφα;",
+      "Έχει προσφορά για internet;"
     ];
 
     const userId = getOrCreateUserId();
@@ -736,7 +784,9 @@
       }
 
       window.addEventListener("message", (event) => {
-        const type = event.data;
+        if (!isAllowedMessageOrigin(event.origin)) return;
+
+        const type = getMessageType(event.data);
         if (type === "restoreChat") {
           restoreChat(false);
         }
@@ -771,7 +821,7 @@
       title.textContent = "Πώς μπορώ να βοηθήσω;";
 
       const text = document.createElement("p");
-      text.textContent = "Ρωτήστε για προσφορές, δικαιολογητικά, IBAN, αποστολή εγγράφων και ενεργοποίηση SIM.";
+      text.textContent = "Γεια σας, είμαι η Sofia. Μπορώ να βοηθήσω με προσφορές, δικαιολογητικά, διαδικασίες και στοιχεία επικοινωνίας του Π.Κ.Σ.Α.Α.";
 
       const prompts = document.createElement("div");
       prompts.className = "quick-prompts";
@@ -1125,8 +1175,31 @@
 
     function postToParent(type) {
       try {
-        window.parent.postMessage(type, "*");
+        if (window.parent === window) return;
+        const targetOrigin = getParentTargetOrigin();
+        if (!targetOrigin) return;
+        window.parent.postMessage({ source: "sofia-chat", type }, targetOrigin);
       } catch (_) {}
+    }
+
+    function getMessageType(data) {
+      if (typeof data === "string") return data;
+      if (data && typeof data.type === "string") return data.type;
+      return "";
+    }
+
+    function isAllowedMessageOrigin(origin) {
+      if (!origin || origin === window.location.origin) return true;
+      return ALLOWED_PARENT_ORIGINS.has(origin);
+    }
+
+    function getParentTargetOrigin() {
+      try {
+        const referrerOrigin = document.referrer ? new URL(document.referrer).origin : "";
+        if (ALLOWED_PARENT_ORIGINS.has(referrerOrigin)) return referrerOrigin;
+        if (ALLOWED_PARENT_ORIGINS.has(window.location.origin)) return window.location.origin;
+      } catch (_) {}
+      return "";
     }
 
     function getOrCreateUserId() {
