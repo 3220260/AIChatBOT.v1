@@ -16,6 +16,7 @@ const MAX_HISTORY_MESSAGES = 4;
 const MAX_RELEVANT_FAQS_FOR_GEMINI = 5;
 const MAX_FAQ_ANSWER_CHARS_FOR_GEMINI = 420;
 const MAX_HISTORY_CHARS_FOR_GEMINI = 360;
+const MAX_OFF_TOPIC_PLAYFUL_REPLIES = 5;
 const MAX_OUTPUT_TOKENS = readIntEnv("GEMINI_MAX_OUTPUT_TOKENS", 220, 80, 600);
 const GEMINI_THINKING_BUDGET = readIntEnv("GEMINI_THINKING_BUDGET", 0, -1, 24576);
 
@@ -50,6 +51,7 @@ const model = genAI ? genAI.getGenerativeModel({ model: GEMINI_MODEL }) : null;
 
 const memory = new Map();
 const rateLimitStore = new Map();
+const offTopicPlayStore = new Map();
 let activeRequests = 0;
 
 function readIntEnv(name, fallback, min, max) {
@@ -343,12 +345,21 @@ const OUT_OF_SCOPE_KEYWORDS = [
   "ποδόσφαιρο",
   "ποδοσφαιρο",
   "podosfairo",
+  "πρωτάθλημα",
+  "πρωταθλημα",
+  "protathlima",
   "στοίχημα",
   "στοιχημα",
   "stoixima",
   "μαγειρική",
   "μαγειρικη",
   "mageiriki",
+  "συνταγή",
+  "συνταγη",
+  "syntagi",
+  "μακαρόνια",
+  "μακαρονια",
+  "makaronia",
   "ταινία",
   "ταινια",
   "tainia",
@@ -359,7 +370,21 @@ const OUT_OF_SCOPE_KEYWORDS = [
   "fortnite",
   "instagram",
   "tiktok",
-  "facebook"
+  "facebook",
+  "διάγνωση",
+  "διαγνωση",
+  "diagnosi",
+  "φαρμακο",
+  "φαρμακο",
+  "επένδυση",
+  "επενδυση",
+  "ependysi",
+  "μετοχές",
+  "μετοχες",
+  "metoxes",
+  "δικηγόρος",
+  "δικηγορος",
+  "dikigoros"
 ];
 
 const AMBIGUOUS_SCOPE_KEYWORDS = [
@@ -836,6 +861,42 @@ function checkRateLimit(req, userId) {
   };
 }
 
+function getOffTopicPlayCountKey(req, userId) {
+  const ip = normalizeRateLimitPart(getClientIp(req));
+  const safeUserId = normalizeRateLimitPart(userId).slice(0, 60);
+  return `${ip}:${safeUserId}`;
+}
+
+function getPlayfulOffTopicReply(message, count) {
+  const replies = [
+    "Καλή ερώτηση, αλλά εγώ είμαι εδώ κυρίως για να βοηθάω με τις προσφορές και τις διαδικασίες του Συνεταιρισμού. Θέλετε να σας δείξω ποιες προσφορές υπάρχουν;",
+    "Μπορώ να βοηθήσω καλύτερα σε θέματα της ιστοσελίδας, όπως προσφορές, δικαιολογητικά, αιτήσεις και επικοινωνία. Για ποια προσφορά ενδιαφέρεστε;",
+    "Αυτό είναι λίγο έξω από τον ρόλο μου 😄 Είμαι η Sofia και γνωρίζω πληροφορίες για τον Π.Κ.Σ.Α.Α., τις προσφορές και τα βήματα αίτησης.",
+    "Δεν θέλω να σας δώσω άσχετη ή λάθος απάντηση. Μπορώ όμως να σας βοηθήσω με κινητή, σταθερή, internet, τηλεόραση, υγεία ή δικαιολογητικά.",
+    "Ας το γυρίσουμε λίγο στο πρακτικό κομμάτι 😊 Θέλετε πληροφορίες για προσφορές, αίτηση, δικαιολογητικά ή στοιχεία επικοινωνίας;"
+  ];
+
+  if (count > MAX_OFF_TOPIC_PLAYFUL_REPLIES) {
+    return "Μπορώ να βοηθήσω κυρίως με πληροφορίες για τις προσφορές, τα δικαιολογητικά, τις διαδικασίες και την ιστοσελίδα του Συνεταιρισμού.";
+  }
+
+  return replies[(count - 1) % replies.length];
+}
+
+function sendLocalOffTopicReply(req, res, userId, message, source = "local_off_topic_playful") {
+  const key = getOffTopicPlayCountKey(req, userId);
+  const count = (offTopicPlayStore.get(key) || 0) + 1;
+  offTopicPlayStore.set(key, count);
+
+  return sendJson(res, 200, {
+    reply: getPlayfulOffTopicReply(message, count),
+    usedGemini: false
+  }, {
+    source,
+    offTopicCount: count
+  });
+}
+
 /* =========================================
    6. TOKEN LOGGING / COST ESTIMATE
    ========================================= */
@@ -930,13 +991,7 @@ export default async function handler(req, res) {
     }
 
     if (shouldBlockForScope(safeMessage)) {
-      return sendJson(res, 200, {
-        reply: SCOPE_REPLY,
-        usedGemini: false
-      }, {
-        source: "blocked_out_of_scope",
-        estimatedTokensUsed: 0
-      });
+      return sendLocalOffTopicReply(req, res, userId, safeMessage);
     }
 
     const scoredFaqs = getRelevantFaqs(safeMessage);
@@ -965,13 +1020,7 @@ export default async function handler(req, res) {
       generalContext = buildGeneralSiteContext();
       geminiContextSource = "general_site_context";
     } else {
-      return sendJson(res, 200, {
-        reply: SCOPE_REPLY,
-        usedGemini: false
-      }, {
-        source: "not_website_related",
-        estimatedTokensUsed: 0
-      });
+      return sendLocalOffTopicReply(req, res, userId, safeMessage);
     }
 
     if (!model) {

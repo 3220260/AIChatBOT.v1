@@ -45,6 +45,10 @@ async function loadHandler({ debug = false } = {}) {
 
 async function postChat(message, options = {}) {
   const handler = await loadHandler({ debug: options.debug });
+  return postChatWithHandler(handler, message, options);
+}
+
+async function postChatWithHandler(handler, message, options = {}) {
   const userId = options.userId || `test-${Date.now()}-${Math.random()}`;
   const req = {
     method: "POST",
@@ -146,16 +150,18 @@ test("πες μου ανέκδοτο blocks locally without Gemini", async () =>
   const response = await postChat("πες μου ανέκδοτο", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "blocked_out_of_scope");
+  assert.equal(response.body.source, "local_off_topic_playful");
   assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.offTopicCount, 1);
 });
 
 test("καιρός αύριο blocks locally without Gemini", async () => {
   const response = await postChat("καιρός αύριο", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "blocked_out_of_scope");
+  assert.equal(response.body.source, "local_off_topic_playful");
   assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.offTopicCount, 1);
 });
 
 test("medium relevant query is routed to Gemini path when no direct FAQ is clear", async () => {
@@ -210,6 +216,58 @@ test("unrelated but not explicitly blocked wording stays local scope reply", asy
   const response = await postChat("τι είναι η κβαντική φυσική;", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "not_website_related");
+  assert.equal(response.body.source, "local_off_topic_playful");
   assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.offTopicCount, 1);
+});
+
+test("off-topic questions use five playful redirects then the firm redirect", async () => {
+  const handler = await loadHandler({ debug: true });
+  const options = {
+    userId: "off-topic-sequence",
+    ip: "127.0.0.55",
+    userAgent: "off-topic-test-agent"
+  };
+  const messages = [
+    "Πες μου ένα ανέκδοτο",
+    "Τι καιρό θα κάνει αύριο;",
+    "Ποιος θα πάρει το πρωτάθλημα;",
+    "Πες μου συνταγή για μακαρόνια",
+    "Τι είναι το TikTok;",
+    "Πες μου πάλι κάτι άσχετο"
+  ];
+
+  const responses = [];
+  for (const message of messages) {
+    responses.push(await postChatWithHandler(handler, message, options));
+  }
+
+  responses.forEach((response, index) => {
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "local_off_topic_playful");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.offTopicCount, index + 1);
+  });
+
+  const firstFiveReplies = responses.slice(0, 5).map((response) => response.body.reply);
+  assert.equal(new Set(firstFiveReplies).size, 5);
+  assert.match(responses[0].body.reply, /Καλή ερώτηση/);
+  assert.match(responses[1].body.reply, /Για ποια προσφορά ενδιαφέρεστε/);
+  assert.match(responses[2].body.reply, /έξω από τον ρόλο μου/);
+  assert.match(responses[3].body.reply, /Δεν θέλω να σας δώσω άσχετη/);
+  assert.match(responses[4].body.reply, /πρακτικό κομμάτι/);
+  assert.equal(
+    responses[5].body.reply,
+    "Μπορώ να βοηθήσω κυρίως με πληροφορίες για τις προσφορές, τα δικαιολογητικά, τις διαδικασίες και την ιστοσελίδα του Συνεταιρισμού."
+  );
+});
+
+test("off-topic production response hides playful debug metadata", async () => {
+  const response = await postChat("Πες μου ένα ανέκδοτο");
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.source, undefined);
+  assert.equal(response.body.offTopicCount, undefined);
+  assert.match(response.body.reply, /Καλή ερώτηση/);
 });
