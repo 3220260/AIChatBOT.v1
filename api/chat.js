@@ -27,16 +27,17 @@ const DIRECT_FAQ_SCORE_GAP = 2;
 const MIN_RELEVANT_SCORE_FOR_GEMINI = 2;
 
 const UNKNOWN_REPLY = "Δεν έχω σίγουρη πληροφορία γι’ αυτό. Καλύτερα να επικοινωνήσετε με τον Συνεταιρισμό.";
-const SCOPE_REPLY = "Μπορώ να βοηθήσω με πληροφορίες για τις προσφορές και τις διαδικασίες της ιστοσελίδας.";
+const SCOPE_REPLY = "Μπορώ να βοηθήσω με πληροφορίες για τις προσφορές, τις διαδικασίες και την ιστοσελίδα του Συνεταιρισμού.";
 
 const GEMINI_SYSTEM_RULES = [
   "You are Sofia, the official digital assistant for the Π.Κ.Σ.Α.Α. website.",
   "Reply only in Greek.",
-  "Use only the provided website knowledge base.",
+  "Use only the provided website knowledge/context.",
+  "Help users understand offers, documents, procedures, contact details and how to use the website.",
   "Do not invent prices, terms, offers, phone numbers, emails, IBANs, or procedures.",
-  `If the provided context is insufficient, reply exactly with: "${UNKNOWN_REPLY}"`,
+  `If the context is insufficient, say exactly: "${UNKNOWN_REPLY}"`,
   `If the question is unrelated to the website, reply exactly with: "${SCOPE_REPLY}"`,
-  "Be concise and helpful, normally 50-90 Greek words.",
+  "Be concise, friendly and practical.",
   "When the user asks for a process, answer with short numbered steps.",
   "When the user asks for documents, answer with a compact checklist.",
   "Never show IDs, scores, token counts, costs or internal notes."
@@ -335,6 +336,9 @@ const OUT_OF_SCOPE_KEYWORDS = [
   "poiima",
   "καιρός",
   "καιρος",
+  "καιρό",
+  "καιρο",
+  "kero",
   "kairos",
   "ποδόσφαιρο",
   "ποδοσφαιρο",
@@ -374,6 +378,121 @@ const AMBIGUOUS_SCOPE_KEYWORDS = [
   "epikoinon"
 ];
 
+const WEBSITE_RELATED_KEYWORDS = [
+  "συνεταιρισμός",
+  "συνεταιρισμος",
+  "synetairismos",
+  "sinetairismos",
+  "synetelas",
+  "πκσαα",
+  "pksaa",
+  "προσφορά",
+  "προσφορα",
+  "προσφορές",
+  "προσφορες",
+  "prosfora",
+  "prosfores",
+  "vodafone",
+  "cu",
+  "nova",
+  "q",
+  "eon",
+  "tv",
+  "internet",
+  "ίντερνετ",
+  "ιντερνετ",
+  "σταθερή",
+  "σταθερη",
+  "σταθερό",
+  "σταθερο",
+  "statheri",
+  "stathero",
+  "κινητή",
+  "κινητη",
+  "kinito",
+  "kinita",
+  "δικαιολογητικά",
+  "δικαιολογητικα",
+  "dikaiologitika",
+  "dikeologitika",
+  "xartia",
+  "έγγραφα",
+  "εγγραφα",
+  "eggrafa",
+  "αίτηση",
+  "αιτηση",
+  "aitisi",
+  "φορητότητα",
+  "φορητοτητα",
+  "foritotita",
+  "νέος αριθμός",
+  "νεος αριθμος",
+  "neos arithmos",
+  "thelo neo arithmo",
+  "sim",
+  "ενεργοποίηση",
+  "ενεργοποιηση",
+  "energopoiisi",
+  "energopoiw",
+  "iban",
+  "κατάθεση",
+  "καταθεση",
+  "katathesi",
+  "email",
+  "mail",
+  "τηλέφωνο",
+  "τηλεφωνο",
+  "tilefono",
+  "επικοινωνία",
+  "επικοινωνια",
+  "επικοινωνώ",
+  "επικοινωνω",
+  "επικοινωνήσω",
+  "επικοινωνησω",
+  "epikoinonia",
+  "epikoinon",
+  "epikoinoniso",
+  "διεύθυνση",
+  "διευθυνση",
+  "diefthinsi",
+  "dieuthinsi",
+  "viber",
+  "υγεία",
+  "υγεια",
+  "igeia",
+  "cookies",
+  "cookie",
+  "προσωπικά δεδομένα",
+  "προσωπικα δεδομενα",
+  "prosopika dedomena",
+  "χρήση σελίδας",
+  "χρηση σελιδας",
+  "xrisi selidas",
+  "πού πατάω",
+  "που παταω",
+  "pou patao",
+  "πού στέλνω",
+  "που στελνω",
+  "pou stelno",
+  "πώς κάνω",
+  "πως κανω",
+  "pos kano",
+  "καλύτερη προσφορά",
+  "καλυτερη προσφορα",
+  "kaliteri prosfora",
+  "ποια προσφορά",
+  "poia prosfora"
+];
+
+const GENERAL_CONTEXT_FAQ_IDS = new Set([
+  "site-pksaa-overview",
+  "site-offers-overview",
+  "site-use-page",
+  "site-application-steps",
+  "site-contact-current",
+  "documents-general-checklist"
+]);
+
 function getLocalSmallTalkReply(message) {
   const normalized = toSmallTalkKey(message);
   const words = new Set(normalized.split(" ").filter(Boolean));
@@ -409,6 +528,22 @@ function hasAmbiguousScopeKeyword(message) {
 
 function shouldBlockForScope(message) {
   return isClearlyOutOfScope(message);
+}
+
+function shouldUseGeminiForWebsiteAdvice(message) {
+  const normalizedMessage = toSearchKey(message);
+  return /(kaliteri|katallili|protini|protein|simbouli|gia emena|gia mena|poia prosfora)/.test(normalizedMessage)
+    && /(prosfora|prosfores|paketo|programma)/.test(normalizedMessage);
+}
+
+function isWebsiteRelatedQuestion(message) {
+  const normalizedMessage = toSearchKey(message);
+  if (!normalizedMessage) return false;
+
+  return WEBSITE_RELATED_KEYWORDS.some((keyword) => {
+    const normalizedKeyword = toSearchKey(keyword);
+    return normalizedKeyword.length >= 2 && normalizedMessage.includes(normalizedKeyword);
+  });
 }
 
 /* =========================================
@@ -459,17 +594,35 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     if (normalizedMessage.includes("katathesi") && searchableText.includes("katathesi")) score += 3;
     if (normalizedMessage.includes("foritotita") && searchableText.includes("foritotita")) score += 3;
     if (normalizedMessage.includes("energopoi") && searchableText.includes("energopoi")) score += 3;
-    if (/(epikoinonia|tilefono|kinito|email|dieuth|diefth|dieth|dith|viber|xartis|maps|brisketai)/.test(normalizedMessage)
-      && /(epikoinonia|tilefono|kinito|email|dieuth|diefth|dieth|dith|viber|xartis|maps|karistou|brisketai)/.test(searchableText)) {
+    if (/(epikoinonia|epikoinon|epikinonia|epikinon|tilefono|kinito|email|dieuth|diefth|dieth|dith|viber|xartis|maps|brisketai)/.test(normalizedMessage)
+      && /(epikoinonia|epikoinon|epikinonia|epikinon|tilefono|kinito|email|dieuth|diefth|dieth|dith|viber|xartis|maps|karistou|brisketai)/.test(searchableText)) {
       score += 8;
+    }
+    if (/(epikoinon|epikinon|tilefono|email)/.test(normalizedMessage)
+      && faq.id === "site-contact-current") {
+      score += 18;
     }
     if (/(aitisi|vima|diadikasia|xrisimopoi|pato|anoigo|stelno|steln|apostol)/.test(normalizedMessage)
       && /(aitisi|vima|diadikasia|xrisimopoi|pato|apostoli|steln|email)/.test(searchableText)) {
       score += 6;
     }
-    if (/(pksaa|sinetairismos|synetairismos|poios eisai|ti einai)/.test(normalizedMessage)
-      && /(pksaa|sinetairismos|synetairismos|promitheftikos|katanalotikos)/.test(searchableText)) {
+    if (/(pksaa|sinetairismos|synetairismos|sineterismos|poios eisai|ti einai)/.test(normalizedMessage)
+      && /(pksaa|sinetairismos|synetairismos|sineterismos|promitheftikos|katanalotikos)/.test(searchableText)) {
       score += 10;
+    }
+    if (/(sinetairism|synetairism|sineterism|pksaa)/.test(normalizedMessage)
+      && faq.id === "site-pksaa-overview") {
+      score += 18;
+    }
+    if (/(pou|pu|brisketai|vrisket|xartis|maps|dieuth|diefth)/.test(normalizedMessage)
+      && /(sinetairism|synetairism|sineterism|pksaa)/.test(normalizedMessage)
+      && faq.id === "site-location-map") {
+      score += 24;
+    }
+    if (/(pata|pato|patis|katalev|xrisimopoi|pou)/.test(normalizedMessage)
+      && /(prosfora|prosfores)/.test(normalizedMessage)
+      && faq.id === "site-use-page") {
+      score += 20;
     }
     if (/(cookies|dedomena|prosopika)/.test(normalizedMessage)
       && /(cookies|dedomena|prosopika)/.test(searchableText)) {
@@ -535,6 +688,21 @@ function buildFaqContext(relevantFaqs) {
     .join("\n\n");
 }
 
+function buildGeneralSiteContext() {
+  return [
+    "Η Sofia είναι ψηφιακή βοηθός της ιστοσελίδας synetairismos-astynomikon.gr.",
+    "Βοηθά τους χρήστες με πληροφορίες για προσφορές, δικαιολογητικά, διαδικασίες, επικοινωνία και χρήση της ιστοσελίδας.",
+    "Δεν εφευρίσκει τιμές, όρους, IBAN, τηλέφωνα ή έγγραφα.",
+    `Αν δεν υπάρχει σίγουρη πληροφορία, απαντά: "${UNKNOWN_REPLY}"`
+  ].join(" ");
+}
+
+function getGeneralContextFaqs(limit = 3) {
+  return faqs
+    .filter((faq) => GENERAL_CONTEXT_FAQ_IDS.has(faq.id))
+    .slice(0, limit);
+}
+
 function compactText(text = "", maxChars = 420) {
   const compact = String(text).replace(/\s+/g, " ").trim();
   if (compact.length <= maxChars) return compact;
@@ -592,9 +760,10 @@ function buildHistoryContext(history, message) {
     .slice(0, MAX_HISTORY_CHARS_FOR_GEMINI);
 }
 
-function buildGeminiPrompt({ faqContext, historyContext, message }) {
+function buildGeminiPrompt({ faqContext, generalContext, historyContext, message }) {
   return [
     GEMINI_SYSTEM_RULES,
+    generalContext ? `Website context:\n${generalContext}` : "",
     historyContext ? `Previous turn:\n${historyContext}` : "",
     `KB:\n${faqContext}`,
     `Customer: ${message}`
@@ -771,18 +940,11 @@ export default async function handler(req, res) {
     }
 
     const scoredFaqs = getRelevantFaqs(safeMessage);
+    let relevantFaqs = [];
+    let generalContext = "";
+    let geminiContextSource = "faq_chunks";
 
-    if (!scoredFaqs.length || scoredFaqs[0].score < MIN_RELEVANT_SCORE_FOR_GEMINI) {
-      return sendJson(res, 200, {
-        reply: UNKNOWN_REPLY,
-        usedGemini: false
-      }, {
-        source: "no_relevant_faq",
-        estimatedTokensUsed: 0
-      });
-    }
-
-    if (shouldAnswerDirectly(scoredFaqs)) {
+    if (!shouldUseGeminiForWebsiteAdvice(safeMessage) && shouldAnswerDirectly(scoredFaqs)) {
       return sendJson(res, 200, {
         reply: scoredFaqs[0].faq.answer,
         usedGemini: false
@@ -794,9 +956,33 @@ export default async function handler(req, res) {
       });
     }
 
+    if (scoredFaqs.length && scoredFaqs[0].score >= MIN_RELEVANT_SCORE_FOR_GEMINI) {
+      relevantFaqs = scoredFaqs.map((item) => item.faq);
+    } else if (isWebsiteRelatedQuestion(safeMessage)) {
+      relevantFaqs = scoredFaqs.length
+        ? scoredFaqs.map((item) => item.faq)
+        : getGeneralContextFaqs(3);
+      generalContext = buildGeneralSiteContext();
+      geminiContextSource = "general_site_context";
+    } else {
+      return sendJson(res, 200, {
+        reply: SCOPE_REPLY,
+        usedGemini: false
+      }, {
+        source: "not_website_related",
+        estimatedTokensUsed: 0
+      });
+    }
+
     if (!model) {
       return sendJson(res, 500, {
         error: "Το chatbot δεν έχει ρυθμιστεί σωστά. Λείπει το GEMINI_API_KEY στο Vercel."
+      }, {
+        source: "gemini_unconfigured",
+        usedGemini: true,
+        contextSource: geminiContextSource,
+        sentFaqs: relevantFaqs.length,
+        matchedFaqIds: scoredFaqs.map((item) => item.faq.id)
       });
     }
 
@@ -812,11 +998,11 @@ export default async function handler(req, res) {
       let history = memory.get(userId) || [];
       history = history.slice(-MAX_HISTORY_MESSAGES);
 
-      const relevantFaqs = scoredFaqs.map((item) => item.faq);
       const faqContext = buildFaqContext(relevantFaqs);
       const historyContext = buildHistoryContext(history, safeMessage);
       const contextMessage = buildGeminiPrompt({
         faqContext,
+        generalContext,
         historyContext,
         message: safeMessage
       });
@@ -859,6 +1045,7 @@ export default async function handler(req, res) {
         matchedFaqIds: scoredFaqs.map((item) => item.faq.id),
         bestScore: scoredFaqs[0]?.score || 0,
         sentFaqs: relevantFaqs.length,
+        contextSource: geminiContextSource,
         sentHistory: Boolean(historyContext),
         messagePreview: safeMessage.slice(0, 80),
         ...cost
@@ -871,6 +1058,7 @@ export default async function handler(req, res) {
         source: "gemini",
         model: GEMINI_MODEL,
         matchedFaqIds: scoredFaqs.map((item) => item.faq.id),
+        contextSource: geminiContextSource,
         ...cost
       });
     } finally {

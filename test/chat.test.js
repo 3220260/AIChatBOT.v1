@@ -162,5 +162,54 @@ test("medium relevant query is routed to Gemini path when no direct FAQ is clear
   const response = await postChat("θέλω πληροφορίες για παροχές και δικαιολογητικά", { debug: true });
 
   assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
   assert.match(response.body.error, /GEMINI_API_KEY/);
+});
+
+test("website-related question without exact FAQ uses Gemini fallback", async () => {
+  const response = await postChat("Πώς μπορώ να κάνω αίτηση;", { debug: true });
+
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+  assert.equal(response.body.contextSource, "faq_chunks");
+});
+
+test("website-related question with no relevant FAQ uses general site context", async () => {
+  const response = await postChat("pos kano kati sto site", { debug: true });
+
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+  assert.equal(response.body.contextSource, "general_site_context");
+});
+
+test("confused offer navigation gets helpful site-use answer", async () => {
+  await assertDirectFaq("Δεν καταλαβαίνω πού να πατήσω για προσφορές", /Μενού Επιλογών/);
+});
+
+test("cooperative overview wording answers locally", async () => {
+  await assertDirectFaq("Θέλω να μάθω για τον Συνεταιρισμό", /Προμηθευτικός και Καταναλωτικός Συνεταιρισμός/);
+});
+
+test("contact wording answers locally", async () => {
+  await assertDirectFaq("Πού μπορώ να επικοινωνήσω;", /210 5245210/);
+});
+
+test("personal best-offer advice is routed to Gemini instead of a random price FAQ", async () => {
+  const response = await postChat("Ποια προσφορά είναι καλύτερη για εμένα;", { debug: true });
+
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+  assert.equal(response.body.contextSource, "faq_chunks");
+});
+
+test("unrelated but not explicitly blocked wording stays local scope reply", async () => {
+  const response = await postChat("τι είναι η κβαντική φυσική;", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "not_website_related");
+  assert.equal(response.body.usedGemini, false);
 });
