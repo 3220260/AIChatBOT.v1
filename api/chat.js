@@ -150,6 +150,24 @@ function normalizeGreeklish(text = "") {
     .replace(/ei/g, "i")
     .replace(/oi/g, "i")
     .replace(/ai/g, "e")
+    .replace(/\bthlefon/g, "tilefon")
+    .replace(/\btilephon/g, "tilefon")
+    .replace(/\bkinhth/g, "kinito")
+    .replace(/\bkiniti/g, "kinito")
+    .replace(/\bstatherh/g, "statheri")
+    .replace(/\bforhtothta/g, "foritotita")
+    .replace(/\bforitothta/g, "foritotita")
+    .replace(/\bforhtotita/g, "foritotita")
+    .replace(/\bdikaiologhtika/g, "dikaiologitika")
+    .replace(/\bdikeologhtika/g, "dikeologitika")
+    .replace(/\bdikeologitika/g, "dikeologitika")
+    .replace(/\baithsh/g, "aitisi")
+    .replace(/\bepikinonia/g, "epikoinonia")
+    .replace(/\bepikinono/g, "epikoinon")
+    .replace(/\bepikoinono/g, "epikoinon")
+    .replace(/\bstelnw/g, "stelno")
+    .replace(/\btaytotita/g, "tautotita")
+    .replace(/\btautothta/g, "tautotita")
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -680,8 +698,19 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     }
 
     const wantsSubmissionEmail = /(email|emel|mail|mel|apostol|steln|stelno|steil)/.test(normalizedMessage);
+    const wantsContactPhone = /(tilefono|thlefono|epikoinonia|epikoinon|epikinonia|epikinon)/.test(normalizedMessage);
+    const mentionsMobileProvider = /(vodafone|cu|nova|q|kartokinit|kinito|sim|foritotita|dikaiologitika|dikeologitika)/.test(normalizedMessage);
+
     if (wantsSubmissionEmail && faq.id === "mobile-submit-email") {
-      score += 30;
+      score += 60;
+    }
+
+    if (wantsSubmissionEmail && mentionsMobileProvider && /synetelas2011@gmail\.com/.test(searchableText)) {
+      score += 50;
+    }
+
+    if (wantsContactPhone && faq.id === "site-contact-current") {
+      score += 80;
     }
 
     return { faq, score };
