@@ -166,6 +166,7 @@ function normalizeGreeklish(text = "") {
     .replace(/\bepikinono/g, "epikoinon")
     .replace(/\bepikoinono/g, "epikoinon")
     .replace(/\bstelnw/g, "stelno")
+    .replace(/\bsteal\b/g, "steil")
     .replace(/\btaytotita/g, "tautotita")
     .replace(/\btautothta/g, "tautotita")
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
@@ -234,7 +235,30 @@ const LOCAL_SMALL_TALK = [
     reply: "Παρακαλώ! Είμαι στη διάθεσή σας για πληροφορίες της ιστοσελίδας του Π.Κ.Σ.Α.Α."
   },
   {
-    patterns: ["ποιος εισαι", "τι εισαι", "ανθρωπος", "ρομποτ", "bot", "poios eisai", "ti eisai", "robot"],
+    patterns: [
+      "ποιος εισαι",
+      "ποιος είσαι",
+      "τι εισαι",
+      "τι είσαι",
+      "πως σε λενε",
+      "πώς σε λένε",
+      "ποιο ειναι το ονομα σου",
+      "ποιο είναι το όνομά σου",
+      "ονομα σου",
+      "όνομα σου",
+      "ανθρωπος",
+      "ρομποτ",
+      "bot",
+      "poios eisai",
+      "ti eisai",
+      "pos se lene",
+      "pos se lene?",
+      "pio einai to onoma sou",
+      "poio einai to onoma sou",
+      "onoma sou",
+      "onomazesai",
+      "robot"
+    ],
     reply: "Είμαι η Sofia, η ψηφιακή βοηθός του Π.Κ.Σ.Α.Α., και απαντώ με πληροφορίες από την ιστοσελίδα για προσφορές, διαδικασίες και επικοινωνία."
   }
 ];
@@ -575,8 +599,14 @@ function shouldBlockForScope(message) {
 
 function shouldUseGeminiForWebsiteAdvice(message) {
   const normalizedMessage = toSearchKey(message);
-  return /(kaliteri|katallili|protini|protein|simbouli|gia emena|gia mena|poia prosfora)/.test(normalizedMessage)
-    && /(prosfora|prosfores|paketo|programma)/.test(normalizedMessage);
+
+  const asksForAdviceOrComparison =
+    /(kaliteri|kalyteri|katallili|protini|protein|simbouli|gia emena|gia mena|poia prosfora|pia prosfora|poia|pia|axizi|aksizi|axizei|aksizei|simferi|symferi|sigkrine|sigkrisi|sigrine|sigrisi|sugkrine|sugkrisi|sygkrine|sygkrisi|singkrine|singrisi|xamilo kostos|xamilo|fthino|fthinotero|ti na dialexo|ti na epilexo|ti na prosexo|prosexo)/.test(normalizedMessage);
+
+  const mentionsOfferTopic =
+    /(prosfora|prosfores|paketo|programma|vodafone|cu|nova|q|kinito|kinita|kiniti|kartokinito|tilefonia|internet|eon|cosmote)/.test(normalizedMessage);
+
+  return asksForAdviceOrComparison && mentionsOfferTopic;
 }
 
 function isWebsiteRelatedQuestion(message) {
@@ -690,6 +720,12 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
       && /(dikaiologitika|dikeologitika|tautotita|eggrafa|apodeiktiko|dilosi)/.test(searchableText)) {
       score += 5;
     }
+
+    if (asksBotToSendDocuments
+      && /(kinito|kiniti|kinita|kartokinito|vodafone|cu|nova|q)/.test(normalizedMessage)
+      && /(documents|document|dikaiologitika|xartia|eggrafa)/.test(faq.id)) {
+      score += 35;
+    }
     if (/vodafone/.test(normalizedMessage)
       && /cu/.test(normalizedMessage)
       && /(dikaiologitika|dikeologitika|xartia|eggrafa)/.test(normalizedMessage)
@@ -697,8 +733,29 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
       score += 20;
     }
 
-    const wantsSubmissionEmail = /(email|emel|mail|mel|apostol|steln|stelno|steil)/.test(normalizedMessage);
-    const wantsContactPhone = /(tilefono|thlefono|epikoinonia|epikoinon|epikinonia|epikinon)/.test(normalizedMessage);
+    const asksForDocuments = /(dikaiologitika|dikeologitika|xartia|eggrafa|ti xartia|poia xartia)/.test(normalizedMessage);
+    const mentionsVodafoneMobile = /vodafone/.test(normalizedMessage)
+      && /(cu|kinito|kiniti|kinita|kartokinito|sim|arithmo|arithmos|foritotita)/.test(normalizedMessage);
+    const mentionsAnyMobile = /(kinito|kiniti|kinita|kartokinito|sim|arithmo|arithmos|foritotita|vodafone|cu|nova|q)/.test(normalizedMessage);
+
+    if (asksForDocuments && mentionsVodafoneMobile && faq.id === "vodafone-cu-documents-overview") {
+      score += 90;
+    }
+
+    if (asksForDocuments && mentionsAnyMobile && /(mobile|vodafone|nova|documents|portability|new-number)/.test(faq.id)) {
+      score += 35;
+    }
+
+    if (asksForDocuments && faq.id === "site-offers-overview") {
+      score -= 100;
+    }
+
+    const asksBotToSendDocuments = /(steile mou|steil mou|stile mou|stile mi|tile mou|tile mi|teile mou|teile mi|dose mou|dos mou|ta xartia gia|xartia gia kiniti|xartia gia kinito)/.test(normalizedMessage);
+    const wantsSubmissionEmail = !asksBotToSendDocuments
+      && /(email|emel|mail|mel|apostol|steln|stelno|steil)/.test(normalizedMessage);
+    const wantsOfferInfo = /(prosfora|prosfores|paketo|programma|timi|times|kostos|pagio|xamilo|fthino)/.test(normalizedMessage);
+    const mentionsPhoneService = /(tilefono|thlefono|tilefonia|kinito|kinita|kiniti|kartokinito|stathero|statheri|internet|vodafone|cu|nova|q|eon|cosmote)/.test(normalizedMessage);
+    const wantsContactPhone = !wantsOfferInfo && /(tilefono|thlefono|epikoinonia|epikoinon|epikinonia|epikinon)/.test(normalizedMessage);
     const mentionsMobileProvider = /(vodafone|cu|nova|q|kartokinit|kinito|sim|foritotita|dikaiologitika|dikeologitika)/.test(normalizedMessage);
 
     if (wantsSubmissionEmail && faq.id === "mobile-submit-email") {
@@ -711,6 +768,96 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
 
     if (wantsContactPhone && faq.id === "site-contact-current") {
       score += 80;
+    }
+
+    if (wantsOfferInfo && mentionsPhoneService && faq.id === "site-contact-current") {
+      score -= 100;
+    }
+
+    if (wantsOfferInfo && mentionsPhoneService && /(offer|offers|price|program|mobile|fixed|vodafone|nova|cu|q|eon|internet)/.test(faq.id)) {
+      score += 18;
+    }
+
+    // INTENT CORRECTION GUARD
+    // Κρατάμε ξεχωριστά intents που μπερδεύονται εύκολα:
+    // - προσφορά τηλεφωνίας != τηλέφωνο επικοινωνίας
+    // - τι χαρτιά χρειάζονται != πού στέλνω τα χαρτιά
+    // - σύγκριση/τι αξίζει/χαμηλό κόστος -> Gemini
+    const intentWantsAdvice = shouldUseGeminiForWebsiteAdvice(message);
+
+    const intentWantsOfferInfo =
+      /(prosfora|prosfores|paketo|programma|timi|times|kostos|pagio|xamilo|fthino|axizi|axizei|aksizi|simferi|symferi)/.test(normalizedMessage);
+
+    const intentMentionsPhoneService =
+      /(tilefono|thlefono|tilefonia|kinito|kinita|kiniti|kartokinito|stathero|statheri|internet|vodafone|cu|nova|q|eon|cosmote)/.test(normalizedMessage);
+
+    const intentAsksContactPhone =
+      !intentWantsOfferInfo
+      && (
+        /(tilefono epikoinonias|thlefono epikoinonias|arithmos epikoinonias)/.test(normalizedMessage)
+        || (/(tilefono|thlefono)/.test(normalizedMessage) && /(epikoinonia|epikoinon|epikinonia|epikinon)/.test(normalizedMessage))
+      );
+
+    const intentAsksWhereToSendDocuments =
+      /(pou|pu|pos|pws|se poio|se poia)/.test(normalizedMessage)
+      && /(steln|stelno|steil|steal|apostol|email|mail)/.test(normalizedMessage)
+      && /(xartia|eggrafa|dikaiologitika|dikeologitika)/.test(normalizedMessage);
+
+    const intentAsksWhatDocuments =
+      !intentAsksWhereToSendDocuments
+      && /(ti xartia|poia xartia|ti dikaiologitika|poia dikaiologitika|xartia gia|dikaiologitika gia|dikeologitika gia|steile mou|teile mou|stile mou|dose mou|dos mou|xreiazomai xartia|xreiazete xartia)/.test(normalizedMessage);
+
+    const intentMentionsMobile =
+      /(kinito|kiniti|kinita|kartokinito|mobile|vodafone|cu|nova|q|sim|arithmo|arithmos|foritotita)/.test(normalizedMessage);
+
+    const intentMentionsVodafoneMobile =
+      /vodafone/.test(normalizedMessage)
+      && /(cu|kinito|kiniti|kinita|kartokinito|sim|arithmo|arithmos|foritotita)/.test(normalizedMessage);
+
+    const intentMentionsTv =
+      /(eon|cosmote|tv|tileorasi)/.test(normalizedMessage);
+
+    // Σύγκριση / τι αξίζει / χαμηλό κόστος: να μην απαντά email/τηλέφωνο/άσχετο TV FAQ.
+    if (intentWantsAdvice) {
+      if (faq.id === "mobile-submit-email" || faq.id === "site-contact-current" || faq.id === "site-offers-overview") {
+        score -= 200;
+      }
+
+      if (intentMentionsMobile && /(eon|tv|cosmote)/.test(faq.id)) {
+        score -= 200;
+      }
+
+      if (intentMentionsMobile && /(mobile|vodafone|nova|cu|q|price|program|offer)/.test(faq.id)) {
+        score += 60;
+      }
+    }
+
+    // Προσφορά τηλεφωνίας: να μην το περνάει ως τηλέφωνο επικοινωνίας.
+    if (intentWantsOfferInfo && intentMentionsPhoneService && faq.id === "site-contact-current") {
+      score -= 180;
+    }
+
+    // Πραγματική ερώτηση για τηλέφωνο επικοινωνίας.
+    if (intentAsksContactPhone && faq.id === "site-contact-current") {
+      score += 140;
+    }
+
+    // "Τι χαρτιά για Vodafone κινητό": να προτιμά δικαιολογητικά, όχι γενική λίστα προσφορών ή email αποστολής.
+    if (intentAsksWhatDocuments && intentMentionsVodafoneMobile && /(vodafone|mobile|documents|document|new-number|portability)/.test(faq.id)) {
+      score += 110;
+    }
+
+    if (intentAsksWhatDocuments && intentMentionsMobile && /(mobile|documents|document|vodafone|nova|new-number|portability)/.test(faq.id)) {
+      score += 65;
+    }
+
+    if (intentAsksWhatDocuments && (faq.id === "mobile-submit-email" || faq.id === "site-offers-overview")) {
+      score -= 140;
+    }
+
+    // "Πού στέλνω χαρτιά": εδώ όντως θέλουμε το email αποστολής.
+    if (intentAsksWhereToSendDocuments && faq.id === "mobile-submit-email") {
+      score += 120;
     }
 
     return { faq, score };
