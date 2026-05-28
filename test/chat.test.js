@@ -271,3 +271,51 @@ test("off-topic production response hides playful debug metadata", async () => {
   assert.equal(response.body.offTopicCount, undefined);
   assert.match(response.body.reply, /Καλή ερώτηση/);
 });
+
+
+test("Greeklish identity question answers locally", async () => {
+  const response = await postChat("pos se lene?", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "local_small_talk");
+  assert.equal(response.body.usedGemini, false);
+  assert.match(response.body.reply, /Sofia|Σοφία/);
+});
+
+test("Greeklish mobile offer advice routes to Gemini", async () => {
+  const response = await postChat("pia prosfora axizei sta kinita", { debug: true });
+
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+});
+
+test("Greeklish comparison routes to Gemini instead of email FAQ", async () => {
+  const response = await postChat("Είμαι μέλος και θέλω κινητή με χαμηλό κόστος. Σύγκρινε Vodafone CU και NOVA Q.", { debug: true });
+
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+});
+
+test("Greeklish Vodafone mobile documents question answers documents", async () => {
+  await assertDirectFaq("ti xartia na steal gia vodafone kinito", /υπεύθυνη δήλωση|ταυτότητα|SIM|κάρτα SIM/);
+});
+
+test("Greeklish send me mobile documents does not answer only submission email", async () => {
+  const response = await postChat("teile moy ta xartia gia kiniti se mail", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.notEqual(response.body.matchedFaqId, "mobile-submit-email");
+  assert.match(response.body.reply, /υπεύθυνη δήλωση|ταυτότητα|SIM|κάρτα SIM|δικαιολογητικά/);
+});
+
+test("Greeklish phone offer does not return contact details", async () => {
+  const response = await postChat("prosfora tilefono", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.doesNotMatch(response.body.reply, /Καρύστου 3|210 5245210|6936799908/);
+});
+

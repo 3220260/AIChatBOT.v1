@@ -167,6 +167,12 @@ function normalizeGreeklish(text = "") {
     .replace(/\bepikoinono/g, "epikoinon")
     .replace(/\bstelnw/g, "stelno")
     .replace(/\bsteal\b/g, "steil")
+    .replace(/\bstile\b/g, "steil")
+    .replace(/\bstilw\b/g, "steil")
+    .replace(/\bstelnw\b/g, "stelno")
+    .replace(/\bteile\b/g, "steile")
+    .replace(/\bmoi\b/g, "mou")
+    .replace(/\bmoy\b/g, "mou")
     .replace(/\btaytotita/g, "tautotita")
     .replace(/\btautothta/g, "tautotita")
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
@@ -601,7 +607,7 @@ function shouldUseGeminiForWebsiteAdvice(message) {
   const normalizedMessage = toSearchKey(message);
 
   const asksForAdviceOrComparison =
-    /(kaliteri|kalyteri|katallili|protini|protein|simbouli|gia emena|gia mena|poia prosfora|pia prosfora|poia|pia|axizi|aksizi|axizei|aksizei|simferi|symferi|sigkrine|sigkrisi|sigrine|sigrisi|sugkrine|sugkrisi|sygkrine|sygkrisi|singkrine|singrisi|xamilo kostos|xamilo|fthino|fthinotero|ti na dialexo|ti na epilexo|ti na prosexo|prosexo)/.test(normalizedMessage);
+    /(kaliteri|kalyteri|katallili|protini|protein|simbouli|gia emena|gia mena|poia prosfora|pia prosfora|poia|pia|axizi|aksizi|axizei|aksizei|simferi|symferi|sigkrine|sigkrisi|sigrine|sigrisi|sugkrine|sugkrisi|sygkrine|sygkrisi|singkrine|singrisi|sigrino|sigkrino|sugkrino|sygkrino|xamilo kostos|xamilo|fthino|fthinotero|ti na dialexo|ti na epilexo|ti na prosexo|prosexo)/.test(normalizedMessage);
 
   const mentionsOfferTopic =
     /(prosfora|prosfores|paketo|programma|vodafone|cu|nova|q|kinito|kinita|kiniti|kartokinito|tilefonia|internet|eon|cosmote)/.test(normalizedMessage);
@@ -721,11 +727,6 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
       score += 5;
     }
 
-    if (asksBotToSendDocuments
-      && /(kinito|kiniti|kinita|kartokinito|vodafone|cu|nova|q)/.test(normalizedMessage)
-      && /(documents|document|dikaiologitika|xartia|eggrafa)/.test(faq.id)) {
-      score += 35;
-    }
     if (/vodafone/.test(normalizedMessage)
       && /cu/.test(normalizedMessage)
       && /(dikaiologitika|dikeologitika|xartia|eggrafa)/.test(normalizedMessage)
@@ -835,6 +836,11 @@ function getRelevantFaqs(message, limit = MAX_RELEVANT_FAQS_FOR_GEMINI) {
     // Προσφορά τηλεφωνίας: να μην το περνάει ως τηλέφωνο επικοινωνίας.
     if (intentWantsOfferInfo && intentMentionsPhoneService && faq.id === "site-contact-current") {
       score -= 180;
+    }
+
+    // Απλή ερώτηση τύπου "prosfora tilefono": απάντηση από overview προσφορών, όχι Gemini.
+    if (!intentWantsAdvice && intentWantsOfferInfo && intentMentionsPhoneService && faq.id === "site-offers-overview") {
+      score += 120;
     }
 
     // Πραγματική ερώτηση για τηλέφωνο επικοινωνίας.
