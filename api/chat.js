@@ -984,6 +984,42 @@ function cleanReply(text = "") {
     .trim();
 }
 
+function rememberTurn(userId, message, reply) {
+  if (!userId || !message || !reply) return;
+
+  let history = memory.get(userId) || [];
+  history = history.slice(-MAX_HISTORY_MESSAGES);
+
+  history.push({
+    role: "user",
+    parts: [{ text: String(message) }]
+  });
+
+  history.push({
+    role: "model",
+    parts: [{ text: String(reply) }]
+  });
+
+  if (history.length > MAX_HISTORY_MESSAGES) {
+    history = history.slice(-MAX_HISTORY_MESSAGES);
+  }
+
+  memory.set(userId, history);
+}
+
+function hasPriorMemory(userId) {
+  return (memory.get(userId) || []).length > 0;
+}
+
+function isFollowUpQuestion(message) {
+  const normalizedMessage = toSearchKey(message);
+  const words = normalizedMessage.split(" ").filter(Boolean);
+
+  if (!normalizedMessage || words.length > 6) return false;
+
+  return /(ine idia|einai idia|idia|idio|to idio|same|diafora|diafer|diaforet|afto|auto|ayto|auta|afta|ekeino)/.test(normalizedMessage);
+}
+
 /* =========================================
    5. RATE LIMITS
    ========================================= */
@@ -1163,6 +1199,8 @@ export default async function handler(req, res) {
 
     const localReply = getLocalSmallTalkReply(safeMessage);
     if (localReply) {
+      rememberTurn(userId, safeMessage, localReply);
+
       return sendJson(res, 200, {
         reply: localReply,
         usedGemini: false
@@ -1182,8 +1220,11 @@ export default async function handler(req, res) {
     let geminiContextSource = "faq_chunks";
 
     if (!shouldUseGeminiForWebsiteAdvice(safeMessage) && shouldAnswerDirectly(scoredFaqs)) {
+      const directReply = scoredFaqs[0].faq.answer;
+      rememberTurn(userId, safeMessage, directReply);
+
       return sendJson(res, 200, {
-        reply: scoredFaqs[0].faq.answer,
+        reply: directReply,
         usedGemini: false
       }, {
         source: "direct_faq",
@@ -1201,6 +1242,10 @@ export default async function handler(req, res) {
         : getGeneralContextFaqs(3);
       generalContext = buildGeneralSiteContext();
       geminiContextSource = "general_site_context";
+    } else if (isFollowUpQuestion(safeMessage) && hasPriorMemory(userId)) {
+      relevantFaqs = getGeneralContextFaqs(3);
+      generalContext = buildGeneralSiteContext();
+      geminiContextSource = "history_followup";
     } else {
       return sendLocalOffTopicReply(req, res, userId, safeMessage);
     }

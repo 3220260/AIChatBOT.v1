@@ -319,3 +319,26 @@ test("Greeklish phone offer does not return contact details", async () => {
   assert.doesNotMatch(response.body.reply, /Καρύστου 3|210 5245210|6936799908/);
 });
 
+
+test("short Greeklish follow-up uses previous FAQ history", async () => {
+  const handler = await loadHandler({ debug: true });
+  const options = {
+    userId: "followup-history-test",
+    ip: "127.0.0.88",
+    userAgent: "followup-history-agent"
+  };
+
+  const first = await postChatWithHandler(handler, "ποιες προσφορές υπάρχουν;", options);
+
+  assert.equal(first.status, 200);
+  assert.equal(first.body.source, "direct_faq");
+  assert.equal(first.body.usedGemini, false);
+
+  const second = await postChatWithHandler(handler, "einai idia?", options);
+
+  assert.equal(second.status, 500);
+  assert.equal(second.body.source, "gemini_unconfigured");
+  assert.equal(second.body.usedGemini, true);
+  assert.equal(second.body.contextSource, "history_followup");
+});
+
