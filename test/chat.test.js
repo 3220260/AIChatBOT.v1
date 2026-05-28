@@ -342,3 +342,43 @@ test("short Greeklish follow-up uses previous FAQ history", async () => {
   assert.equal(second.body.contextSource, "history_followup");
 });
 
+
+test("Greeklish follow-up difference question uses previous direct FAQ history", async () => {
+  const handler = await loadHandler({ debug: true });
+  const options = {
+    userId: "followup-difference-test",
+    ip: "127.0.0.92",
+    userAgent: "followup-difference-agent"
+  };
+
+  const first = await postChatWithHandler(handler, "ποιες προσφορές υπάρχουν;", options);
+
+  assert.equal(first.status, 200);
+  assert.equal(first.body.source, "direct_faq");
+  assert.equal(first.body.usedGemini, false);
+
+  const second = await postChatWithHandler(handler, "ti diafora exoun", options);
+
+  assert.equal(second.status, 500);
+  assert.equal(second.body.source, "gemini_unconfigured");
+  assert.equal(second.body.usedGemini, true);
+  assert.equal(second.body.contextSource, "history_followup");
+});
+
+test("Greeklish follow-up same question uses previous direct FAQ history", async () => {
+  const handler = await loadHandler({ debug: true });
+  const options = {
+    userId: "followup-same-test",
+    ip: "127.0.0.93",
+    userAgent: "followup-same-agent"
+  };
+
+  await postChatWithHandler(handler, "ποιες προσφορές υπάρχουν;", options);
+  const second = await postChatWithHandler(handler, "einai idia?", options);
+
+  assert.equal(second.status, 500);
+  assert.equal(second.body.source, "gemini_unconfigured");
+  assert.equal(second.body.usedGemini, true);
+  assert.equal(second.body.contextSource, "history_followup");
+});
+

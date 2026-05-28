@@ -929,7 +929,8 @@ function shouldIncludeHistory(message) {
   const normalizedMessage = toSearchKey(message);
   const words = normalizedMessage.split(" ").filter(Boolean);
 
-  if (words.length <= 4) return true;
+  if (isFollowUpQuestion(message)) return true;
+  if (words.length <= 6) return true;
 
   return [
     "αυτο",
@@ -1242,6 +1243,10 @@ export default async function handler(req, res) {
         : getGeneralContextFaqs(3);
       generalContext = buildGeneralSiteContext();
       geminiContextSource = "general_site_context";
+    } else if (isFollowUpQuestion(safeMessage) && hasPriorMemory(userId)) {
+      relevantFaqs = getGeneralContextFaqs(3);
+      generalContext = buildGeneralSiteContext();
+      geminiContextSource = "history_followup";
     } else if (isFollowUpQuestion(safeMessage) && hasPriorMemory(userId)) {
       relevantFaqs = getGeneralContextFaqs(3);
       generalContext = buildGeneralSiteContext();
