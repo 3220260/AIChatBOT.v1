@@ -1,9 +1,9 @@
 {
-  "name": "verbot-synetelas",
+  "name": "Sofia",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Synetelas FAQ chatbot with Gemini backend and static chat UI.",
+  "description": "Sofia FAQ chatbot with Gemini backend and static chat UI.",
   "scripts": {
     "dev": "node scripts/dev-server.js",
     "test": "node --test",

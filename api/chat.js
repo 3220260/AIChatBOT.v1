@@ -6,7 +6,6 @@ import { faqs } from "../faqs.js";
    ========================================= */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
-const DEBUG = process.env.DEBUG === "true";
 
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_MESSAGES_PER_WINDOW = 8;
@@ -233,11 +232,11 @@ const STOP_WORDS = new Set([
    ========================================= */
 const LOCAL_SMALL_TALK = [
   {
-    patterns: ["γεια", "γειά", "καλημερα", "καλησπερα", "καληνυχτα", "hello", "geia", "kalimera", "kalispera"],
+    patterns: ["γεια", "γειά", "καλημερα", "καλησπερα", "καληνυχτα", "hello", "geia", "kalimera", "kalispera","gia sou","hi","χαι","γεια σου","μιλα","μιλα μου","τι κανεις","τι κανεισ", "ti kaneis","mila","mila mou","mila moy"],
     reply: "Γεια σας! Είμαι η Sofia και μπορώ να βοηθήσω με προσφορές, δικαιολογητικά, διαδικασίες και στοιχεία επικοινωνίας του Π.Κ.Σ.Α.Α."
   },
   {
-    patterns: ["ευχαριστω", "ευχαριστώ", "thanks", "thank you", "euxaristo", "efxaristo"],
+    patterns: ["ευχαριστω", "ευχαριστώ", "thanks", "thank you", "euxaristo", "efxaristo","kleise","klise","off","of","οφ","κλεισε"],
     reply: "Παρακαλώ! Είμαι στη διάθεσή σας για πληροφορίες της ιστοσελίδας του Π.Κ.Σ.Α.Α."
   },
   {

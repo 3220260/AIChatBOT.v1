@@ -1,8 +1,3 @@
-// faqs.js
-// Βάση γνώσης για το chatbot Synetelas.
-// Αντικατέστησε το υπάρχον faqs.js με αυτό το αρχείο.
-// Το api/chat.js μπορεί να συνεχίσει να κάνει:
-// import { faqs } from "../faqs.js";
 
 export const faqs = [
   {
