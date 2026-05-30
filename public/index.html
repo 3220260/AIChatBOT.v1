@@ -1719,7 +1719,20 @@
       return ALLOWED_PARENT_ORIGINS.has(origin);
     }
 
+    function getRequestedParentOrigin() {
+      try {
+        const parentOrigin = new URLSearchParams(window.location.search).get("parentOrigin")?.trim();
+        if (parentOrigin) {
+          const normalizedOrigin = new URL(parentOrigin).origin;
+          if (ALLOWED_PARENT_ORIGINS.has(normalizedOrigin)) return normalizedOrigin;
+        }
+      } catch (_) {}
+      return "";
+    }
+
     function getParentTargetOrigin() {
+      const requestedParentOrigin = getRequestedParentOrigin();
+      if (requestedParentOrigin) return requestedParentOrigin;
       try {
         const referrerOrigin = document.referrer ? new URL(document.referrer).origin : "";
         if (ALLOWED_PARENT_ORIGINS.has(referrerOrigin)) return referrerOrigin;
