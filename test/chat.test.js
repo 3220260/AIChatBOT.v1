@@ -131,7 +131,7 @@ test("νέος αριθμός answers from FAQ", async () => {
 });
 
 test("πού στέλνω έγγραφα answers email FAQ", async () => {
-  await assertDirectFaq("πού στέλνω έγγραφα", /synetelas2011@gmail\.com/);
+  await assertDirectFaq("πού στέλνω έγγραφα", /synetelas2025@gmail\.com/);
 });
 
 test("IBAN answers payment FAQ", async () => {
@@ -363,6 +363,42 @@ test("Greeklish follow-up difference question uses previous direct FAQ history",
   assert.equal(second.body.source, "gemini_unconfigured");
   assert.equal(second.body.usedGemini, true);
   assert.equal(second.body.contextSource, "history_followup");
+});
+
+test("Greeklish νέο Vodafone απαντά ελληνικά", async () => {
+  await assertDirectFaq("ti xreiazetai gia neo arithmo vodafone cu", /παράρτημα προσωπικών δεδομένων|υπεύθυνη δήλωση/);
+});
+
+test("Greeklish φορητότητα Nova απαντά ελληνικά", async () => {
+  await assertDirectFaq("thelo foritotita se nova q", /έντυπο φορητότητας αριθμού Nova/);
+});
+
+test("Greeklish φορητότητα Vodafone απαντά ελληνικά", async () => {
+  await assertDirectFaq("thelo foritotita vodafone cu", /έντυπο φορητότητας αριθμού Vodafone/);
+});
+
+test("ενεργοποίηση Vodafone SIM", async () => {
+  await assertDirectFaq("pote vazo tin sim vodafone", /1252/);
+});
+
+test("ενεργοποίηση Nova SIM", async () => {
+  await assertDirectFaq("pote vazo tin sim nova q", /12200/);
+});
+
+test("IBAN κατάθεσης", async () => {
+  await assertDirectFaq("poio einai to iban gia katathesi", /GR5801720500005050099524664|GR5302600310000310201070966/);
+});
+
+test("EON TV", async () => {
+  await assertDirectFaq("eon cosmote tv", /20,90€\/μήνα|EON \+ Cosmote TV Full Pack/);
+});
+
+test("διεύθυνση χωρίς αριθμό", async () => {
+  await assertDirectFaq("i dieuthinsi den exei arithmo", /GPS|Google Maps|pin/);
+});
+
+test("Nova 5G Home Internet", async () => {
+  await assertDirectFaq("nova 5g home internet", /17,90€|100 Mbps/);
 });
 
 test("Greeklish follow-up same question uses previous direct FAQ history", async () => {

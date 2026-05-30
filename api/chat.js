@@ -276,6 +276,15 @@ const BUSINESS_KEYWORDS = [
   "cu",
   "nova",
   "q",
+  "nova q",
+  "vodafone cu",
+  "5g home internet",
+  "eon tv",
+  "google maps pin",
+  "gps",
+  "smart box",
+  "gov.gr",
+  "gov gr",
   "eon",
   "tv",
   "τηλεφωνία",
@@ -968,9 +977,36 @@ function buildHistoryContext(history, message) {
     .slice(0, MAX_HISTORY_CHARS_FOR_GEMINI);
 }
 
-function buildGeminiPrompt({ faqContext, generalContext, historyContext, message }) {
+function buildAssistantContextText(context) {
+  if (!context || typeof context !== "object") return "";
+
+  const title = typeof context.title === "string" ? context.title.trim() : "";
+  const subtitle = typeof context.subtitle === "string" ? context.subtitle.trim() : "";
+  const summary = typeof context.summary === "string" ? context.summary.trim() : "";
+  const provider = typeof context.provider === "string" ? context.provider.trim() : "";
+  const processType = typeof context.processType === "string" ? context.processType.trim() : "";
+  const stepTitle = typeof context.stepTitle === "string" ? context.stepTitle.trim() : "";
+  const prompts = Array.isArray(context.prompts)
+    ? context.prompts.map((prompt) => String(prompt || "").trim()).filter(Boolean).slice(0, 4)
+    : [];
+
+  const sections = [];
+  if (title) sections.push(`Καρτέλα: ${title}`);
+  if (subtitle) sections.push(`Βήμα: ${subtitle}`);
+  if (provider || processType) {
+    sections.push(`Διαδικασία: ${[provider, processType].filter(Boolean).join(" · ")}`.trim());
+  }
+  if (stepTitle && stepTitle !== subtitle) sections.push(`Συγκεκριμένο βήμα: ${stepTitle}`);
+  if (summary) sections.push(`Σύντομο πλαίσιο: ${summary}`);
+  if (prompts.length) sections.push(`Προτεινόμενες ερωτήσεις:\n- ${prompts.join("\n- ")}`);
+
+  return sections.join("\n");
+}
+
+function buildGeminiPrompt({ faqContext, generalContext, historyContext, assistantContext, message }) {
   return [
     GEMINI_SYSTEM_RULES,
+    assistantContext ? `Page context:\n${assistantContext}` : "",
     generalContext ? `Website context:\n${generalContext}` : "",
     historyContext ? `Previous turn:\n${historyContext}` : "",
     `KB:\n${faqContext}`,
@@ -1187,8 +1223,10 @@ export default async function handler(req, res) {
       return sendJson(res, 405, { error: "Method not allowed. Use POST /api/chat." });
     }
 
-    const { message, userId } = req.body || {};
+    const { message, userId, context } = req.body || {};
     const safeMessage = typeof message === "string" ? message.trim() : "";
+    const assistantContextText = buildAssistantContextText(context);
+    const hasAssistantContext = Boolean(assistantContextText);
 
     if (!safeMessage || !userId) {
       return sendJson(res, 400, { error: "Λείπει μήνυμα ή αναγνωριστικό χρήστη." });
@@ -1224,7 +1262,7 @@ export default async function handler(req, res) {
       });
     }
 
-    if (shouldBlockForScope(safeMessage)) {
+    if (shouldBlockForScope(safeMessage) && !hasAssistantContext) {
       return sendLocalOffTopicReply(req, res, userId, safeMessage);
     }
 
@@ -1262,6 +1300,12 @@ export default async function handler(req, res) {
       geminiContextSource = "tv_pack_content_question";
     } else if (scoredFaqs.length && scoredFaqs[0].score >= MIN_RELEVANT_SCORE_FOR_GEMINI) {
       relevantFaqs = scoredFaqs.map((item) => item.faq);
+    } else if (hasAssistantContext) {
+      relevantFaqs = scoredFaqs.length
+        ? scoredFaqs.map((item) => item.faq)
+        : getGeneralContextFaqs(3);
+      generalContext = buildGeneralSiteContext();
+      geminiContextSource = "parent_context";
     } else if (isWebsiteRelatedQuestion(safeMessage)) {
       relevantFaqs = scoredFaqs.length
         ? scoredFaqs.map((item) => item.faq)
@@ -1310,6 +1354,7 @@ export default async function handler(req, res) {
         faqContext,
         generalContext,
         historyContext,
+        assistantContext: assistantContextText,
         message: safeMessage
       });
 

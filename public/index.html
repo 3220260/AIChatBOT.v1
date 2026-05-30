@@ -281,6 +281,63 @@
       text-align: center;
     }
 
+    .context-card {
+      width: min(100%, 690px);
+      margin: 0 auto 16px;
+      padding: 14px 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(66, 133, 244, 0.14);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 255, 0.92));
+      box-shadow: 0 14px 30px rgba(60, 64, 67, 0.07);
+    }
+
+    .context-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(66, 133, 244, 0.08);
+      color: var(--blue);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .context-card-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 760;
+      line-height: 1.35;
+    }
+
+    .context-card-text {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.55;
+    }
+
+    .context-card-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .context-card-prompt {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(66, 133, 244, 0.14);
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
     .quick-prompts {
       margin-top: 34px;
       display: grid;
@@ -724,6 +781,12 @@
         text-align: left;
       }
 
+      .context-card {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
       .welcome-kicker {
         margin-left: 0;
       }
@@ -1030,6 +1093,7 @@
     let isSending = false;
     let abortController = null;
     let typingRow = null;
+    let activeParentContext = null;
 
     init();
 
@@ -1107,7 +1171,128 @@
         if (type === "minimizeChat" || type === "closeChat") {
           minimizeChat(false);
         }
+        if (type === "setContext") {
+          setParentContext(event.data?.context || null);
+        }
+        if (type === "clearContext") {
+          clearParentContext();
+        }
       });
+    }
+
+    function normalizeParentContext(context) {
+      if (!context || typeof context !== "object") return null;
+
+      const title = typeof context.title === "string" ? context.title.trim() : "";
+      const subtitle = typeof context.subtitle === "string" ? context.subtitle.trim() : "";
+      const summary = typeof context.summary === "string" ? context.summary.trim() : "";
+      const source = typeof context.source === "string" ? context.source.trim() : "";
+      const provider = typeof context.provider === "string" ? context.provider.trim() : "";
+      const processType = typeof context.processType === "string" ? context.processType.trim() : "";
+      const stepTitle = typeof context.stepTitle === "string" ? context.stepTitle.trim() : "";
+      const stepIndex = Number.isFinite(Number(context.stepIndex)) ? Number(context.stepIndex) : null;
+      const prompts = Array.isArray(context.prompts)
+        ? context.prompts.map((prompt) => String(prompt || "").trim()).filter(Boolean).slice(0, 4)
+        : [];
+
+      if (!title && !subtitle && !summary && !prompts.length && !provider && !processType && !stepTitle) {
+        return null;
+      }
+
+      return {
+        title,
+        subtitle,
+        summary,
+        source,
+        provider,
+        processType,
+        stepTitle,
+        stepIndex,
+        prompts,
+      };
+    }
+
+    function setParentContext(context) {
+      const normalized = normalizeParentContext(context);
+      activeParentContext = normalized;
+      if (messages.length === 0) {
+        messagesEl.innerHTML = "";
+        if (activeParentContext) {
+          renderContextCard();
+        }
+        renderWelcome();
+        scrollToBottom(false);
+        return;
+      }
+      renderContextCard();
+    }
+
+    function clearParentContext() {
+      activeParentContext = null;
+      if (messages.length === 0) {
+        messagesEl.innerHTML = "";
+        renderWelcome();
+        scrollToBottom(false);
+        return;
+      }
+      renderContextCard();
+    }
+
+    function getActiveQuickPrompts() {
+      if (!activeParentContext?.prompts?.length) return quickPrompts;
+
+      const merged = [...activeParentContext.prompts, ...quickPrompts];
+      return [...new Set(merged)];
+    }
+
+    function renderContextCard() {
+      const existing = messagesEl.querySelector("[data-parent-context-card='true']");
+      if (existing) existing.remove();
+      if (!activeParentContext) return;
+
+      const card = document.createElement("div");
+      card.className = "context-card";
+      card.dataset.parentContextCard = "true";
+
+      const badge = document.createElement("div");
+      badge.className = "context-card-badge";
+      badge.textContent = "Πλαίσιο συνομιλίας";
+
+      const title = document.createElement("p");
+      title.className = "context-card-title";
+      title.textContent = activeParentContext.title || "Πλαίσιο από την κάρτα";
+
+      const text = document.createElement("p");
+      text.className = "context-card-text";
+      text.textContent = activeParentContext.summary || "Μπορώ να βοηθήσω με ό,τι αφορά το σημείο από όπου άνοιξες το chat.";
+
+      card.appendChild(badge);
+      card.appendChild(title);
+      card.appendChild(text);
+
+      if (activeParentContext.prompts.length) {
+        const prompts = document.createElement("div");
+        prompts.className = "context-card-prompts";
+
+        activeParentContext.prompts.forEach((prompt) => {
+          const promptChip = document.createElement("button");
+          promptChip.type = "button";
+          promptChip.className = "context-card-prompt";
+          promptChip.textContent = prompt;
+          promptChip.addEventListener("click", () => {
+            if (isSending) return;
+            inputEl.value = prompt;
+            autoResizeTextarea();
+            updateComposerState();
+            submitCurrentMessage();
+          });
+          prompts.appendChild(promptChip);
+        });
+
+        card.appendChild(prompts);
+      }
+
+      messagesEl.prepend(card);
     }
 
     function setupViewportHeight() {
@@ -1133,18 +1318,19 @@
 
       const kicker = document.createElement("div");
       kicker.className = "welcome-kicker";
-      kicker.textContent = "Sofia AI assistant";
+      kicker.textContent = activeParentContext ? "Sofia AI assistant · Πλαίσιο καρτέλας" : "Sofia AI assistant";
 
       const title = document.createElement("h1");
-      title.textContent = "Πώς μπορώ να βοηθήσω;";
+      title.textContent = activeParentContext?.title ? `Πώς μπορώ να βοηθήσω για ${activeParentContext.title};` : "Πώς μπορώ να βοηθήσω;";
 
       const text = document.createElement("p");
-      text.textContent = "Γεια σας, είμαι η Sofia. Μπορώ να βοηθήσω με προσφορές, δικαιολογητικά, διαδικασίες και στοιχεία επικοινωνίας του Π.Κ.Σ.Α.Α.";
+      text.textContent = activeParentContext?.summary
+        || "Γεια σας, είμαι η Sofia. Μπορώ να βοηθήσω με προσφορές, δικαιολογητικά, διαδικασίες και στοιχεία επικοινωνίας του Π.Κ.Σ.Α.Α.";
 
       const prompts = document.createElement("div");
       prompts.className = "quick-prompts";
 
-      quickPrompts.forEach((prompt) => {
+      getActiveQuickPrompts().forEach((prompt) => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "prompt-btn";
@@ -1170,6 +1356,9 @@
       messages = [];
       writeStorage(STORAGE_KEY, messages);
       messagesEl.innerHTML = "";
+      if (activeParentContext) {
+        renderContextCard();
+      }
       renderWelcome();
       scrollToBottom(false);
       showToast("Η συνομιλία καθαρίστηκε");
@@ -1208,7 +1397,7 @@
         const response = await fetch(API_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: content, userId }),
+          body: JSON.stringify({ message: content, userId, context: activeParentContext }),
           signal: abortController.signal
         });
 

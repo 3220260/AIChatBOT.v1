@@ -1,4 +1,3 @@
-
 export const faqs = [
   {
     "id": "site-pksaa-overview",
@@ -38,10 +37,7 @@ export const faqs = [
       "σταθερή",
       "internet",
       "τηλεόραση",
-      "υγεία",
-      "Vodafone",
-      "Nova",
-      "EON"
+      "υγεία"
     ],
     "question": "Ποιες προσφορές εμφανίζονται στη σελίδα;",
     "answer": "Στη σελίδα εμφανίζονται προσφορές για κινητή τηλεφωνία Vodafone CU και NOVA Q, σταθερή και internet Vodafone, Nova 5G Home Internet, EON + Cosmote TV, καθώς και παροχές υγείας/περίθαλψης. Για κάθε προσφορά πατάτε την αντίστοιχη κάρτα ή κουμπί προβολής για να δείτε λεπτομέρειες και δικαιολογητικά."
@@ -83,7 +79,12 @@ export const faqs = [
       "προβολή προσφοράς",
       "provoli prosforas",
       "μενού επιλογών",
-      "menu"
+      "menu",
+      "prosfores",
+      "διαδικασια",
+      "diadikasia",
+      "menou",
+      "menoo"
     ],
     "question": "Πώς χρησιμοποιώ τη σελίδα για να δω μια προσφορά;",
     "answer": "Πατήστε την κάρτα της προσφοράς που σας ενδιαφέρει ή ανοίξτε το Μενού Επιλογών. Από εκεί επιλέγετε Κινητή Τηλεφωνία, Σταθερή & Internet, Nova & Cosmote TV ή Υγεία & Περίθαλψη. Στα παράθυρα λεπτομερειών εμφανίζονται τα βήματα, τα έντυπα, τα δικαιολογητικά και τα στοιχεία αποστολής."
@@ -337,7 +338,12 @@ export const faqs = [
       "17,90",
       "100 Mbps",
       "δωρεάν τέλη",
-      "μηδενικό κόστος έναρξης"
+      "μηδενικό κόστος έναρξης",
+      "nova 5g home internet",
+      "5g home internet",
+      "5g home internet+",
+      "nova 5g home",
+      "100Mbps"
     ],
     "question": "Τι προσφορά υπάρχει για Nova σταθερό και Internet;",
     "answer": "Η σελίδα εμφανίζει Nova 5G Home Internet με δωρεάν τέλη, μηδενικό κόστος έναρξης, ταχύτητες έως 100 Mbps, απεριόριστα προς όλους και τιμή 17,90€/μήνα."
@@ -395,7 +401,18 @@ export const faqs = [
       "διεύθυνση",
       "λογαριασμός",
       "ΔΕΚΟ",
-      "GOV"
+      "GOV",
+      "dikaiologitika statheri internet",
+      "statheri internet dikaiologitika",
+      "gov gr",
+      "gov.gr",
+      "kep",
+      "google maps",
+      "google maps pin",
+      "gps",
+      "pin",
+      "diefthinsi",
+      "dieuthinsi"
     ],
     "question": "Τι δικαιολογητικά χρειάζονται για αίτηση σταθερής τηλεφωνίας ή internet;",
     "answer": "Για αίτηση σταθερής τηλεφωνίας ή internet χρειάζεται πλήρως συμπληρωμένη αίτηση βάσει του επίσημου template, ψηφιακή υπογραφή μέσω GOV, ευκρινής αστυνομική ταυτότητα μπρος-πίσω και απόδειξη διεύθυνσης εγκατάστασης. Αν υπάρχει ήδη σταθερή, χρειάζονται όλες οι σελίδες του τελευταίου λογαριασμού σταθερής, όπου φαίνονται ονοματεπώνυμο και πλήρης διεύθυνση. Αν δεν υπάρχει σταθερή, χρειάζεται λογαριασμός ΔΕΚΟ, όπως ΔΕΗ ή ΕΥΔΑΠ, με ονοματεπώνυμο και πλήρη διεύθυνση."
@@ -412,7 +429,14 @@ export const faqs = [
       "gps",
       "συντεταγμένες",
       "google maps",
-      "pin"
+      "pin",
+      "dieuthinsi xoris arithmo",
+      "xoris arithmo",
+      "xoris odo",
+      "gps pin",
+      "google maps pin",
+      "google maps pin location",
+      "coordinates"
     ],
     "question": "Τι γίνεται αν η διεύθυνση εγκατάστασης δεν έχει οδό ή αριθμό;",
     "answer": "Αν η διεύθυνση δεν είναι συγκεκριμένη, για παράδειγμα είναι χωρίς αριθμό, εκτός σχεδίου ή σε περιοχή που δηλώνεται μόνο με όνομα χωριού, απαιτούνται υποχρεωτικά συντεταγμένες GPS και screenshot από Google Maps με pin location. Χωρίς σαφή ταυτοποίηση της τοποθεσίας η αίτηση δεν μπορεί να προχωρήσει, γιατί δεν είναι γνωστό πού θα γίνει η εγκατάσταση."
@@ -426,7 +450,11 @@ export const faqs = [
       "υπογραφή",
       "αίτηση",
       "σταθερή",
-      "internet"
+      "internet",
+      "gov gr",
+      "gov.gr",
+      "digital signature",
+      "ypografi"
     ],
     "question": "Πώς πρέπει να υπογραφεί η αίτηση σταθερής ή internet;",
     "answer": "Η αίτηση πρέπει να είναι πλήρως συμπληρωμένη και να υπογράφεται υποχρεωτικά μέσω GOV με ψηφιακή υπογραφή. Όλα τα πεδία πρέπει να είναι συμπληρωμένα όπως στο template, όπως ΑΦΜ, ΔΟΥ, στοιχεία επικοινωνίας και πλήρης διεύθυνση εγκατάστασης."
@@ -442,7 +470,13 @@ export const faqs = [
       "τιμή",
       "σταθερό",
       "internet",
-      "100Mbps"
+      "100Mbps",
+      "nova 5g home internet",
+      "nova 5g home internet+",
+      "5g home internet",
+      "5g home internet+",
+      "nova 5g home",
+      "100 mbps"
     ],
     "question": "Ποια είναι η προσφορά για σταθερό και internet;",
     "answer": "Η προσφορά αφορά υπηρεσία σταθερής ασύρματης πρόσβασης με απεριόριστο internet και απεριόριστα λεπτά ομιλίας προς εθνικά σταθερά και κινητά, με εξαίρεση ειδικούς ή μη γεωγραφικούς αριθμούς. Στο έντυπο εμφανίζεται τελική τιμή προσφοράς 17,90€ για το 5G Home Internet+."
@@ -455,7 +489,11 @@ export const faqs = [
       "100Mbps",
       "5G Home",
       "internet",
-      "ίντερνετ"
+      "ίντερνετ",
+      "5g home internet",
+      "5g home internet+",
+      "100 mbps",
+      "tachytita"
     ],
     "question": "Τι ταχύτητα δίνει το 5G Home Internet;",
     "answer": "Στο έντυπο αναφέρεται απεριόριστο internet με ταχύτητα έως 100 Mbps για τα προγράμματα 5G Home Internet και 5G Home Internet+."
@@ -468,7 +506,12 @@ export const faqs = [
       "24 μήνες",
       "συμβόλαιο",
       "δέσμευση",
-      "σταθερή"
+      "σταθερή",
+      "24 mines",
+      "24 months",
+      "diarkeia symvolaiou",
+      "symvolaio",
+      "contract"
     ],
     "question": "Πόση διάρκεια έχει το συμβόλαιο σταθερής τηλεφωνίας ή internet;",
     "answer": "Στο έντυπο της σύμβασης αναφέρεται διάρκεια συμβολαίου 24 μήνες."
@@ -496,7 +539,12 @@ export const faqs = [
       "αναπροσαρμογή",
       "ανανεωση",
       "αορίστου",
-      "συμβόλαιο"
+      "συμβόλαιο",
+      "meta ti lixi",
+      "ananeosi",
+      "aoristou",
+      "aoristoy",
+      "λήξη σύμβασης"
     ],
     "question": "Τι γίνεται μετά τη λήξη της διάρκειας του συμβολαίου σταθερής;",
     "answer": "Μετά την πάροδο της ορισμένης διάρκειας, ο συνδρομητής μπορεί να ανανεώσει τη σύμβαση. Αν δεν γίνει ανανέωση, το πάγιο μπορεί να αναπροσαρμοστεί σύμφωνα με τον τιμοκατάλογο και το συμβόλαιο γίνεται αορίστου χρόνου."
@@ -526,7 +574,18 @@ export const faqs = [
       "διεύθυνση",
       "λογαριασμός",
       "ΔΕΚΟ",
-      "GOV"
+      "GOV",
+      "gov gr",
+      "gov.gr",
+      "google maps",
+      "google maps pin",
+      "gps",
+      "pin",
+      "deh",
+      "ΔΕΗ",
+      "eydap",
+      "ΕΥΔΑΠ",
+      "λογαριασμός ΔΕΚΟ"
     ],
     "question": "Τι δικαιολογητικά χρειάζονται για EON τηλεόραση;",
     "answer": "Για EON τηλεόραση χρειάζεται πλήρως συμπληρωμένη αίτηση με ψηφιακή υπογραφή μέσω GOV, ευκρινής ταυτότητα μπρος-πίσω και απόδειξη διεύθυνσης εγκατάστασης. Αν υπάρχει σταθερή τηλεφωνία, ζητούνται όλες οι σελίδες του τελευταίου λογαριασμού σταθερής. Αν δεν υπάρχει σταθερή, χρειάζεται λογαριασμός ΔΕΚΟ με ονοματεπώνυμο και πλήρη διεύθυνση."
@@ -541,7 +600,16 @@ export const faqs = [
       "gps",
       "google maps",
       "pin",
-      "εκτός σχεδίου"
+      "εκτός σχεδίου",
+      "dieuthinsi xoris arithmo",
+      "xoris arithmo",
+      "xoris odo",
+      "gps pin",
+      "google maps pin",
+      "google maps pin location",
+      "coordinates",
+      "i dieuthinsi den exei arithmo",
+      "dieuthinsi den exei arithmo"
     ],
     "question": "Τι χρειάζεται για EON αν η διεύθυνση δεν είναι σαφής;",
     "answer": "Αν η διεύθυνση εγκατάστασης δεν είναι σαφής, απαιτούνται υποχρεωτικά συντεταγμένες GPS και screenshot από Google Maps με pin location. Χωρίς αυτά, η αίτηση δεν προχωρά γιατί δεν θα είναι γνωστό το ακριβές σημείο εγκατάστασης."
@@ -555,7 +623,11 @@ export const faqs = [
       "EON",
       "πρόγραμμα",
       "τιμές",
-      "τηλεόραση"
+      "τηλεόραση",
+      "eon entry",
+      "eon plus",
+      "adult pack",
+      "τιμές eon"
     ],
     "question": "Ποια προγράμματα EON υπάρχουν;",
     "answer": "Στο έντυπο αναφέρονται τα προγράμματα EON Entry, EON και EON+. Αναφέρονται επίσης πρόσθετα πακέτα όπως EON Extra, EON Multiroom και Adult Pack."
@@ -569,7 +641,10 @@ export const faqs = [
       "2 πάγια",
       "EON+",
       "προσφορά",
-      "τιμή"
+      "τιμή",
+      "eon plus timi",
+      "2 pagia doro",
+      "2 πάγια δώρο"
     ],
     "question": "Ποια είναι η προσφορά για EON+;",
     "answer": "Στο έντυπο φαίνεται προσφορά για EON+ στα 20,90€ και δύο πάγια δώρο. Οι αναγραφόμενες τιμές περιλαμβάνουν ΦΠΑ 24%."
@@ -585,7 +660,12 @@ export const faqs = [
       "9,09",
       "10,91",
       "τιμοκατάλογος",
-      "EON"
+      "EON",
+      "eon timi",
+      "τιμές eon",
+      "times eon",
+      "eon price list",
+      "eon prices"
     ],
     "question": "Ποιες τιμές φαίνονται στον τιμοκατάλογο EON;",
     "answer": "Στο έντυπο εμφανίζονται ενδεικτικά οι τιμές 18,18€ για EON Entry, 27,27€ για EON και 54,55€ για EON+. Για πρόσθετα πακέτα εμφανίζονται 2,73€ για EON Extra, 9,09€ για EON Multiroom και 10,91€ για Adult Pack."
@@ -597,7 +677,10 @@ export const faqs = [
       "διάρκεια",
       "24 μήνες",
       "συμβόλαιο",
-      "EON"
+      "EON",
+      "24 mines",
+      "diarkeia",
+      "symvolaio"
     ],
     "question": "Πόση διάρκεια έχει το συμβόλαιο EON;",
     "answer": "Στο έντυπο EON αναφέρεται διάρκεια σύμβασης 24 μήνες."
@@ -614,7 +697,10 @@ export const faqs = [
       "EON+",
       "60",
       "80",
-      "140"
+      "140",
+      "telos diakopis",
+      "ritra",
+      "cancellation"
     ],
     "question": "Υπάρχει τέλος διακοπής στο EON;",
     "answer": "Στο έντυπο αναφέρονται τέλη διακοπής ανά πρόγραμμα: 60€ για EON Entry, 80€ για EON και 140€ για EON+."
@@ -627,7 +713,11 @@ export const faqs = [
       "δορυφορικός",
       "εξοπλισμός",
       "EON",
-      "τηλεόραση"
+      "τηλεόραση",
+      "smart box",
+      "smartbox",
+      "doriforikos",
+      "equipment"
     ],
     "question": "Τι εξοπλισμό επιλέγω για EON;",
     "answer": "Στο έντυπο εμφανίζονται επιλογές εξοπλισμού όπως EON Smart Box και δορυφορικός εξοπλισμός. Η επιλογή εξαρτάται από τον τρόπο παροχής της υπηρεσίας και τις οδηγίες της αίτησης."
@@ -655,7 +745,10 @@ export const faqs = [
       "ερωτικά",
       "18",
       "Novacinema",
-      "κανάλια"
+      "κανάλια",
+      "adult pack",
+      "18+",
+      "enilikon"
     ],
     "question": "Υπάρχει πακέτο ενηλίκων στο EON;",
     "answer": "Στο έντυπο αναφέρεται Adult Pack ως πρόσθετο πακέτο. Για πρόσβαση σε πρόγραμμα ενηλίκων απαιτείται δήλωση ότι ο συνδρομητής έχει συμπληρώσει το 18ο έτος της ηλικίας του. Αν δεν επιθυμεί πρόσβαση σε σχετικό περιεχόμενο, πρέπει να επιλέξει το αντίστοιχο πεδίο στην αίτηση."
@@ -674,7 +767,14 @@ export const faqs = [
       "δικαιολογητικα",
       "καρτοκινητή",
       "καρτοκινητη",
-      "SIM"
+      "SIM",
+      "thelo neo noumero vodafone",
+      "thelo neo noumero nova q",
+      "neo arithmo vodafone cu",
+      "neo noumero vodafone cu",
+      "neo arithmo nova q",
+      "vodafone cu",
+      "nova q"
     ],
     "question": "Τι δικαιολογητικά χρειάζονται για νέο αριθμό;",
     "answer": "Για νέο αριθμό καρτοκινητής, είτε Vodafone CU είτε Nova Q, χρειάζονται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, επικύρωση μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και παραλαβή ή φωτογραφία της κάρτας SIM. Για Vodafone CU αναφέρεται επίσης παράρτημα προσωπικών δεδομένων."
@@ -694,7 +794,13 @@ export const faqs = [
       "δικαιολογητικα",
       "καρτοκινητή",
       "καρτοκινητη",
-      "SIM"
+      "SIM",
+      "thelo foritotita",
+      "foritotita vodafone cu",
+      "foritotita nova q",
+      "metafora arithmou",
+      "kratao ton arithmo mou",
+      "retain my number"
     ],
     "question": "Τι χρειάζεται για φορητότητα αριθμού;",
     "answer": "Για φορητότητα καρτοκινητής σε Vodafone CU ή Nova Q χρειάζονται υπεύθυνη δήλωση καρτοκινητής, έντυπο φορητότητας αριθμού του αντίστοιχου παρόχου, επικύρωση μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο ταυτότητας, αποδεικτικό κατάθεσης και η νέα SIM. Για Vodafone CU αναφέρεται επίσης παράρτημα προσωπικών δεδομένων."
@@ -709,7 +815,13 @@ export const faqs = [
       "ενεργοποιειται",
       "SIM",
       "1252",
-      "12200"
+      "12200",
+      "pote vazo tin sim",
+      "pote allazo tin sim",
+      "pote allazo sim",
+      "klisi 1252",
+      "klisi 12200",
+      "restart"
     ],
     "question": "Πώς ενεργοποιείται η SIM;",
     "answer": "Στη φορητότητα, η νέα SIM μπαίνει όταν κοπεί το σήμα του παλιού παρόχου. Για Vodafone CU κάνετε κλήση στο 1252, ενώ για Nova Q κάνετε κλήση στο 12200. Αφήνετε να χτυπήσει και μετά κάνετε επανεκκίνηση της συσκευής."
@@ -727,7 +839,17 @@ export const faqs = [
       "Πειραιώς",
       "Eurobank",
       "South Attica",
-      "πληρωμή"
+      "πληρωμή",
+      "pou kano katathesi",
+      "pou kano tin katathesi",
+      "pou kanw katathesi",
+      "100 euro",
+      "100 ευρώ",
+      "100€",
+      "katathesi 100",
+      "pireos",
+      "eurobank",
+      "iban katathesis"
     ],
     "question": "Πού γίνεται η κατάθεση των 100€ για νέο αριθμό ή φορητότητα;",
     "answer": "Η κατάθεση των 100€ γίνεται σε έναν από τους λογαριασμούς της SOUTH ATTICA TELECOMMUNICATIONS: Πειραιώς IBAN GR5801720500005050099524664 ή Eurobank IBAN GR5302600310000310201070966. Κρατήστε το αποδεικτικό κατάθεσης, γιατί χρειάζεται στα δικαιολογητικά."
@@ -741,7 +863,13 @@ export const faqs = [
       "gov",
       "ΚΕΠ",
       "ψηφιακή βεβαίωση",
-      "καρτοκινητή"
+      "καρτοκινητή",
+      "gov gr",
+      "gov.gr",
+      "kep",
+      "epikyrwsi",
+      "epikyrosi",
+      "digital signature"
     ],
     "question": "Πώς επικυρώνεται η υπεύθυνη δήλωση για καρτοκινητή;",
     "answer": "Η υπεύθυνη δήλωση επικυρώνεται είτε ηλεκτρονικά μέσω gov.gr με ψηφιακή βεβαίωση εγγράφου, είτε σε οποιοδήποτε ΚΕΠ."
@@ -757,7 +885,13 @@ export const faqs = [
       "υπεύθυνη δήλωση",
       "προσωπικά δεδομένα",
       "ταυτότητα",
-      "SIM"
+      "SIM",
+      "ti xreiazetai gia neo arithmo vodafone",
+      "thelo neo noumero vodafone",
+      "thelo neo noumero vodafone cu",
+      "neo arithmo vodafone cu",
+      "vodafone cu neo arithmo",
+      "vodafone cu new number"
     ],
     "question": "Τι χρειάζεται για νέο αριθμό Vodafone CU;",
     "answer": "Για νέο αριθμό Vodafone CU χρειάζεται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, παράρτημα προσωπικών δεδομένων, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και παραλαβή της κάρτας SIM."
@@ -771,7 +905,16 @@ export const faqs = [
       "μεταφορά αριθμού",
       "δικαιολογητικά",
       "έντυπο φορητότητας",
-      "SIM"
+      "SIM",
+      "foritotita vodafone",
+      "foritotita vodafone cu",
+      "thelo foritotita vodafone",
+      "thelo na kratiso ton arithmo mou",
+      "metafora arithmou vodafone",
+      "retain my number vodafone",
+      "thelo foritotita se vodafone cu",
+      "foritotita se vodafone cu",
+      "vodafone cu portability"
     ],
     "question": "Τι χρειάζεται για φορητότητα σε Vodafone CU;",
     "answer": "Για φορητότητα σε Vodafone CU χρειάζεται υπεύθυνη δήλωση καρτοκινητής, παράρτημα προσωπικών δεδομένων, έντυπο φορητότητας αριθμού Vodafone, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο ταυτότητας, αποδεικτικό κατάθεσης και παραλαβή της νέας SIM."
@@ -786,7 +929,11 @@ export const faqs = [
       "1252",
       "σήμα",
       "SIM",
-      "επανεκκίνηση"
+      "επανεκκίνηση",
+      "pote vazo tin sim vodafone",
+      "pote allazo tin sim vodafone",
+      "klisi 1252",
+      "vodafone cu sim"
     ],
     "question": "Πώς ενεργοποιείται η Vodafone CU SIM;",
     "answer": "Όταν κοπεί το σήμα του παλιού παρόχου, τοποθετείτε τη νέα Vodafone CU SIM στο κινητό και κάνετε μια κλήση στο 1252. Αφήνετε να χτυπήσει και μετά κάνετε επανεκκίνηση της συσκευής."
@@ -801,7 +948,12 @@ export const faqs = [
       "δικαιολογητικά",
       "υπεύθυνη δήλωση",
       "ταυτότητα",
-      "SIM"
+      "SIM",
+      "ti xreiazetai gia neo arithmo nova",
+      "thelo neo noumero nova q",
+      "neo arithmo nova q",
+      "nova q neo arithmo",
+      "nova q new number"
     ],
     "question": "Τι χρειάζεται για νέο αριθμό Nova Q;",
     "answer": "Για νέο αριθμό Nova Q χρειάζεται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και φωτογραφία της κάρτας SIM."
@@ -816,7 +968,16 @@ export const faqs = [
       "μεταφορά αριθμού",
       "έντυπο φορητότητας",
       "δικαιολογητικά",
-      "SIM"
+      "SIM",
+      "foritotita nova",
+      "foritotita nova q",
+      "thelo foritotita nova",
+      "thelo na kratiso ton arithmo mou",
+      "metafora arithmou nova",
+      "retain my number nova",
+      "thelo foritotita se nova q",
+      "foritotita se nova q",
+      "nova q portability"
     ],
     "question": "Τι χρειάζεται για φορητότητα σε Nova Q;",
     "answer": "Για φορητότητα σε Nova Q χρειάζεται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, έντυπο φορητότητας αριθμού Nova, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και η κάρτα SIM σε φωτογραφία."
@@ -831,7 +992,11 @@ export const faqs = [
       "12200",
       "σήμα",
       "SIM",
-      "επανεκκίνηση"
+      "επανεκκίνηση",
+      "pote vazo tin sim nova",
+      "pote vazo tin sim nova q",
+      "klisi 12200",
+      "nova q sim"
     ],
     "question": "Πώς ενεργοποιείται η Nova Q SIM;",
     "answer": "Όταν κοπεί το σήμα του παλιού παρόχου, βάζετε τη νέα Nova Q SIM και κάνετε μια κλήση στο 12200. Αφήνετε να χτυπήσει και μετά κάνετε επανεκκίνηση της συσκευής."
@@ -846,10 +1011,18 @@ export const faqs = [
       "συνεταιρισμός",
       "synetelas2011",
       "pou stelno ta dikaiologitika",
-      "pou stelno ta eggrafa"
+      "pou stelno ta eggrafa",
+      "synetelas2025",
+      "synetelas2025@gmail.com",
+      "stelno dikaiologitika",
+      "stelnw dikaiologitika",
+      "apostoli email",
+      "nea sim email",
+      "foritotita email",
+      "neo noumero email"
     ],
     "question": "Πού στέλνω τα δικαιολογητικά για νέα SIM ή φορητότητα;",
-    "answer": "Στείλτε όλα τα έγγραφα και το αποδεικτικό κατάθεσης σε ένα email στο synetelas2011@gmail.com, όπως αναφέρεται στους οδηγούς της σελίδας."
+    "answer": "Στείλτε όλα τα έγγραφα και το αποδεικτικό κατάθεσης σε ένα email στο synetelas2025@gmail.com, όπως αναφέρεται στους οδηγούς της σελίδας."
   },
   {
     "id": "mobile-when-to-change-sim",
@@ -859,7 +1032,13 @@ export const faqs = [
       "σήμα",
       "παλιός πάροχος",
       "φορητότητα",
-      "ενεργοποίηση"
+      "ενεργοποίηση",
+      "pote vazo tin sim",
+      "pote allazo sim",
+      "pote allazo tin sim",
+      "otan kopsei to sima",
+      "foritotita",
+      "restart"
     ],
     "question": "Πότε βάζω τη νέα SIM σε φορητότητα;",
     "answer": "Στη φορητότητα, η νέα SIM μπαίνει όταν κοπεί το σήμα του παλιού παρόχου. Μετά γίνεται η αντίστοιχη κλήση ενεργοποίησης: 1252 για Vodafone CU ή 12200 για Nova Q, και στη συνέχεια επανεκκίνηση της συσκευής."
