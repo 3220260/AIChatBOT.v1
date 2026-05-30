@@ -1231,6 +1231,30 @@ export const faqs = [
     ],
     "question": "Τι να απαντά το bot όταν δεν ξέρει κάτι;",
     "answer": "Αν δεν υπάρχει επαρκής πληροφορία στη βάση γνώσης, το bot πρέπει να απαντά ευγενικά ότι δεν έχει σίγουρη πληροφορία και να προτείνει επικοινωνία με εκπρόσωπο του Συνεταιρισμού. Δεν πρέπει να μαντεύει τιμές, όρους ή δικαιολογητικά."
+  },
+  {
+    "id": "tv-full-pack-contents",
+    "category": "Nova & Cosmote TV",
+    "source": "Κάρτα προσφοράς EON + Cosmote TV Full Pack",
+    "keywords": [
+      "TV Full Pack",
+      "Cosmote TV Full Pack",
+      "EON Full Pack",
+      "EON + Cosmote TV",
+      "τι έχει μέσα το TV Full Pack",
+      "τι περιλαμβάνει το Full Pack",
+      "ti exei mesa to tv full pack",
+      "ti exi mesa to tv full pack",
+      "ti periexei to full pack",
+      "kanalia",
+      "κανάλια",
+      "ταινίες",
+      "σειρές",
+      "αθλητικά",
+      "on demand"
+    ],
+    "question": "Τι περιλαμβάνει το EON + Cosmote TV Full Pack;",
+    "answer": "Στη σελίδα αναφέρεται ότι η προσφορά EON + Cosmote TV Full Pack στα 20,90€/μήνα περιλαμβάνει premium τηλεοπτικό πακέτο με αθλητικά, ταινίες και on demand περιεχόμενο, καθώς και πάνω από 6.000 ταινίες και σειρές on demand. Δεν αναφέρονται αναλυτικά όλα τα κανάλια του πακέτου στη σελίδα."
   }
 ];
 
