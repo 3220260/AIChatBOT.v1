@@ -179,6 +179,36 @@
       transform: scale(0.96);
     }
 
+    #closeBtn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(234, 67, 53, 0.18);
+      background: rgba(234, 67, 53, 0.10);
+      color: var(--red);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 8px 18px rgba(234, 67, 53, 0.12);
+    }
+
+    #closeBtn svg {
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
+    }
+
+    #closeBtn:hover {
+      background: rgba(234, 67, 53, 0.16);
+      color: #c5221f;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.62),
+        0 10px 22px rgba(234, 67, 53, 0.18);
+    }
+
+    #closeBtn:focus-visible {
+      outline: 3px solid rgba(234, 67, 53, 0.24);
+      outline-offset: 3px;
+    }
+
     .messages-wrap {
       min-height: 0;
       position: relative;
@@ -745,6 +775,11 @@
         height: 34px;
       }
 
+      #closeBtn {
+        width: 40px;
+        height: 40px;
+      }
+
       .messages {
         padding-bottom: 14px;
       }
@@ -960,6 +995,10 @@
   "http://127.0.0.1:5500",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
+  "http://localhost:4174",
+  "http://127.0.0.1:4174",
+  "http://localhost:4175",
+  "http://127.0.0.1:4175",
   "http://localhost:5173",
   "http://127.0.0.1:5173"
 ]);
@@ -1348,6 +1387,7 @@
 
       if (notifyParent) {
         postToParent("PKSAA_CHAT_CLOSE");
+        postToParent("closeChat");
       }
     }
 
@@ -1470,8 +1510,12 @@
       try {
         if (window.parent === window) return;
         const targetOrigin = getParentTargetOrigin();
-        if (!targetOrigin) return;
-        window.parent.postMessage({ source: "sofia-chat", type }, targetOrigin);
+        const payload = { source: "sofia-chat", type };
+        if (targetOrigin) {
+          window.parent.postMessage(payload, targetOrigin);
+          return;
+        }
+        window.parent.postMessage(payload, "*");
       } catch (_) {}
     }
 
