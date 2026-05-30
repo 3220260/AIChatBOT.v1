@@ -949,16 +949,20 @@
     const USER_ID_KEY = "sofia_chat_user_id";
     const MAX_CHARS = 500;
     const MAX_STORED_MESSAGES = 80;
-    const ALLOWED_PARENT_ORIGINS = new Set([
-      "https://synetairismos-astynomikon.gr",
-      "https://www.synetairismos-astynomikon.gr",
-      "https://3220260.github.io",
-      "http://localhost:5500",
-      "http://127.0.0.1:5500",
-      "http://localhost:3000",
-      "http://127.0.0.1:3000"
-    ]);
-
+    
+   const ALLOWED_PARENT_ORIGINS = new Set([
+  "https://synetairismos-astynomikon.gr",
+  "https://www.synetairismos-astynomikon.gr",
+  "https://nyxlabs.gr",
+  "https://www.nyxlabs.gr",
+  "https://3220260.github.io",
+  "http://localhost:5500",
+  "http://127.0.0.1:5500",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173"
+]);
     const messagesEl = document.getElementById("messages");
     const formEl = document.getElementById("chatForm");
     const inputEl = document.getElementById("chatInput");
@@ -1341,8 +1345,9 @@
     function closeChat(notifyParent = true) {
       inputEl.blur();
       document.body.classList.add("is-minimized");
+
       if (notifyParent) {
-        postToParent("closeChat");
+        postToParent("PKSAA_CHAT_CLOSE");
       }
     }
 
