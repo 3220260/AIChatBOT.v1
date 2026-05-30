@@ -1021,19 +1021,6 @@ function isFollowUpQuestion(message) {
   return /(ine idia|einai idia|idia|idio|to idio|same|diafora|diafer|diaforet|afto|auto|ayto|auta|afta|ekeino)/.test(normalizedMessage);
 }
 
-
-function isTvPackContentQuestion(message) {
-  const normalizedMessage = toSearchKey(message);
-
-  const mentionsTvPack =
-    /(tv|tileorasi|eon|cosmote|full pack|fullpack)/.test(normalizedMessage);
-
-  const asksContents =
-    /(ti ex|ti periex|periex|mesa|perilamvan|kanal|channel|athlitik|taini|series|seir|on demand|content|periexomen)/.test(normalizedMessage);
-
-  return mentionsTvPack && asksContents;
-}
-
 /* =========================================
    5. RATE LIMITS
    ========================================= */
@@ -1233,13 +1220,7 @@ export default async function handler(req, res) {
     let generalContext = "";
     let geminiContextSource = "faq_chunks";
 
-    const forceGeminiForTvPackContents = isTvPackContentQuestion(safeMessage);
-
-    if (
-      !forceGeminiForTvPackContents &&
-      !shouldUseGeminiForWebsiteAdvice(safeMessage) &&
-      shouldAnswerDirectly(scoredFaqs)
-    ) {
+    if (!shouldUseGeminiForWebsiteAdvice(safeMessage) && shouldAnswerDirectly(scoredFaqs)) {
       const directReply = scoredFaqs[0].faq.answer;
       rememberTurn(userId, safeMessage, directReply);
 
@@ -1254,13 +1235,7 @@ export default async function handler(req, res) {
       });
     }
 
-    if (forceGeminiForTvPackContents) {
-      relevantFaqs = scoredFaqs.length
-        ? scoredFaqs.map((item) => item.faq)
-        : getGeneralContextFaqs(3);
-      generalContext = buildGeneralSiteContext();
-      geminiContextSource = "tv_pack_content_question";
-    } else if (scoredFaqs.length && scoredFaqs[0].score >= MIN_RELEVANT_SCORE_FOR_GEMINI) {
+    if (scoredFaqs.length && scoredFaqs[0].score >= MIN_RELEVANT_SCORE_FOR_GEMINI) {
       relevantFaqs = scoredFaqs.map((item) => item.faq);
     } else if (isWebsiteRelatedQuestion(safeMessage)) {
       relevantFaqs = scoredFaqs.length
