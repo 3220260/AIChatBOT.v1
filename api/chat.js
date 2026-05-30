@@ -6,6 +6,7 @@ import { faqs } from "../faqs.js";
    ========================================= */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+const DEBUG = process.env.DEBUG === "true";
 
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_MESSAGES_PER_WINDOW = 8;
