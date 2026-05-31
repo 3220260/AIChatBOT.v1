@@ -1,0 +1,170 @@
+[
+  {
+    "id": "vodafone-cu-new-number-price",
+    "message": "Πόσο κοστίζει;",
+    "context": {
+      "title": "Νέος αριθμός",
+      "provider": "Vodafone CU",
+      "processType": "new-number",
+      "summary": "Προσφορά κινητής για νέο αριθμό Vodafone CU με 100€ για 12 μήνες."
+    },
+    "mustInclude": [
+      "Vodafone CU",
+      "NOVA Q"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "vodafone-cu-new-number-documents",
+    "message": "Τι δικαιολογητικά χρειάζονται;",
+    "context": {
+      "title": "Νέος αριθμός",
+      "provider": "Vodafone CU",
+      "processType": "new-number",
+      "summary": "Προσφορά κινητής για νέο αριθμό Vodafone CU με 100€ για 12 μήνες."
+    },
+    "mustInclude": [
+      "υπεύθυνη δήλωση",
+      "κατάθεση 100€"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "vodafone-cu-portability-what-needed",
+    "message": "Τι χρειάζεται;",
+    "context": {
+      "title": "Φορητότητα",
+      "provider": "Vodafone CU",
+      "processType": "portability",
+      "summary": "Φορητότητα Vodafone CU με αίτημα ενεργοποίησης φορητότητας και έντυπο φορητότητας."
+    },
+    "mustInclude": [
+      "φορητότητα",
+      "Vodafone CU"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "vodafone-cu-send-documents",
+    "message": "Πού τα στέλνω;",
+    "context": {
+      "title": "Vodafone CU",
+      "provider": "Vodafone CU",
+      "processType": "new-number",
+      "summary": "Σύνδεση κινητής Vodafone CU και αποστολή δικαιολογητικών για ενεργοποίηση."
+    },
+    "mustInclude": [
+      "synetelas2025@gmail.com",
+      "αποδεικτικό κατάθεσης"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "nova-q-price",
+    "message": "Πόσο κοστίζει;",
+    "context": {
+      "title": "NOVA Q",
+      "provider": "NOVA Q",
+      "processType": "new-number",
+      "summary": "Προσφορά κινητής Nova Q με 100€ για 12 μήνες."
+    },
+    "mustInclude": [
+      "NOVA Q",
+      "Vodafone CU"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "vodafone-fixed-internet-price",
+    "message": "Πόσο κοστίζει;",
+    "context": {
+      "title": "Vodafone σταθερή & Internet",
+      "provider": "Vodafone",
+      "processType": "fixed-internet",
+      "summary": "Vodafone σταθερή και internet από 16,00€/μήνα με διαθέσιμες επιλογές προγράμματος."
+    },
+    "mustInclude": [
+      "σταθερή και internet Vodafone"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "nova-5g-home-internet-price",
+    "message": "Πόσο κάνει;",
+    "context": {
+      "title": "Nova 5G Home Internet",
+      "provider": "Nova",
+      "processType": "home-5g",
+      "summary": "Nova 5G Home Internet με ταχύτητες έως 100 Mbps και τιμή 17,90€ τον μήνα."
+    },
+    "mustInclude": [
+      "Nova 5G Home Internet"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "eon-cosmote-tv-contents",
+    "message": "Τι περιλαμβάνει;",
+    "context": {
+      "title": "EON + Cosmote TV",
+      "provider": "Nova / Cosmote",
+      "processType": "tv",
+      "summary": "Προσφορά EON + Cosmote TV Full Pack με αθλητικό και ψυχαγωγικό περιεχόμενο."
+    },
+    "mustInclude": [
+      "EON + Cosmote TV"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  },
+  {
+    "id": "health-benefits-price",
+    "message": "Πόσο κοστίζει;",
+    "context": {
+      "title": "Υγεία / περίθαλψη",
+      "provider": "Interamerican",
+      "processType": "health",
+      "summary": "Παροχές υγείας και περίθαλψης με διαθέσιμα προγράμματα και τιμές."
+    },
+    "mustInclude": [
+      "Interamerican",
+      "50.000€"
+    ],
+    "mustNotInclude": [
+      "Μπορώ να βοηθήσω κυρίως",
+      "Αυτό είναι λίγο έξω από τον ρόλο μου",
+      "Δεν έχω σίγουρη πληροφορία"
+    ]
+  }
+]
