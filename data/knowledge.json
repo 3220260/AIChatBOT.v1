@@ -1,0 +1,1574 @@
+[
+  {
+    "id": "site-pksaa-overview",
+    "category": "Γενικές πληροφορίες Π.Κ.Σ.Α.Α.",
+    "source": "FAQ / Πληροφορίες Συνεταιρισμού",
+    "question": "Τι είναι ο Π.Κ.Σ.Α.Α.;",
+    "answer": "Ο Π.Κ.Σ.Α.Α. είναι ο Προμηθευτικός και Καταναλωτικός Συνεταιρισμός Αστυνομικών Αττικής. Η ιστοσελίδα συγκεντρώνει επίσημες προσφορές και παροχές για τα μέλη, όπως κινητή, σταθερή, internet, τηλεόραση, υγεία και συνεργαζόμενες υπηρεσίες.",
+    "keywords": [
+      "ΠΚΣΑΑ",
+      "Π.Κ.Σ.Α.Α.",
+      "συνεταιρισμός",
+      "συνεταιρισμος",
+      "synetairismos",
+      "sinetairismos",
+      "synetairismos astynomikon",
+      "sinetairismos astinomikon",
+      "τι είναι ο συνεταιρισμός",
+      "ti einai o sinetairismos",
+      "τι είναι ο ΠΚΣΑΑ",
+      "τι ειναι ο ΠΚΣΑΑ",
+      "ti einai o pksaa"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-offers-overview",
+    "category": "Προσφορές",
+    "source": "Ενεργές προσφορές / Κεντρική σελίδα",
+    "question": "Ποιες προσφορές εμφανίζονται στη σελίδα;",
+    "answer": "Στη σελίδα εμφανίζονται προσφορές για κινητή τηλεφωνία Vodafone CU και NOVA Q, σταθερή και internet Vodafone, Nova 5G Home Internet, EON + Cosmote TV, καθώς και παροχές υγείας/περίθαλψης. Για κάθε προσφορά πατάτε την αντίστοιχη κάρτα ή κουμπί προβολής για να δείτε λεπτομέρειες και δικαιολογητικά.",
+    "keywords": [
+      "προσφορές",
+      "προσφορες",
+      "prosfores",
+      "ποιες προσφορές υπάρχουν",
+      "poies prosfores yparxoun",
+      "τι προσφορές έχει",
+      "ti prosfores exei",
+      "κινητή",
+      "σταθερή",
+      "internet",
+      "τηλεόραση",
+      "υγεία"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-offer-prices-summary",
+    "category": "Προσφορές",
+    "source": "Κάρτες προσφορών",
+    "question": "Πόσο κάνουν οι προσφορές που φαίνονται στη σελίδα;",
+    "answer": "Στη σελίδα φαίνονται ενδεικτικά: κινητή Vodafone CU/NOVA Q με 100€ για 12 μήνες, Vodafone σταθερή/internet από 16,00€/μήνα, Nova 5G Home Internet 17,90€/μήνα, EON + Cosmote TV Full Pack 20,90€/μήνα και παροχές υγείας με τιμές που εμφανίζονται στην ενότητα Υγεία. Για ακριβείς όρους επιλέξτε την αντίστοιχη προσφορά στη σελίδα.",
+    "keywords": [
+      "πόσο κάνει η προσφορά",
+      "ποσο κανει η προσφορα",
+      "poso kanei i prosfora",
+      "τιμή προσφοράς",
+      "τιμη προσφορας",
+      "timi prosforas",
+      "τιμές",
+      "times",
+      "κόστος",
+      "kostos",
+      "πάγιο",
+      "pagio"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-use-page",
+    "category": "Χρήση ιστοσελίδας",
+    "source": "Μενού επιλογών / Κάρτες προσφορών",
+    "question": "Πώς χρησιμοποιώ τη σελίδα για να δω μια προσφορά;",
+    "answer": "Πατήστε την κάρτα της προσφοράς που σας ενδιαφέρει ή ανοίξτε το Μενού Επιλογών. Από εκεί επιλέγετε Κινητή Τηλεφωνία, Σταθερή & Internet, Nova & Cosmote TV ή Υγεία & Περίθαλψη. Στα παράθυρα λεπτομερειών εμφανίζονται τα βήματα, τα έντυπα, τα δικαιολογητικά και τα στοιχεία αποστολής.",
+    "keywords": [
+      "πώς χρησιμοποιώ τη σελίδα",
+      "πως χρησιμοποιω τη σελιδα",
+      "pos xrisimopoio ti selida",
+      "πού πατάω",
+      "που παταω",
+      "pou patao",
+      "να δω προσφορά",
+      "να δω προσφορα",
+      "προβολή προσφοράς",
+      "provoli prosforas",
+      "μενού επιλογών",
+      "menu",
+      "prosfores",
+      "διαδικασια",
+      "diadikasia",
+      "menou",
+      "menoo"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-application-steps",
+    "category": "Χρήση ιστοσελίδας",
+    "source": "Οδηγοί αιτήσεων",
+    "question": "Τι πρέπει να κάνω βήμα-βήμα για να ολοκληρώσω αίτηση;",
+    "answer": "1. Επιλέξτε την προσφορά στη σελίδα. 2. Διαβάστε τον οδηγό και κατεβάστε τα έντυπα που εμφανίζονται. 3. Συμπληρώστε τα στοιχεία και κάντε την απαιτούμενη υπογραφή/επικύρωση μέσω gov.gr ή ΚΕΠ. 4. Συγκεντρώστε τα δικαιολογητικά. 5. Στείλτε τα έγγραφα και το αποδεικτικό κατάθεσης στο email που εμφανίζεται στον οδηγό της προσφοράς.",
+    "keywords": [
+      "πώς κάνω αίτηση",
+      "πως κανω αιτηση",
+      "pos kano aitisi",
+      "βήμα βήμα",
+      "vima vima",
+      "ολοκληρώσω αίτηση",
+      "olokliroso aitisi",
+      "τι κάνω για αίτηση",
+      "ti kano gia aitisi"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-contact-current",
+    "category": "Επικοινωνία",
+    "source": "Πληροφορίες Συνεταιρισμού / Επικοινωνία",
+    "question": "Ποια είναι τα στοιχεία επικοινωνίας του Συνεταιρισμού;",
+    "answer": "Στη σελίδα αναφέρονται: διεύθυνση Καρύστου 3, Αθήνα 115 23, τηλέφωνο γραφείου 210 5245210, κινητό 6936799908 και email synetelas2011@gmail.com. Υπάρχει επίσης Viber Community για ενημέρωση για νέες προσφορές.",
+    "keywords": [
+      "επικοινωνία",
+      "επικοινωνια",
+      "epikoinonia",
+      "τηλέφωνα",
+      "τηλεφωνα",
+      "tilefona",
+      "poioi einai oi tropoi epikoinonias",
+      "τηλέφωνο επικοινωνίας",
+      "tilefono epikoinonias",
+      "email",
+      "διεύθυνση",
+      "διευθυνση",
+      "dieuthinsi",
+      "viber",
+      "community"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-location-map",
+    "category": "Επικοινωνία",
+    "source": "Πληροφορίες Συνεταιρισμού / google map",
+    "question": "Πού βρίσκεται ο Συνεταιρισμός;",
+    "answer": "Ο Συνεταιρισμός βρίσκεται στην Καρύστου 3, Αθήνα 115 23. Στη σελίδα υπάρχει ενότητα Πληροφορίες / google map για να δείτε την τοποθεσία στον χάρτη.",
+    "keywords": [
+      "πού βρίσκεται",
+      "που βρισκεται",
+      "pou brisketai",
+      "πού είναι ο συνεταιρισμός",
+      "που ειναι ο συνεταιρισμος",
+      "pou einai o synetairismos",
+      "διεύθυνση",
+      "διευθυνση",
+      "diefthinsi",
+      "dieuthinsi",
+      "χάρτης",
+      "χαρτης",
+      "xartis",
+      "google maps",
+      "map",
+      "Καρύστου 3"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-viber-community",
+    "category": "Επικοινωνία",
+    "source": "Viber Community",
+    "question": "Υπάρχει Viber Community;",
+    "answer": "Ναι. Στη σελίδα υπάρχει Viber Community με μήνυμα “Μάθε πρώτος τις νέες μας προσφορές!”. Μπορείτε να πατήσετε τον σύνδεσμο της ενότητας Viber Community για να συνδεθείτε.",
+    "keywords": [
+      "viber",
+      "community",
+      "viber community",
+      "κοινότητα viber",
+      "koinotita viber",
+      "νέες προσφορές",
+      "nees prosfores",
+      "ενημέρωση προσφορών",
+      "enimerosi prosforon"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "site-privacy-cookies",
+    "category": "Cookies / Προσωπικά δεδομένα",
+    "source": "Προσωπικά Δεδομένα / Cookies",
+    "question": "Τι ισχύει για προσωπικά δεδομένα και cookies;",
+    "answer": "Η σελίδα αναφέρει ότι τα στοιχεία που αποστέλλονται χρησιμοποιούνται αποκλειστικά για την εξυπηρέτηση της διαδικασίας που επιλέγετε. Στέλνετε μόνο τα απαραίτητα δικαιολογητικά. Χρησιμοποιούνται απαραίτητα cookies για τη λειτουργία της σελίδας και μπορεί να χρησιμοποιούνται ανώνυμα στατιστικά για βελτίωση της εμπειρίας.",
+    "keywords": [
+      "προσωπικά δεδομένα",
+      "προσωπικα δεδομενα",
+      "prosopika dedomena",
+      "cookies",
+      "cookie",
+      "gdpr",
+      "τι στοιχεία κρατάτε",
+      "ti stoixeia kratate"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "documents-general-checklist",
+    "category": "Δικαιολογητικά",
+    "source": "Οδηγοί δικαιολογητικών",
+    "question": "Τι δικαιολογητικά χρειάζονται γενικά;",
+    "answer": "Τα δικαιολογητικά εξαρτώνται από την προσφορά. Συνήθως η σελίδα ζητά: ταυτότητα μπρος-πίσω, συμπληρωμένο έντυπο/αίτηση, υπεύθυνη δήλωση με επικύρωση μέσω gov.gr ή ΚΕΠ όπου απαιτείται, αποδεικτικό κατάθεσης όταν υπάρχει πληρωμή και επιπλέον έντυπα όπως φορητότητα ή προσωπικά δεδομένα ανά πάροχο.",
+    "keywords": [
+      "τι δικαιολογητικά χρειάζονται",
+      "τι δικαιολογητικα χρειαζονται",
+      "ti dikaiologitika xreiazontai",
+      "δικαιολογητικά",
+      "dikaiologitika",
+      "χαρτιά",
+      "χαρτια",
+      "xartia",
+      "έγγραφα",
+      "eggrafa",
+      "checklist"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-offer-summary",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "Κινητή Τηλεφωνία",
+    "question": "Τι προσφορά υπάρχει για κινητή τηλεφωνία;",
+    "answer": "Η σελίδα εμφανίζει προσφορά κινητής για Vodafone CU και NOVA Q με 100€ για 12 μήνες. Αναφέρονται απεριόριστη ομιλία προς όλους, ατελείωτα data/internet και δωρεάν SMS προς όλους. Για αίτηση επιλέγετε πάροχο και μετά νέο αριθμό ή φορητότητα.",
+    "keywords": [
+      "κινητή προσφορά",
+      "κινητη προσφορα",
+      "kinita prosfora",
+      "Vodafone CU",
+      "NOVA Q",
+      "100 ευρώ",
+      "100€",
+      "12 μήνες",
+      "απεριόριστη ομιλία",
+      "ατελείωτα data",
+      "δωρεάν sms"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-documents-overview",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "Δικαιολογητικά σύνδεσης Vodafone CU / NOVA Q",
+    "question": "Τι δικαιολογητικά χρειάζονται για κινητή;",
+    "answer": "Για κινητή Vodafone CU ή NOVA Q χρειάζονται συνήθως: υπεύθυνη δήλωση καρτοκινητής με επικύρωση μέσω gov.gr ή ΚΕΠ, φωτοτυπία ταυτότητας μπρος-πίσω, αποδεικτικό κατάθεσης 100€ και στοιχεία/φωτογραφία SIM. Αν κρατάτε τον αριθμό σας, χρειάζεται και αίτηση/έντυπο φορητότητας. Για Vodafone CU αναφέρεται και έντυπο προσωπικών δεδομένων.",
+    "keywords": [
+      "δικαιολογητικά κινητής",
+      "δικαιολογητικα κινητης",
+      "dikaiologitika kinitis",
+      "τι δικαιολογητικά χρειάζονται για κινητή",
+      "ti dikaiologitika xreiazontai gia kinito",
+      "χαρτιά για κινητή",
+      "xartia gia kinito",
+      "έγγραφα κινητής",
+      "eggrafa kinitis",
+      "Vodafone CU",
+      "NOVA Q"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "vodafone-cu-documents-overview",
+    "category": "Vodafone CU",
+    "source": "Δικαιολογητικά σύνδεσης Vodafone CU",
+    "question": "Τι δικαιολογητικά χρειάζονται για Vodafone CU;",
+    "answer": "Για Vodafone CU χρειάζονται: υπεύθυνη δήλωση καρτοκινητής με επικύρωση μέσω gov.gr ή ΚΕΠ, έντυπο/παράρτημα προσωπικών δεδομένων, κατάθεση 100€, φωτοτυπία ταυτότητας μπρος-πίσω, αποδεικτικό κατάθεσης και η SIM. Αν κάνετε φορητότητα, χρειάζεται επιπλέον αίτημα/έντυπο ενεργοποίησης φορητότητας.",
+    "keywords": [
+      "Τι δικαιολογητικά χρειάζονται για Vodafone CU",
+      "τι δικαιολογητικα χρειαζονται για vodafone cu",
+      "ti dikaiologitika xreiazontai gia vodafone cu",
+      "Vodafone CU δικαιολογητικά",
+      "Vodafone CU έγγραφα",
+      "Vodafone CU χαρτιά",
+      "προσωπικά δεδομένα Vodafone",
+      "αίτημα ενεργοποίησης Vodafone"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "vodafone-fixed-offer-current",
+    "category": "Vodafone σταθερή / Internet",
+    "source": "Αποκλειστική Προσφορά Vodafone",
+    "question": "Τι προσφορά υπάρχει για Vodafone σταθερή και Internet;",
+    "answer": "Η σελίδα αναφέρει Vodafone σταθερή & Internet από 16,00€/μήνα, με ADSL/FTTC, FTTH 100 Mbps και FTTH 300 Mbps. Στα FTTH πακέτα εμφανίζονται 2 μήνες δωρεάν, δωρεάν router Wi-Fi, εγκατάσταση/ενεργοποίηση και απεριόριστα σταθερά με 300 λεπτά προς κινητά.",
+    "keywords": [
+      "Vodafone σταθερή",
+      "Vodafone σταθερο",
+      "Vodafone internet",
+      "σταθερή Vodafone",
+      "FTTH",
+      "ADSL",
+      "FTTC",
+      "16,00",
+      "18,00",
+      "300 Mbps",
+      "2 μήνες δωρεάν"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-internet-offers-overview",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "Επιλογή Internet",
+    "question": "Έχει προσφορά για σταθερό internet;",
+    "answer": "Ναι. Η σελίδα εμφανίζει δύο επιλογές για σταθερό/internet: Vodafone σταθερή & Internet από 16,00€/μήνα με ADSL/FTTC και FTTH πακέτα, και Nova 5G Home Internet στα 17,90€/μήνα με ταχύτητες έως 100 Mbps και δωρεάν τέλη.",
+    "keywords": [
+      "σταθερό internet",
+      "σταθερο internet",
+      "stathero internet",
+      "σταθερή internet",
+      "internet προσφορά",
+      "internet prosfora",
+      "έχει προσφορά για internet",
+      "exei prosfora gia internet",
+      "προσφορά για σταθερό",
+      "Vodafone",
+      "Nova"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-internet-application-steps",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "Προσφορά Nova Σταθερό & Internet / Vodafone σταθερή",
+    "question": "Πώς κάνω αίτηση για σταθερό internet;",
+    "answer": "1. Επιλέξτε στη σελίδα Σταθερή & Internet και μετά Vodafone ή Nova. 2. Κατεβάστε/συμπληρώστε την αίτηση της προσφοράς. 3. Υπογράψτε μέσω gov.gr ή ΚΕΠ όπου ζητείται. 4. Ετοιμάστε ταυτότητα μπρος-πίσω και απόδειξη διεύθυνσης εγκατάστασης. 5. Στείλτε τα απαραίτητα έγγραφα στο synetelas2011@gmail.com.",
+    "keywords": [
+      "πώς κάνω αίτηση για σταθερό internet",
+      "πως κανω αιτηση για σταθερο internet",
+      "pos kano aitisi gia stathero internet",
+      "αίτηση σταθερό",
+      "αιτηση σταθερο",
+      "σταθερή αίτηση",
+      "σταθερη αιτηση",
+      "βήματα για σταθερό",
+      "vhmata gia stathero"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "nova-fixed-offer-current",
+    "category": "Nova σταθερό / Internet",
+    "source": "Nova 5G Home Internet",
+    "question": "Τι προσφορά υπάρχει για Nova σταθερό και Internet;",
+    "answer": "Η σελίδα εμφανίζει Nova 5G Home Internet με δωρεάν τέλη, μηδενικό κόστος έναρξης, ταχύτητες έως 100 Mbps, απεριόριστα προς όλους και τιμή 17,90€/μήνα.",
+    "keywords": [
+      "Nova σταθερό",
+      "Nova σταθερο",
+      "Nova internet",
+      "5G Home",
+      "17,90",
+      "100 Mbps",
+      "δωρεάν τέλη",
+      "μηδενικό κόστος έναρξης",
+      "nova 5g home internet",
+      "5g home internet",
+      "5g home internet+",
+      "nova 5g home",
+      "100Mbps"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-cosmote-tv-offer-current",
+    "category": "Τηλεόραση",
+    "source": "EON + Cosmote TV",
+    "question": "Υπάρχει προσφορά για Nova EON ή τηλεόραση;",
+    "answer": "Ναι. Η σελίδα εμφανίζει προσφορά EON + Cosmote TV Full Pack στα 20,90€/μήνα, με 2 πάγια δώρο, αθλητικά και ταινίες. Αναφέρονται επίσης αθλητικό θέαμα και πάνω από 6.000 ταινίες και σειρές on demand.",
+    "keywords": [
+      "Nova EON",
+      "EON",
+      "Cosmote TV",
+      "τηλεόραση",
+      "tileorasi",
+      "20,90",
+      "Full Pack",
+      "2 πάγια δώρο",
+      "αθλητικά",
+      "ταινίες"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "health-offer-current",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "Παροχές Υγείας",
+    "question": "Υπάρχει προσφορά υγείας στη σελίδα;",
+    "answer": "Ναι. Η σελίδα εμφανίζει παροχές υγείας/περίθαλψης, όπως ομαδικό συμβόλαιο Interamerican με νοσοκομειακή περίθαλψη 50.000€ ετησίως, παροχή βοήθειας 24ωρο με 20€/έτος για όλα τα μέλη της οικογένειας και κάρτα προνομίων υγείας. Στην ενότητα εμφανίζονται τιμές ανά κατηγορία ασφαλιζόμενου.",
+    "keywords": [
+      "υγεία",
+      "υγεια",
+      "igeia",
+      "περίθαλψη",
+      "perithalpsi",
+      "Interamerican",
+      "ασφάλιση υγείας",
+      "παροχές υγείας",
+      "νοσοκομειακή κάλυψη",
+      "50.000",
+      "32,18",
+      "36,64",
+      "37,40"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-documents-required",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι δικαιολογητικά χρειάζονται για αίτηση σταθερής τηλεφωνίας ή internet;",
+    "answer": "Για αίτηση σταθερής τηλεφωνίας ή internet χρειάζεται πλήρως συμπληρωμένη αίτηση βάσει του επίσημου template, ψηφιακή υπογραφή μέσω GOV, ευκρινής αστυνομική ταυτότητα μπρος-πίσω και απόδειξη διεύθυνσης εγκατάστασης. Αν υπάρχει ήδη σταθερή, χρειάζονται όλες οι σελίδες του τελευταίου λογαριασμού σταθερής, όπου φαίνονται ονοματεπώνυμο και πλήρης διεύθυνση. Αν δεν υπάρχει σταθερή, χρειάζεται λογαριασμός ΔΕΚΟ, όπως ΔΕΗ ή ΕΥΔΑΠ, με ονοματεπώνυμο και πλήρη διεύθυνση.",
+    "keywords": [
+      "σταθερή",
+      "internet",
+      "ίντερνετ",
+      "δικαιολογητικά",
+      "ταυτότητα",
+      "διεύθυνση",
+      "λογαριασμός",
+      "ΔΕΚΟ",
+      "GOV",
+      "dikaiologitika statheri internet",
+      "statheri internet dikaiologitika",
+      "gov gr",
+      "gov.gr",
+      "kep",
+      "google maps",
+      "google maps pin",
+      "gps",
+      "pin",
+      "diefthinsi",
+      "dieuthinsi"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-address-no-street",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι γίνεται αν η διεύθυνση εγκατάστασης δεν έχει οδό ή αριθμό;",
+    "answer": "Αν η διεύθυνση δεν είναι συγκεκριμένη, για παράδειγμα είναι χωρίς αριθμό, εκτός σχεδίου ή σε περιοχή που δηλώνεται μόνο με όνομα χωριού, απαιτούνται υποχρεωτικά συντεταγμένες GPS και screenshot από Google Maps με pin location. Χωρίς σαφή ταυτοποίηση της τοποθεσίας η αίτηση δεν μπορεί να προχωρήσει, γιατί δεν είναι γνωστό πού θα γίνει η εγκατάσταση.",
+    "keywords": [
+      "χωριό",
+      "χωρις οδο",
+      "χωρίς αριθμό",
+      "Άγραφα",
+      "εκτός σχεδίου",
+      "gps",
+      "συντεταγμένες",
+      "google maps",
+      "pin",
+      "dieuthinsi xoris arithmo",
+      "xoris arithmo",
+      "xoris odo",
+      "gps pin",
+      "google maps pin",
+      "google maps pin location",
+      "coordinates"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-gov-signature",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πώς πρέπει να υπογραφεί η αίτηση σταθερής ή internet;",
+    "answer": "Η αίτηση πρέπει να είναι πλήρως συμπληρωμένη και να υπογράφεται υποχρεωτικά μέσω GOV με ψηφιακή υπογραφή. Όλα τα πεδία πρέπει να είναι συμπληρωμένα όπως στο template, όπως ΑΦΜ, ΔΟΥ, στοιχεία επικοινωνίας και πλήρης διεύθυνση εγκατάστασης.",
+    "keywords": [
+      "gov",
+      "ψηφιακή υπογραφή",
+      "υπογραφή",
+      "αίτηση",
+      "σταθερή",
+      "internet",
+      "gov gr",
+      "gov.gr",
+      "digital signature",
+      "ypografi"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-programs-price",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποια είναι η προσφορά για σταθερό και internet;",
+    "answer": "Η προσφορά αφορά υπηρεσία σταθερής ασύρματης πρόσβασης με απεριόριστο internet και απεριόριστα λεπτά ομιλίας προς εθνικά σταθερά και κινητά, με εξαίρεση ειδικούς ή μη γεωγραφικούς αριθμούς. Στο έντυπο εμφανίζεται τελική τιμή προσφοράς 17,90€ για το 5G Home Internet+.",
+    "keywords": [
+      "4G Home",
+      "5G Home",
+      "5G Home Internet+",
+      "17,90",
+      "τιμή",
+      "σταθερό",
+      "internet",
+      "100Mbps",
+      "nova 5g home internet",
+      "nova 5g home internet+",
+      "5g home internet",
+      "5g home internet+",
+      "nova 5g home",
+      "100 mbps"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-speed",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι ταχύτητα δίνει το 5G Home Internet;",
+    "answer": "Στο έντυπο αναφέρεται απεριόριστο internet με ταχύτητα έως 100 Mbps για τα προγράμματα 5G Home Internet και 5G Home Internet+.",
+    "keywords": [
+      "ταχύτητα",
+      "100Mbps",
+      "5G Home",
+      "internet",
+      "ίντερνετ",
+      "5g home internet",
+      "5g home internet+",
+      "100 mbps",
+      "tachytita"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-duration",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πόση διάρκεια έχει το συμβόλαιο σταθερής τηλεφωνίας ή internet;",
+    "answer": "Στο έντυπο της σύμβασης αναφέρεται διάρκεια συμβολαίου 24 μήνες.",
+    "keywords": [
+      "διάρκεια",
+      "24 μήνες",
+      "συμβόλαιο",
+      "δέσμευση",
+      "σταθερή",
+      "24 mines",
+      "24 months",
+      "diarkeia symvolaiou",
+      "symvolaio",
+      "contract"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-form-numbers",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι γράφω στα πεδία αριθμού και κάρτας SIM στην αίτηση σταθερής;",
+    "answer": "Στο πεδίο αριθμού σύνδεσης τηλεφωνίας γράφεται ο αριθμός που μεταφέρεται ή ο νέος αριθμός. Στο πεδίο αριθμού κάρτας SIM γράφεται ο αριθμός της κάρτας SIM που δίνεται στον πελάτη. Το πεδίο αριθμού συμβολαίου δεν συμπληρώνεται, εκτός αν υπάρχει σχετική οδηγία.",
+    "keywords": [
+      "αριθμός σύνδεσης",
+      "sim",
+      "κάρτα sim",
+      "φόρμα",
+      "συμπλήρωση",
+      "νέος αριθμός",
+      "φορητότητα"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-after-contract",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι γίνεται μετά τη λήξη της διάρκειας του συμβολαίου σταθερής;",
+    "answer": "Μετά την πάροδο της ορισμένης διάρκειας, ο συνδρομητής μπορεί να ανανεώσει τη σύμβαση. Αν δεν γίνει ανανέωση, το πάγιο μπορεί να αναπροσαρμοστεί σύμφωνα με τον τιμοκατάλογο και το συμβόλαιο γίνεται αορίστου χρόνου.",
+    "keywords": [
+      "λήξη",
+      "αναπροσαρμογή",
+      "ανανεωση",
+      "αορίστου",
+      "συμβόλαιο",
+      "meta ti lixi",
+      "ananeosi",
+      "aoristou",
+      "aoristoy",
+      "λήξη σύμβασης"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "fixed-combo-discount",
+    "category": "Σταθερή τηλεφωνία / Internet",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Μπορεί να χαθεί μια συνδυαστική έκπτωση;",
+    "answer": "Ναι. Αν έχει δοθεί έκπτωση συνδυαστικών υπηρεσιών και πάψουν να ισχύουν οι προϋποθέσεις του συνδυαστικού πακέτου, για παράδειγμα αν μειωθεί ή καταργηθεί κάποια σύνδεση ή αλλάξει πρόγραμμα, ενδέχεται να σταματήσει η σχετική έκπτωση.",
+    "keywords": [
+      "συνδυαστική έκπτωση",
+      "έκπτωση",
+      "κινητή",
+      "σταθερή",
+      "τηλεόραση",
+      "πακέτο"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-documents-required",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι δικαιολογητικά χρειάζονται για EON τηλεόραση;",
+    "answer": "Για EON τηλεόραση χρειάζεται πλήρως συμπληρωμένη αίτηση με ψηφιακή υπογραφή μέσω GOV, ευκρινής ταυτότητα μπρος-πίσω και απόδειξη διεύθυνσης εγκατάστασης. Αν υπάρχει σταθερή τηλεφωνία, ζητούνται όλες οι σελίδες του τελευταίου λογαριασμού σταθερής. Αν δεν υπάρχει σταθερή, χρειάζεται λογαριασμός ΔΕΚΟ με ονοματεπώνυμο και πλήρη διεύθυνση.",
+    "keywords": [
+      "EON",
+      "τηλεόραση",
+      "δικαιολογητικά",
+      "ταυτότητα",
+      "διεύθυνση",
+      "λογαριασμός",
+      "ΔΕΚΟ",
+      "GOV",
+      "gov gr",
+      "gov.gr",
+      "google maps",
+      "google maps pin",
+      "gps",
+      "pin",
+      "deh",
+      "ΔΕΗ",
+      "eydap",
+      "ΕΥΔΑΠ",
+      "λογαριασμός ΔΕΚΟ"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-address-no-street",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι χρειάζεται για EON αν η διεύθυνση δεν είναι σαφής;",
+    "answer": "Αν η διεύθυνση εγκατάστασης δεν είναι σαφής, απαιτούνται υποχρεωτικά συντεταγμένες GPS και screenshot από Google Maps με pin location. Χωρίς αυτά, η αίτηση δεν προχωρά γιατί δεν θα είναι γνωστό το ακριβές σημείο εγκατάστασης.",
+    "keywords": [
+      "EON",
+      "διεύθυνση",
+      "χωρίς αριθμό",
+      "gps",
+      "google maps",
+      "pin",
+      "εκτός σχεδίου",
+      "dieuthinsi xoris arithmo",
+      "xoris arithmo",
+      "xoris odo",
+      "gps pin",
+      "google maps pin",
+      "google maps pin location",
+      "coordinates",
+      "i dieuthinsi den exei arithmo",
+      "dieuthinsi den exei arithmo"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-programs",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποια προγράμματα EON υπάρχουν;",
+    "answer": "Στο έντυπο αναφέρονται τα προγράμματα EON Entry, EON και EON+. Αναφέρονται επίσης πρόσθετα πακέτα όπως EON Extra, EON Multiroom και Adult Pack.",
+    "keywords": [
+      "EON Entry",
+      "EON+",
+      "EON",
+      "πρόγραμμα",
+      "τιμές",
+      "τηλεόραση",
+      "eon entry",
+      "eon plus",
+      "adult pack",
+      "τιμές eon"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-price-offer",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποια είναι η προσφορά για EON+;",
+    "answer": "Στο έντυπο φαίνεται προσφορά για EON+ στα 20,90€ και δύο πάγια δώρο. Οι αναγραφόμενες τιμές περιλαμβάνουν ΦΠΑ 24%.",
+    "keywords": [
+      "20,90",
+      "δύο πάγια δώρο",
+      "2 πάγια",
+      "EON+",
+      "προσφορά",
+      "τιμή",
+      "eon plus timi",
+      "2 pagia doro",
+      "2 πάγια δώρο"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-list-prices",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποιες τιμές φαίνονται στον τιμοκατάλογο EON;",
+    "answer": "Στο έντυπο εμφανίζονται ενδεικτικά οι τιμές 18,18€ για EON Entry, 27,27€ για EON και 54,55€ για EON+. Για πρόσθετα πακέτα εμφανίζονται 2,73€ για EON Extra, 9,09€ για EON Multiroom και 10,91€ για Adult Pack.",
+    "keywords": [
+      "18,18",
+      "27,27",
+      "54,55",
+      "2,73",
+      "9,09",
+      "10,91",
+      "τιμοκατάλογος",
+      "EON",
+      "eon timi",
+      "τιμές eon",
+      "times eon",
+      "eon price list",
+      "eon prices"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-contract-duration",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πόση διάρκεια έχει το συμβόλαιο EON;",
+    "answer": "Στο έντυπο EON αναφέρεται διάρκεια σύμβασης 24 μήνες.",
+    "keywords": [
+      "διάρκεια",
+      "24 μήνες",
+      "συμβόλαιο",
+      "EON",
+      "24 mines",
+      "diarkeia",
+      "symvolaio"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-cancellation-fees",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Υπάρχει τέλος διακοπής στο EON;",
+    "answer": "Στο έντυπο αναφέρονται τέλη διακοπής ανά πρόγραμμα: 60€ για EON Entry, 80€ για EON και 140€ για EON+.",
+    "keywords": [
+      "τέλος διακοπής",
+      "διακοπή",
+      "ακύρωση",
+      "ρήτρα",
+      "EON Entry",
+      "EON+",
+      "60",
+      "80",
+      "140",
+      "telos diakopis",
+      "ritra",
+      "cancellation"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-equipment",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι εξοπλισμό επιλέγω για EON;",
+    "answer": "Στο έντυπο εμφανίζονται επιλογές εξοπλισμού όπως EON Smart Box και δορυφορικός εξοπλισμός. Η επιλογή εξαρτάται από τον τρόπο παροχής της υπηρεσίας και τις οδηγίες της αίτησης.",
+    "keywords": [
+      "Smart Box",
+      "δορυφορικός",
+      "εξοπλισμός",
+      "EON",
+      "τηλεόραση",
+      "smart box",
+      "smartbox",
+      "doriforikos",
+      "equipment"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-bill-address",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πού δηλώνω πού θα πηγαίνει ο λογαριασμός EON;",
+    "answer": "Στην αίτηση υπάρχει πεδίο για τη διεύθυνση αποστολής λογαριασμού και επιλογή τρόπου αποστολής. Εκεί πρέπει να δηλωθεί πού θα πηγαίνει ο λογαριασμός και με ποιον τρόπο θα αποστέλλεται.",
+    "keywords": [
+      "λογαριασμός",
+      "αποστολή λογαριασμού",
+      "διεύθυνση",
+      "email",
+      "sms",
+      "έντυπος"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "eon-adult-pack",
+    "category": "Τηλεόραση",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Υπάρχει πακέτο ενηλίκων στο EON;",
+    "answer": "Στο έντυπο αναφέρεται Adult Pack ως πρόσθετο πακέτο. Για πρόσβαση σε πρόγραμμα ενηλίκων απαιτείται δήλωση ότι ο συνδρομητής έχει συμπληρώσει το 18ο έτος της ηλικίας του. Αν δεν επιθυμεί πρόσβαση σε σχετικό περιεχόμενο, πρέπει να επιλέξει το αντίστοιχο πεδίο στην αίτηση.",
+    "keywords": [
+      "Adult Pack",
+      "ενηλίκων",
+      "ερωτικά",
+      "18",
+      "Novacinema",
+      "κανάλια",
+      "adult pack",
+      "18+",
+      "enilikon"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-new-number-documents-generic",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι δικαιολογητικά χρειάζονται για νέο αριθμό;",
+    "answer": "Για νέο αριθμό καρτοκινητής, είτε Vodafone CU είτε Nova Q, χρειάζονται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, επικύρωση μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και παραλαβή ή φωτογραφία της κάρτας SIM. Για Vodafone CU αναφέρεται επίσης παράρτημα προσωπικών δεδομένων.",
+    "keywords": [
+      "νέος αριθμός",
+      "νεος αριθμος",
+      "νέο νούμερο",
+      "νεο νουμερο",
+      "thelo neo arithmo",
+      "thelo neo noumero",
+      "δικαιολογητικά",
+      "δικαιολογητικα",
+      "καρτοκινητή",
+      "καρτοκινητη",
+      "SIM",
+      "thelo neo noumero vodafone",
+      "thelo neo noumero nova q",
+      "neo arithmo vodafone cu",
+      "neo noumero vodafone cu",
+      "neo arithmo nova q",
+      "vodafone cu",
+      "nova q"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-portability-documents-generic",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι χρειάζεται για φορητότητα αριθμού;",
+    "answer": "Για φορητότητα καρτοκινητής σε Vodafone CU ή Nova Q χρειάζονται υπεύθυνη δήλωση καρτοκινητής, έντυπο φορητότητας αριθμού του αντίστοιχου παρόχου, επικύρωση μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο ταυτότητας, αποδεικτικό κατάθεσης και η νέα SIM. Για Vodafone CU αναφέρεται επίσης παράρτημα προσωπικών δεδομένων.",
+    "keywords": [
+      "φορητότητα",
+      "φορητοτητα",
+      "μεταφορά αριθμού",
+      "μεταφορα αριθμου",
+      "θέλω να κρατήσω τον αριθμό μου",
+      "θελω να κρατησω τον αριθμο μου",
+      "thelo na kratiso ton arithmo mou",
+      "δικαιολογητικά",
+      "δικαιολογητικα",
+      "καρτοκινητή",
+      "καρτοκινητη",
+      "SIM",
+      "thelo foritotita",
+      "foritotita vodafone cu",
+      "foritotita nova q",
+      "metafora arithmou",
+      "kratao ton arithmo mou",
+      "retain my number"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-sim-activation-generic",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πώς ενεργοποιείται η SIM;",
+    "answer": "Στη φορητότητα, η νέα SIM μπαίνει όταν κοπεί το σήμα του παλιού παρόχου. Για Vodafone CU κάνετε κλήση στο 1252, ενώ για Nova Q κάνετε κλήση στο 12200. Αφήνετε να χτυπήσει και μετά κάνετε επανεκκίνηση της συσκευής.",
+    "keywords": [
+      "ενεργοποίηση SIM",
+      "ενεργοποιηση sim",
+      "ενεργοποιείται",
+      "ενεργοποιειται",
+      "SIM",
+      "1252",
+      "12200",
+      "pote vazo tin sim",
+      "pote allazo tin sim",
+      "pote allazo sim",
+      "klisi 1252",
+      "klisi 12200",
+      "restart"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-deposit-iban",
+    "category": "Πληρωμές / IBAN",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πού γίνεται η κατάθεση των 100€ για νέο αριθμό ή φορητότητα;",
+    "answer": "Η κατάθεση των 100€ γίνεται σε έναν από τους λογαριασμούς της SOUTH ATTICA TELECOMMUNICATIONS: Πειραιώς IBAN GR5801720500005050099524664 ή Eurobank IBAN GR5302600310000310201070966. Κρατήστε το αποδεικτικό κατάθεσης, γιατί χρειάζεται στα δικαιολογητικά.",
+    "keywords": [
+      "100",
+      "κατάθεση",
+      "katathesi",
+      "IBAN",
+      "poio einai to iban",
+      "ποιο είναι το iban",
+      "Πειραιώς",
+      "Eurobank",
+      "South Attica",
+      "πληρωμή",
+      "pou kano katathesi",
+      "pou kano tin katathesi",
+      "pou kanw katathesi",
+      "100 euro",
+      "100 ευρώ",
+      "100€",
+      "katathesi 100",
+      "pireos",
+      "eurobank",
+      "iban katathesis"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-gov-kep",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πώς επικυρώνεται η υπεύθυνη δήλωση για καρτοκινητή;",
+    "answer": "Η υπεύθυνη δήλωση επικυρώνεται είτε ηλεκτρονικά μέσω gov.gr με ψηφιακή βεβαίωση εγγράφου, είτε σε οποιοδήποτε ΚΕΠ.",
+    "keywords": [
+      "υπεύθυνη δήλωση",
+      "επικύρωση",
+      "gov",
+      "ΚΕΠ",
+      "ψηφιακή βεβαίωση",
+      "καρτοκινητή",
+      "gov gr",
+      "gov.gr",
+      "kep",
+      "epikyrwsi",
+      "epikyrosi",
+      "digital signature"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "vodafone-new-number-documents",
+    "category": "Vodafone CU",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι χρειάζεται για νέο αριθμό Vodafone CU;",
+    "answer": "Για νέο αριθμό Vodafone CU χρειάζεται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, παράρτημα προσωπικών δεδομένων, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και παραλαβή της κάρτας SIM.",
+    "keywords": [
+      "Vodafone",
+      "CU",
+      "νέος αριθμός",
+      "δικαιολογητικά",
+      "υπεύθυνη δήλωση",
+      "προσωπικά δεδομένα",
+      "ταυτότητα",
+      "SIM",
+      "ti xreiazetai gia neo arithmo vodafone",
+      "thelo neo noumero vodafone",
+      "thelo neo noumero vodafone cu",
+      "neo arithmo vodafone cu",
+      "vodafone cu neo arithmo",
+      "vodafone cu new number"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "vodafone-portability-documents",
+    "category": "Vodafone CU",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι χρειάζεται για φορητότητα σε Vodafone CU;",
+    "answer": "Για φορητότητα σε Vodafone CU χρειάζεται υπεύθυνη δήλωση καρτοκινητής, παράρτημα προσωπικών δεδομένων, έντυπο φορητότητας αριθμού Vodafone, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο ταυτότητας, αποδεικτικό κατάθεσης και παραλαβή της νέας SIM.",
+    "keywords": [
+      "Vodafone",
+      "φορητότητα",
+      "μεταφορά αριθμού",
+      "δικαιολογητικά",
+      "έντυπο φορητότητας",
+      "SIM",
+      "foritotita vodafone",
+      "foritotita vodafone cu",
+      "thelo foritotita vodafone",
+      "thelo na kratiso ton arithmo mou",
+      "metafora arithmou vodafone",
+      "retain my number vodafone",
+      "thelo foritotita se vodafone cu",
+      "foritotita se vodafone cu",
+      "vodafone cu portability"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "vodafone-activation",
+    "category": "Vodafone CU",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πώς ενεργοποιείται η Vodafone CU SIM;",
+    "answer": "Όταν κοπεί το σήμα του παλιού παρόχου, τοποθετείτε τη νέα Vodafone CU SIM στο κινητό και κάνετε μια κλήση στο 1252. Αφήνετε να χτυπήσει και μετά κάνετε επανεκκίνηση της συσκευής.",
+    "keywords": [
+      "Vodafone",
+      "CU",
+      "ενεργοποίηση",
+      "1252",
+      "σήμα",
+      "SIM",
+      "επανεκκίνηση",
+      "pote vazo tin sim vodafone",
+      "pote allazo tin sim vodafone",
+      "klisi 1252",
+      "vodafone cu sim"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "nova-new-number-documents",
+    "category": "Nova Q",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι χρειάζεται για νέο αριθμό Nova Q;",
+    "answer": "Για νέο αριθμό Nova Q χρειάζεται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και φωτογραφία της κάρτας SIM.",
+    "keywords": [
+      "Nova",
+      "Nova Q",
+      "νέος αριθμός",
+      "δικαιολογητικά",
+      "υπεύθυνη δήλωση",
+      "ταυτότητα",
+      "SIM",
+      "ti xreiazetai gia neo arithmo nova",
+      "thelo neo noumero nova q",
+      "neo arithmo nova q",
+      "nova q neo arithmo",
+      "nova q new number"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "nova-portability-documents",
+    "category": "Nova Q",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι χρειάζεται για φορητότητα σε Nova Q;",
+    "answer": "Για φορητότητα σε Nova Q χρειάζεται υπεύθυνη δήλωση καρτοκινητής σύνδεσης, έντυπο φορητότητας αριθμού Nova, επικύρωση της υπεύθυνης δήλωσης μέσω gov.gr ή ΚΕΠ, κατάθεση 100€, φωτογραφία ή αντίγραφο αστυνομικής ταυτότητας, αποδεικτικό κατάθεσης και η κάρτα SIM σε φωτογραφία.",
+    "keywords": [
+      "Nova",
+      "Nova Q",
+      "φορητότητα",
+      "μεταφορά αριθμού",
+      "έντυπο φορητότητας",
+      "δικαιολογητικά",
+      "SIM",
+      "foritotita nova",
+      "foritotita nova q",
+      "thelo foritotita nova",
+      "thelo na kratiso ton arithmo mou",
+      "metafora arithmou nova",
+      "retain my number nova",
+      "thelo foritotita se nova q",
+      "foritotita se nova q",
+      "nova q portability"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "nova-activation",
+    "category": "Nova Q",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πώς ενεργοποιείται η Nova Q SIM;",
+    "answer": "Όταν κοπεί το σήμα του παλιού παρόχου, βάζετε τη νέα Nova Q SIM και κάνετε μια κλήση στο 12200. Αφήνετε να χτυπήσει και μετά κάνετε επανεκκίνηση της συσκευής.",
+    "keywords": [
+      "Nova",
+      "Nova Q",
+      "ενεργοποίηση",
+      "12200",
+      "σήμα",
+      "SIM",
+      "επανεκκίνηση",
+      "pote vazo tin sim nova",
+      "pote vazo tin sim nova q",
+      "klisi 12200",
+      "nova q sim"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-submit-email",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πού στέλνω τα δικαιολογητικά για νέα SIM ή φορητότητα;",
+    "answer": "Στείλτε όλα τα έγγραφα και το αποδεικτικό κατάθεσης σε ένα email στο synetelas2025@gmail.com, όπως αναφέρεται στους οδηγούς της σελίδας.",
+    "keywords": [
+      "email",
+      "αποστολή",
+      "δικαιολογητικά",
+      "συνεταιρισμός",
+      "synetelas2011",
+      "pou stelno ta dikaiologitika",
+      "pou stelno ta eggrafa",
+      "synetelas2025",
+      "synetelas2025@gmail.com",
+      "stelno dikaiologitika",
+      "stelnw dikaiologitika",
+      "apostoli email",
+      "nea sim email",
+      "foritotita email",
+      "neo noumero email"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-when-to-change-sim",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πότε βάζω τη νέα SIM σε φορητότητα;",
+    "answer": "Στη φορητότητα, η νέα SIM μπαίνει όταν κοπεί το σήμα του παλιού παρόχου. Μετά γίνεται η αντίστοιχη κλήση ενεργοποίησης: 1252 για Vodafone CU ή 12200 για Nova Q, και στη συνέχεια επανεκκίνηση της συσκευής.",
+    "keywords": [
+      "πότε βάζω sim",
+      "σήμα",
+      "παλιός πάροχος",
+      "φορητότητα",
+      "ενεργοποίηση",
+      "pote vazo tin sim",
+      "pote allazo sim",
+      "pote allazo tin sim",
+      "otan kopsei to sima",
+      "foritotita",
+      "restart"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-max-connections",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πόσες καρτοκινητές συνδέσεις μπορώ να έχω;",
+    "answer": "Στην υπεύθυνη δήλωση αναφέρεται ότι επιτρέπεται να ενεργοποιηθούν μέχρι 20 συνολικά συνδέσεις συνδρομητή προπληρωμένου χρόνου ομιλίας, σύμφωνα με τη σχετική νομοθεσία.",
+    "keywords": [
+      "20 συνδέσεις",
+      "μέχρι 20",
+      "καρτοκινητή",
+      "προπληρωμένος χρόνος",
+      "όριο"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "mobile-privacy-options",
+    "category": "Κινητή / Καρτοκινητή",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Μπορώ να ζητήσω απόκρυψη αριθμού ή να μη δέχομαι διαφημιστικές κλήσεις;",
+    "answer": "Στα έντυπα υπάρχουν επιλογές για εμφάνιση ή μη εμφάνιση του αριθμού σε τηλεφωνικούς καταλόγους, καθώς και επιλογές για αποδοχή ή μη αποδοχή διαφημιστικών/προωθητικών επικοινωνιών.",
+    "keywords": [
+      "τηλεφωνικός κατάλογος",
+      "απόκρυψη",
+      "διαφημιστικές κλήσεις",
+      "marketing",
+      "προσωπικά δεδομένα"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-health-overview",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι καλύπτει η ασφάλιση υγείας;",
+    "answer": "Η ομαδική ασφάλιση Interamerican περιλαμβάνει ενδεικτικά ασφάλεια ζωής 5.000€, νοσοκομειακή περίθαλψη έως 50.000€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο, απαλλασσόμενο ποσό 500€, θέση νοσηλείας Γ’ εντός Ελλάδας, εξωνοσοκομειακές παροχές σε συγκεκριμένα δίκτυα και τηλεφωνικές γραμμές υγείας. Για ερμηνεία όρων ισχύει πάντα το ασφαλιστήριο συμβόλαιο.",
+    "keywords": [
+      "ασφάλιση υγείας",
+      "ασφαλιση υγειας",
+      "καλύπτει",
+      "καλυπτει",
+      "παροχές",
+      "παροχες",
+      "νοσοκομειακή",
+      "νοσοκομειακη",
+      "Interamerican"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-general-not-contract",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Το ενημερωτικό έντυπο της ασφάλισης αντικαθιστά το συμβόλαιο;",
+    "answer": "Όχι. Το έντυπο είναι ενημερωτικό και δεν υποκαθιστά το ασφαλιστήριο συμβόλαιο. Για την ερμηνεία οποιουδήποτε ασφαλιστικού θέματος, ισχύει το συμβόλαιο που έχει υπογραφεί με την INTERAMERICAN.",
+    "keywords": [
+      "ασφάλιση",
+      "Interamerican",
+      "ενημερωτικό",
+      "συμβόλαιο",
+      "όροι"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-life",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποιο είναι το ποσό ασφάλειας ζωής;",
+    "answer": "Στον πίνακα παροχών αναφέρεται ασφάλεια ζωής με ασφαλιζόμενο ποσό 5.000€.",
+    "keywords": [
+      "ασφάλεια ζωής",
+      "ζωής",
+      "5000",
+      "Interamerican",
+      "ομαδική ασφάλιση"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-hospital-limit",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποιο είναι το όριο νοσοκομειακής περίθαλψης;",
+    "answer": "Το ανώτατο ποσό αναγνωριζόμενων και καταβαλλόμενων εξόδων για νοσοκομειακή περίθαλψη ορίζεται σε 50.000€ για κάθε ασφαλιστικό έτος και για κάθε ασφαλιζόμενο.",
+    "keywords": [
+      "νοσοκομειακή",
+      "κάλυψη",
+      "50000",
+      "50.000",
+      "όριο",
+      "Interamerican"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-deductible",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Υπάρχει απαλλασσόμενο ποσό στη νοσοκομειακή περίθαλψη;",
+    "answer": "Ναι. Από το σύνολο των αναγνωριζόμενων εξόδων εντός νοσοκομείου αφαιρούνται για κάθε ασφαλιστικό έτος και για κάθε ασφαλιζόμενο τα πρώτα 500€.",
+    "keywords": [
+      "απαλλαγή",
+      "απαλλασσόμενο",
+      "500",
+      "νοσοκομείο",
+      "Interamerican"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-room",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι θέση νοσηλείας καλύπτεται;",
+    "answer": "Εντός Ελλάδας καλύπτεται θέση νοσηλείας Γ’ δηλαδή τρίκλινο. Για κάλυψη εκτός Ελλάδας ή σε Μονάδα Εντατικής Παρακολούθησης αναφέρεται ανώτατο ημερήσιο ποσό 600€.",
+    "keywords": [
+      "θέση νοσηλείας",
+      "δωμάτιο",
+      "τρίκλινο",
+      "Γ θέση",
+      "νοσοκομείο"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-attica-athinaiki",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι κάλυψη υπάρχει στην Αθηναϊκή Κλινική;",
+    "answer": "Σε περίπτωση νοσηλείας στην Αθηναϊκή Κλινική, η εταιρία καταβάλλει με απευθείας κάλυψη αποζημίωση ίση με το 100% των αναγνωριζόμενων εξόδων, σύμφωνα με τους όρους του προγράμματος.",
+    "keywords": [
+      "Αθηναϊκή Κλινική",
+      "Athinaiki",
+      "Mediclinic",
+      "100%",
+      "νοσηλεία",
+      "Αττική"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-special-network",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι κάλυψη υπάρχει στα ειδικά συμβεβλημένα νοσοκομεία Αττικής;",
+    "answer": "Στα ειδικά συμβεβλημένα νοσηλευτικά ιδρύματα Αθήνας, χωρίς συμμετοχή άλλου φορέα ασφάλισης η κάλυψη είναι 85%. Αν άλλος φορέας καλύψει το 15% των συνολικών εξόδων, η εταιρία καλύπτει το 100% της διαφοράς. Αν δεν έχει καλυφθεί το 15%, καλύπτει το 85% της διαφοράς.",
+    "keywords": [
+      "ειδικά συμβεβλημένα",
+      "νοσοκομεία",
+      "85%",
+      "100% διαφοράς",
+      "ΕΟΠΥΥ",
+      "Αττική"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-outside-attica",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι ισχύει για νοσηλεία εκτός Αττικής ή εκτός Ελλάδας;",
+    "answer": "Για νοσηλεία εκτός Αττικής και για νοσηλεία εκτός Ελλάδας, η κάλυψη αναφέρεται ως 85% χωρίς συμμετοχή άλλου φορέα. Με συμμετοχή άλλου φορέα που καλύπτει το 15% των εξόδων, καλύπτεται το 100% της διαφοράς. Αν δεν έχει καλυφθεί το 15%, καλύπτεται το 85% της διαφοράς.",
+    "keywords": [
+      "εκτός Αττικής",
+      "εκτός Ελλάδας",
+      "νοσηλεία",
+      "85%",
+      "100% διαφοράς"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-outpatient-athinaiki-medifirst",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι καλύπτεται εξωνοσοκομειακά σε Αθηναϊκή Κλινική και Medifirst;",
+    "answer": "Για εργαστηριακές διαγνωστικές εξετάσεις και ιατρικές πράξεις, κατόπιν έγγραφης γνωμάτευσης, αναφέρεται όριο 1.500€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο. Οι ιατρικές επισκέψεις είναι χωρίς όριο, με συμμετοχή ασφαλισμένου 10€ ανά επίσκεψη. Για διαγνωστικές εξετάσεις και ιατρικές πράξεις η αποζημίωση αναφέρεται στο 85%.",
+    "keywords": [
+      "εξωνοσοκομειακή",
+      "Medifirst",
+      "Αθηναϊκή Κλινική",
+      "διαγνωστικές",
+      "ιατρικές επισκέψεις",
+      "1500",
+      "10 ευρώ"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-euroclinic-children",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι καλύπτεται στην Ευρωκλινική Παίδων;",
+    "answer": "Στην Ευρωκλινική Παίδων, για εργαστηριακές διαγνωστικές εξετάσεις και ιατρικές πράξεις κατόπιν γνωμάτευσης, αναφέρεται όριο 400€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο. Οι ιατρικές επισκέψεις είναι χωρίς όριο, με συμμετοχή 10€ ανά επίσκεψη. Για εξετάσεις και ιατρικές πράξεις η αποζημίωση αναφέρεται στο 85%.",
+    "keywords": [
+      "Ευρωκλινική Παίδων",
+      "παιδιά",
+      "400",
+      "10 ευρώ",
+      "εξετάσεις",
+      "επισκέψεις"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-affidea-outside-attica",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι καλύπτεται στο δίκτυο Affidea;",
+    "answer": "Η κάλυψη μέσω Affidea ισχύει αποκλειστικά εκτός Αττικής. Για εργαστηριακές διαγνωστικές εξετάσεις κατόπιν γνωμάτευσης αναφέρεται όριο 1.500€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο. Οι ιατρικές επισκέψεις είναι χωρίς όριο, με συμμετοχή 10€ ανά επίσκεψη. Για διαγνωστικές εξετάσεις η αποζημίωση αναφέρεται στο 85%.",
+    "keywords": [
+      "Affidea",
+      "εκτός Αττικής",
+      "διαγνωστικές",
+      "1500",
+      "85%",
+      "10 ευρώ"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-maternity",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Υπάρχει παροχή μητρότητας;",
+    "answer": "Ναι. Αναφέρεται επίδομα 650€ για φυσιολογικό τοκετό, 650€ για καισαρική τομή και 200€ για αποβολή, εφόσον το περιστατικό συμβεί μετά την πάροδο των πρώτων 10 μηνών από την ημερομηνία ασφάλισης της καλυπτόμενης γυναίκας.",
+    "keywords": [
+      "μητρότητα",
+      "τοκετός",
+      "καισαρική",
+      "αποβολή",
+      "650",
+      "200",
+      "10 μήνες"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-daily-benefit",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Υπάρχει ημερήσιο νοσοκομειακό επίδομα;",
+    "answer": "Ναι. Σε περίπτωση νοσηλείας σε οποιοδήποτε νοσοκομείο εντός Ελλάδας, εφόσον ο ασφαλιζόμενος δεν αποζημιωθεί βάσει εξόδων για την ίδια νοσηλεία, αναφέρεται ημερήσιο επίδομα 60€ με ανώτατο αριθμό 90 ημερών.",
+    "keywords": [
+      "ημερήσιο νοσοκομειακό επίδομα",
+      "60",
+      "90 ημέρες",
+      "νοσηλεία",
+      "ατύχημα",
+      "ασθένεια"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-network-documents",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι πρέπει να έχω μαζί μου για χρήση των προνομίων υγείας;",
+    "answer": "Κατά την προσέλευση σε συμβεβλημένο νοσηλευτικό ίδρυμα ή διαγνωστικό κέντρο, πρέπει να έχετε μαζί σας την αστυνομική ταυτότητα και να αναφέρετε ότι έχετε ομαδικό ασφαλιστήριο INTERAMERICAN, τον αριθμό του και την επωνυμία της εταιρίας σας.",
+    "keywords": [
+      "αστυνομική ταυτότητα",
+      "ομαδικό ασφαλιστήριο",
+      "νοσοκομείο",
+      "διαγνωστικό",
+      "Interamerican"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "insurance-hospital-network",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποια νοσοκομεία αναφέρονται στο ειδικό δίκτυο της Interamerican;",
+    "answer": "Στο ειδικό δίκτυο νοσηλευτικών ιδρυμάτων αναφέρονται ενδεικτικά: Αθηναϊκή Mediclinic, Ιατρικό Κέντρο Αθηνών, Ευρωκλινική Αθηνών, Ιατρικό Περιστερίου, Ευρωκλινική Παίδων, Παιδιατρικό Κέντρο Αθηνών και Mediterraneo Hospital.",
+    "keywords": [
+      "νοσοκομεία",
+      "συμβεβλημένα",
+      "Αθηναϊκή Mediclinic",
+      "Ιατρικό",
+      "Ευρωκλινική",
+      "Mediterraneo",
+      "Παίδων"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "health-line-1010",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι είναι η τηλεφωνική γραμμή υγείας 1010;",
+    "answer": "Η γραμμή υγείας 1010 λειτουργεί μέσω του Συντονιστικού Κέντρου Άμεσης Ιατρικής Βοήθειας, στην Ελλάδα, όλο το 24ωρο, 365 ημέρες τον χρόνο και χωρίς περιορισμό κλήσεων. Παρέχει ιατρικές συμβουλές, πληροφορίες για εφημερεύοντα νοσοκομεία και φαρμακεία, καθώς και πληροφορίες για πρόσβαση σε δημόσιες και ιδιωτικές υπηρεσίες υγείας.",
+    "keywords": [
+      "1010",
+      "γραμμή υγείας",
+      "ιατρικές συμβουλές",
+      "εφημερεύοντα",
+      "φαρμακεία",
+      "24ωρο"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "health-line-affidea",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι είναι η γραμμή υγείας Affidea 2160000013;",
+    "answer": "Η τηλεφωνική γραμμή υγείας AFFIDEA 216-0000013 λειτουργεί όλο το 24ωρο, 365 ημέρες τον χρόνο και παρέχει ιατρικές συμβουλές για απρόβλεπτα περιστατικά υγείας, πληροφορίες για εφημερεύοντα νοσοκομεία και φαρμακεία, καθώς και πληροφορίες για διαγνωστικά κέντρα και γιατρούς του δικτύου.",
+    "keywords": [
+      "Affidea",
+      "2160000013",
+      "γραμμή υγείας",
+      "διαγνωστικά",
+      "γιατροί",
+      "24ωρο"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "medical-assistance-services",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι υπηρεσίες δίνει η Άμεση Ιατρική Βοήθεια;",
+    "answer": "Η Άμεση Ιατρική Βοήθεια παρέχει ιατρικές συμβουλές και οδηγίες, καθώς και συντονισμό υγειονομικής μεταφοράς με κατάλληλο μέσο, όπως ασθενοφόρο, ελικόπτερο ή αεροπλάνο, προς την πλησιέστερη ενδεδειγμένη νοσηλευτική μονάδα, όπου αυτό προβλέπεται από το πρόγραμμα.",
+    "keywords": [
+      "άμεση ιατρική βοήθεια",
+      "ασθενοφόρο",
+      "ελικόπτερο",
+      "υγειονομική μεταφορά",
+      "1010"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "medical-assistance-phones",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πώς καλώ την Άμεση Ιατρική Βοήθεια INTERAMERICAN;",
+    "answer": "Για Άμεση Ιατρική Βοήθεια INTERAMERICAN καλείτε στο 1010 από οποιοδήποτε σταθερό ή κινητό τηλέφωνο στην Ελλάδα. Από το εξωτερικό αναφέρεται το +30 210 946 1999. Σε περίπτωση βλάβης σταθερού τηλεφώνου αναφέρεται το +30 6932 237000.",
+    "keywords": [
+      "1010",
+      "2109461999",
+      "6932237000",
+      "τηλέφωνο",
+      "βλάβη σταθερού",
+      "εξωτερικό"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "anytime-discount",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Υπάρχει έκπτωση στην Anytime;",
+    "answer": "Ναι. Αναφέρεται επιπλέον 5% έκπτωση στο ήδη προνομιακό τιμολόγιο της Anytime - INTERAMERICAN για ασφάλιση οχημάτων, δικύκλων και κατοικίας, με χρήση του εκπτωτικού κωδικού 1001065000000018 στην πλατφόρμα anytime.gr.",
+    "keywords": [
+      "Anytime",
+      "έκπτωση",
+      "5%",
+      "κωδικός",
+      "1001065000000018",
+      "όχημα",
+      "δίκυκλο",
+      "κατοικία"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "anytime-who-benefits",
+    "category": "Υγεία / Περίθαλψη",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Ποιοι μπορούν να χρησιμοποιήσουν την έκπτωση Anytime;",
+    "answer": "Στο έντυπο αναφέρεται ότι η εκπτωτική προσφορά ισχύει για αστυνομικούς και στελέχη της Ελληνικής Αστυνομίας και Σωμάτων Ασφαλείας, καθώς και για συνταξιούχους και συγγενείς.",
+    "keywords": [
+      "Anytime",
+      "συνταξιούχοι",
+      "συγγενείς",
+      "αστυνομικοί",
+      "δικαιούχοι",
+      "έκπτωση"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "coop-contact",
+    "category": "Επικοινωνία",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Πώς επικοινωνώ με τον Συνεταιρισμό;",
+    "answer": "Στη σελίδα αναφέρονται: διεύθυνση Καρύστου 3, Αθήνα 115 23, τηλέφωνο γραφείου 210 5245210, κινητό 6936799908 και email synetelas2011@gmail.com. Υπάρχει επίσης Viber Community για ενημέρωση για νέες προσφορές.",
+    "keywords": [
+      "επικοινωνία",
+      "τηλέφωνο",
+      "email",
+      "συνεταιρισμός",
+      "ΠΚΣΑΑ",
+      "synetelas",
+      "viber",
+      "community",
+      "διεύθυνση",
+      "Καρύστου",
+      "6936799908",
+      "synetelas2011"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "unknown-answer-policy",
+    "category": "Οδηγίες bot",
+    "source": "FAQ / Legacy knowledge",
+    "question": "Τι να απαντά το bot όταν δεν ξέρει κάτι;",
+    "answer": "Αν δεν υπάρχει επαρκής πληροφορία στη βάση γνώσης, το bot πρέπει να απαντά ευγενικά ότι δεν έχει σίγουρη πληροφορία και να προτείνει επικοινωνία με εκπρόσωπο του Συνεταιρισμού. Δεν πρέπει να μαντεύει τιμές, όρους ή δικαιολογητικά.",
+    "keywords": [
+      "δεν ξέρω",
+      "άγνωστο",
+      "δεν υπάρχει",
+      "σίγουρη πληροφορία",
+      "εκπρόσωπος"
+    ],
+    "updatedAt": "2026-06-01"
+  },
+  {
+    "id": "tv-full-pack-contents",
+    "category": "Nova & Cosmote TV",
+    "source": "Κάρτα προσφοράς EON + Cosmote TV Full Pack",
+    "question": "Τι περιλαμβάνει το EON + Cosmote TV Full Pack;",
+    "answer": "Στη σελίδα αναφέρεται ότι η προσφορά EON + Cosmote TV Full Pack στα 20,90€/μήνα περιλαμβάνει premium τηλεοπτικό πακέτο με αθλητικά, ταινίες και on demand περιεχόμενο, καθώς και πάνω από 6.000 ταινίες και σειρές on demand. Δεν αναφέρονται αναλυτικά όλα τα κανάλια του πακέτου στη σελίδα.",
+    "keywords": [
+      "TV Full Pack",
+      "Cosmote TV Full Pack",
+      "EON Full Pack",
+      "EON + Cosmote TV",
+      "τι έχει μέσα το TV Full Pack",
+      "τι περιλαμβάνει το Full Pack",
+      "ti exei mesa to tv full pack",
+      "ti exi mesa to tv full pack",
+      "ti periexei to full pack",
+      "kanalia",
+      "κανάλια",
+      "ταινίες",
+      "σειρές",
+      "αθλητικά",
+      "on demand"
+    ],
+    "updatedAt": "2026-06-01"
+  }
+]

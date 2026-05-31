@@ -88,6 +88,32 @@ test("production chat response hides internal debug fields", async () => {
   assert.equal(response.body.matchedFaqId, undefined);
   assert.equal(response.body.score, undefined);
   assert.equal(response.body.estimatedCostUsd, undefined);
+  assert.ok(Array.isArray(response.body.suggestedQuestions));
+  assert.ok(response.body.suggestedQuestions.length >= 2);
+  assert.ok(response.body.suggestedQuestions.length <= 4);
+});
+
+test("direct FAQ response returns suggestedQuestions", async () => {
+  const response = await postChat("Πού στέλνω έγγραφα;", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.ok(Array.isArray(response.body.suggestedQuestions));
+  assert.ok(response.body.suggestedQuestions.length >= 2);
+  assert.ok(response.body.suggestedQuestions.length <= 4);
+  response.body.suggestedQuestions.forEach((question) => {
+    assert.equal(typeof question, "string");
+    assert.ok(question.trim().length > 0);
+  });
+});
+
+test("old reply field still works", async () => {
+  const response = await postChat("τηλέφωνο επικοινωνίας", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(typeof response.body.reply, "string");
+  assert.ok(response.body.reply.length > 0);
 });
 
 test("γεια answers locally without Gemini", async () => {
@@ -417,4 +443,3 @@ test("Greeklish follow-up same question uses previous direct FAQ history", async
   assert.equal(second.body.usedGemini, true);
   assert.equal(second.body.contextSource, "history_followup");
 });
-

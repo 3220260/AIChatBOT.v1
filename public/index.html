@@ -400,6 +400,12 @@
       justify-content: flex-start;
     }
 
+    .assistant-stack {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
     .avatar {
       width: 34px;
       height: 34px;
@@ -447,6 +453,69 @@
       border: 1px solid rgba(221, 227, 238, 0.72);
       border-bottom-left-radius: 8px;
       box-shadow: 0 10px 28px rgba(60, 64, 67, 0.05);
+    }
+
+    .suggested-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: min(760px, calc(100vw - 72px));
+    }
+
+    .suggested-chip {
+      border: 1px solid rgba(66, 133, 244, 0.24);
+      background: rgba(232, 240, 254, 0.72);
+      color: #174ea6;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      line-height: 1.3;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .suggested-chip:hover {
+      background: rgba(232, 240, 254, 0.95);
+      border-color: rgba(66, 133, 244, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .assistant-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .assistant-action {
+      border: 1px solid rgba(201, 212, 229, 0.9);
+      background: rgba(255, 255, 255, 0.92);
+      color: #334155;
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-size: 0.78rem;
+      line-height: 1.2;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, color 0.18s ease;
+    }
+
+    .assistant-action:hover {
+      background: #ffffff;
+      border-color: rgba(66, 133, 244, 0.38);
+      transform: translateY(-1px);
+    }
+
+    .assistant-action:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .assistant-action.feedback.active {
+      background: rgba(232, 240, 254, 0.95);
+      border-color: rgba(66, 133, 244, 0.46);
+      color: #174ea6;
+      font-weight: 650;
     }
 
     .bubble p {
@@ -804,6 +873,15 @@
         max-width: min(100%, calc(100vw - 58px));
       }
 
+      .assistant-actions {
+        gap: 6px;
+      }
+
+      .assistant-action {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+      }
+
       .composer-wrap {
         padding-inline: max(10px, var(--safe-left)) max(10px, var(--safe-right));
         padding-top: 12px;
@@ -936,6 +1014,34 @@
         color: #e3e3e3;
       }
 
+      .suggested-chip {
+        background: rgba(38, 56, 85, 0.58);
+        color: #d2e3fc;
+        border-color: rgba(129, 177, 255, 0.3);
+      }
+
+      .suggested-chip:hover {
+        background: rgba(38, 56, 85, 0.86);
+        border-color: rgba(129, 177, 255, 0.5);
+      }
+
+      .assistant-action {
+        background: rgba(30, 31, 32, 0.92);
+        border-color: rgba(71, 75, 84, 0.82);
+        color: #d0d6e0;
+      }
+
+      .assistant-action:hover {
+        background: rgba(36, 37, 40, 0.95);
+        border-color: rgba(129, 177, 255, 0.48);
+      }
+
+      .assistant-action.feedback.active {
+        background: rgba(38, 56, 85, 0.92);
+        border-color: rgba(129, 177, 255, 0.56);
+        color: #d2e3fc;
+      }
+
       #chatInput {
         color: #e3e3e3;
       }
@@ -1044,6 +1150,7 @@
   <script>
     const API_ENDPOINT = "/api/chat";
     const STORAGE_KEY = "syn_chat_history_v3";
+    const FEEDBACK_STORAGE_KEY = "syn_chat_feedback_v1";
     const USER_ID_KEY = "sofia_chat_user_id";
     const MAX_CHARS = 500;
     const MAX_STORED_MESSAGES = 80;
@@ -1090,6 +1197,8 @@
 
     const userId = getOrCreateUserId();
     let messages = [];
+    let feedbackByMessage = readFeedbackStorage(FEEDBACK_STORAGE_KEY);
+    let messageIdCounter = 0;
     let isSending = false;
     let abortController = null;
     let typingRow = null;
@@ -1300,6 +1409,48 @@
       document.documentElement.style.setProperty("--visual-height", `${Math.round(height)}px`);
     }
 
+    function createMessageId(role = "msg") {
+      messageIdCounter += 1;
+      return `${role}_${Date.now().toString(36)}_${messageIdCounter.toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+    }
+
+    function normalizeStoredMessage(item) {
+      const role = item?.role;
+      const content = String(item?.content || "").trim();
+      if ((role !== "user" && role !== "assistant") || !content) return null;
+
+      const normalized = {
+        id: typeof item?.id === "string" && item.id.trim() ? item.id : createMessageId(role),
+        role,
+        content
+      };
+
+      if (role === "assistant") {
+        const suggestedQuestions = normalizeSuggestedQuestions(item?.suggestedQuestions);
+        if (suggestedQuestions.length) {
+          normalized.suggestedQuestions = suggestedQuestions;
+        }
+      }
+
+      return normalized;
+    }
+
+    function pruneFeedbackStorage() {
+      const validIds = new Set(messages.map((message) => message.id).filter(Boolean));
+      let changed = false;
+
+      Object.keys(feedbackByMessage).forEach((messageId) => {
+        if (!validIds.has(messageId)) {
+          delete feedbackByMessage[messageId];
+          changed = true;
+        }
+      });
+
+      if (changed) {
+        writeFeedbackStorage(FEEDBACK_STORAGE_KEY, feedbackByMessage);
+      }
+    }
+
     function loadHistory() {
       const stored = readStorage(STORAGE_KEY);
 
@@ -1308,8 +1459,20 @@
         return;
       }
 
-      messages = stored;
-      messages.forEach((message) => renderMessage(message.role, message.content, { smooth: false }));
+      messages = stored
+        .map(normalizeStoredMessage)
+        .filter(Boolean)
+        .slice(-MAX_STORED_MESSAGES);
+
+      writeStorage(STORAGE_KEY, messages);
+      pruneFeedbackStorage();
+
+      messages.forEach((message) => renderMessage(message.role, message.content, {
+        messageId: message.id,
+        smooth: false,
+        suggestedQuestions: message.suggestedQuestions
+      }));
+      updateAssistantActionStates();
     }
 
     function renderWelcome() {
@@ -1354,7 +1517,9 @@
 
     function clearConversation() {
       messages = [];
+      feedbackByMessage = {};
       writeStorage(STORAGE_KEY, messages);
+      writeFeedbackStorage(FEEDBACK_STORAGE_KEY, feedbackByMessage);
       messagesEl.innerHTML = "";
       if (activeParentContext) {
         renderContextCard();
@@ -1387,8 +1552,15 @@
       }
     }
 
-    async function sendMessage(content) {
-      addMessage("user", content);
+    async function sendMessage(content, options = {}) {
+      const safeContent = String(content || "").trim();
+      if (!safeContent || isSending) return;
+
+      const skipUserMessage = Boolean(options.skipUserMessage);
+      if (!skipUserMessage) {
+        addMessage("user", safeContent);
+      }
+
       showTyping();
       setSending(true);
       abortController = new AbortController();
@@ -1397,7 +1569,7 @@
         const response = await fetch(API_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: content, userId, context: activeParentContext }),
+          body: JSON.stringify({ message: safeContent, userId, context: activeParentContext }),
           signal: abortController.signal
         });
 
@@ -1409,8 +1581,9 @@
           return;
         }
 
+        const suggestedQuestions = normalizeSuggestedQuestions(data.suggestedQuestions);
         const answer = String(data.answer || data.reply || "Δεν βρέθηκε απάντηση.").trim();
-        addMessage("assistant", answer || "Δεν βρέθηκε απάντηση.");
+        addMessage("assistant", answer || "Δεν βρέθηκε απάντηση.", { suggestedQuestions });
         postToParent("message-sent");
       } catch (error) {
         removeTyping();
@@ -1428,17 +1601,68 @@
       }
     }
 
-    function addMessage(role, content) {
+    function getLastUserMessage() {
+      for (let i = messages.length - 1; i >= 0; i -= 1) {
+        if (messages[i]?.role === "user") {
+          return String(messages[i].content || "").trim();
+        }
+      }
+      return "";
+    }
+
+    async function regenerateLastAssistantReply() {
+      if (isSending) {
+        showToast("Περιμένετε να ολοκληρωθεί η τρέχουσα απάντηση.");
+        return;
+      }
+
+      const lastUserMessage = getLastUserMessage();
+      if (!lastUserMessage) {
+        showToast("Δεν βρέθηκε προηγούμενο μήνυμα για επανάληψη.");
+        return;
+      }
+
+      await sendMessage(lastUserMessage, { skipUserMessage: true });
+    }
+
+    function normalizeSuggestedQuestions(value) {
+      if (!Array.isArray(value)) return [];
+
+      return value
+        .map((item) => String(item || "").replace(/\s+/g, " ").trim())
+        .filter(Boolean)
+        .slice(0, 4);
+    }
+
+    function addMessage(role, content, options = {}) {
+      const messageId = typeof options.messageId === "string" && options.messageId.trim()
+        ? options.messageId
+        : createMessageId(role);
+      const suggestedQuestions = role === "assistant"
+        ? normalizeSuggestedQuestions(options.suggestedQuestions)
+        : [];
+
       const message = {
+        id: messageId,
         role,
-        content: String(content || "")
+        content: String(content || "").trim()
       };
+
+      if (suggestedQuestions.length) {
+        message.suggestedQuestions = suggestedQuestions;
+      }
 
       messages.push(message);
       messages = messages.slice(-MAX_STORED_MESSAGES);
       writeStorage(STORAGE_KEY, messages);
+      pruneFeedbackStorage();
 
-      renderMessage(role, content, { smooth: true });
+      renderMessage(role, content, {
+        messageId,
+        smooth: true,
+        suggestedQuestions
+      });
+      updateAssistantActionStates();
     }
 
     function addTransientAssistant(content) {
@@ -1448,6 +1672,9 @@
     function renderMessage(role, content, options = {}) {
       const row = document.createElement("div");
       row.className = `message-row ${role}`;
+      if (typeof options.messageId === "string" && options.messageId.trim()) {
+        row.dataset.messageId = options.messageId;
+      }
 
       if (role === "assistant") {
         row.appendChild(createAssistantAvatar());
@@ -1462,9 +1689,187 @@
         bubble.textContent = String(content || "");
       }
 
-      row.appendChild(bubble);
+      if (role === "assistant") {
+        const stack = document.createElement("div");
+        stack.className = "assistant-stack";
+        stack.appendChild(bubble);
+
+        const assistantActions = createAssistantActions({
+          messageId: options.messageId,
+          content: String(content || "")
+        });
+        if (assistantActions) {
+          stack.appendChild(assistantActions);
+        }
+
+        const suggestedQuestions = normalizeSuggestedQuestions(options.suggestedQuestions);
+        if (suggestedQuestions.length) {
+          const chips = document.createElement("div");
+          chips.className = "suggested-chips";
+
+          suggestedQuestions.forEach((question) => {
+            const chip = document.createElement("button");
+            chip.type = "button";
+            chip.className = "suggested-chip";
+            chip.textContent = question;
+            chip.addEventListener("click", () => {
+              if (isSending) return;
+              inputEl.value = question;
+              autoResizeTextarea();
+              updateComposerState();
+              submitCurrentMessage();
+            });
+            chips.appendChild(chip);
+          });
+
+          stack.appendChild(chips);
+        }
+
+        row.appendChild(stack);
+      } else {
+        row.appendChild(bubble);
+      }
+
       messagesEl.appendChild(row);
+      updateAssistantActionStates();
       scrollToBottom(options.smooth !== false);
+    }
+
+    function createAssistantActions({ messageId, content }) {
+      if (typeof messageId !== "string" || !messageId.trim()) return null;
+
+      const actions = document.createElement("div");
+      actions.className = "assistant-actions";
+      actions.dataset.messageId = messageId;
+
+      const copyBtn = createAssistantActionButton("copy", "Αντιγραφή", "Copy");
+      copyBtn.addEventListener("click", () => {
+        copyAssistantReply(content);
+      });
+
+      const upBtn = createAssistantActionButton("feedback", "Χρήσιμο", "👍");
+      upBtn.dataset.feedback = "up";
+      upBtn.addEventListener("click", () => {
+        setMessageFeedback(actions, messageId, "up", content);
+      });
+
+      const downBtn = createAssistantActionButton("feedback", "Μη χρήσιμο", "👎");
+      downBtn.dataset.feedback = "down";
+      downBtn.addEventListener("click", () => {
+        setMessageFeedback(actions, messageId, "down", content);
+      });
+
+      const regenerateBtn = createAssistantActionButton("regenerate", "Νέα απάντηση", "↻");
+      regenerateBtn.classList.add("regenerate");
+      regenerateBtn.addEventListener("click", () => {
+        regenerateLastAssistantReply();
+      });
+
+      actions.append(copyBtn, upBtn, downBtn, regenerateBtn);
+      applyFeedbackState(actions, messageId);
+      return actions;
+    }
+
+    function createAssistantActionButton(kind, label, text) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `assistant-action ${kind}`;
+      button.setAttribute("aria-label", label);
+      button.title = label;
+      button.textContent = text;
+      return button;
+    }
+
+    function applyFeedbackState(actions, messageId) {
+      const selectedValue = feedbackByMessage[messageId]?.value;
+      const upButton = actions.querySelector("[data-feedback='up']");
+      const downButton = actions.querySelector("[data-feedback='down']");
+      if (upButton) upButton.classList.toggle("active", selectedValue === "up");
+      if (downButton) downButton.classList.toggle("active", selectedValue === "down");
+    }
+
+    function setMessageFeedback(actions, messageId, value, content) {
+      const currentValue = feedbackByMessage[messageId]?.value;
+      const nextValue = currentValue === value ? null : value;
+
+      if (!nextValue) {
+        delete feedbackByMessage[messageId];
+      } else {
+        feedbackByMessage[messageId] = {
+          value: nextValue,
+          contentPreview: String(content || "").slice(0, 180),
+          updatedAt: new Date().toISOString()
+        };
+      }
+
+      writeFeedbackStorage(FEEDBACK_STORAGE_KEY, feedbackByMessage);
+      applyFeedbackState(actions, messageId);
+      sendFeedback({
+        messageId,
+        value: nextValue,
+        contentPreview: String(content || "").slice(0, 180)
+      });
+    }
+
+    function sendFeedback(payload) {
+      try {
+        console.log("SOFIA_FEEDBACK", payload);
+      } catch (_) {}
+    }
+
+    async function copyAssistantReply(text) {
+      const value = String(text || "").trim();
+      if (!value) return;
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(value);
+        } else {
+          const fallbackSuccess = fallbackCopyText(value);
+          if (!fallbackSuccess) throw new Error("copy_fallback_failed");
+        }
+        showToast("Η απάντηση αντιγράφηκε.");
+      } catch (_) {
+        showToast("Δεν ήταν δυνατή η αντιγραφή.");
+      }
+    }
+
+    function fallbackCopyText(value) {
+      const textarea = document.createElement("textarea");
+      textarea.value = value;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      textarea.style.pointerEvents = "none";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      let copied = false;
+      try {
+        copied = Boolean(document.execCommand("copy"));
+      } catch (_) {
+        copied = false;
+      }
+      textarea.remove();
+      return copied;
+    }
+
+    function updateAssistantActionStates() {
+      const regenerateButtons = messagesEl.querySelectorAll(".assistant-action.regenerate");
+      regenerateButtons.forEach((button) => {
+        button.hidden = true;
+        button.disabled = true;
+      });
+
+      const assistantRows = [...messagesEl.querySelectorAll(".message-row.assistant[data-message-id]")];
+      const lastAssistantRow = assistantRows[assistantRows.length - 1];
+      if (!lastAssistantRow) return;
+
+      const lastRegenerateButton = lastAssistantRow.querySelector(".assistant-action.regenerate");
+      if (!lastRegenerateButton) return;
+
+      lastRegenerateButton.hidden = false;
+      lastRegenerateButton.disabled = isSending;
     }
 
   function createAssistantAvatar() {
@@ -1521,6 +1926,7 @@
       sendBtn.classList.toggle("is-stopping", isSending);
       sendBtn.setAttribute("aria-label", isSending ? "Διακοπή απάντησης" : "Αποστολή");
       updateComposerState();
+      updateAssistantActionStates();
     }
 
     function stopCurrentRequest() {
@@ -1773,9 +2179,37 @@
       }
     }
 
+    function readFeedbackStorage(key) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "{}");
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+
+        const normalized = {};
+        Object.entries(parsed).forEach(([messageId, value]) => {
+          if (typeof messageId !== "string" || !messageId.trim()) return;
+          const feedbackValue = value?.value;
+          if (feedbackValue !== "up" && feedbackValue !== "down") return;
+          normalized[messageId] = {
+            value: feedbackValue,
+            contentPreview: String(value?.contentPreview || ""),
+            updatedAt: String(value?.updatedAt || "")
+          };
+        });
+        return normalized;
+      } catch (_) {
+        return {};
+      }
+    }
+
     function writeStorage(key, value) {
       try {
         localStorage.setItem(key, JSON.stringify(value));
+      } catch (_) {}
+    }
+
+    function writeFeedbackStorage(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value || {}));
       } catch (_) {}
     }
   </script>
