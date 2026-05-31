@@ -107,8 +107,8 @@ function getPlayfulOffTopicReply(message, count) {
   return replies[(count - 1) % replies.length];
 }
 
-function sendLocalOffTopicReply(req, res, userId, message, source = "local_off_topic_playful") {
-  const { count } = incrementOffTopicPlayCount(req, userId);
+async function sendLocalOffTopicReply(req, res, userId, message, source = "local_off_topic_playful") {
+  const { count } = await incrementOffTopicPlayCount(req, userId);
 
   return sendJson(res, 200, {
     reply: getPlayfulOffTopicReply(message, count),
@@ -227,7 +227,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const rateLimit = checkRateLimit(req, userId);
+    const rateLimit = await checkRateLimit(req, userId);
 
     if (!rateLimit.allowed) {
       return sendJson(res, 429, {
@@ -240,7 +240,7 @@ export default async function handler(req, res) {
 
     const localReply = getLocalSmallTalkReply(safeMessage);
     if (localReply) {
-      rememberTurn(userId, safeMessage, localReply, MAX_HISTORY_MESSAGES);
+      await rememberTurn(userId, safeMessage, localReply, MAX_HISTORY_MESSAGES);
 
       return sendJson(res, 200, {
         reply: localReply,
@@ -252,7 +252,7 @@ export default async function handler(req, res) {
     }
 
     if (shouldBlockForScope(safeMessage) && !hasAssistantContext) {
-      return sendLocalOffTopicReply(req, res, userId, safeMessage);
+      return await sendLocalOffTopicReply(req, res, userId, safeMessage);
     }
 
     const scoredFaqs = searchKnowledgeLocal(safeMessage, {
@@ -273,7 +273,7 @@ export default async function handler(req, res) {
       const suggestedQuestions = buildSuggestedQuestions(scoredFaqs, {
         excludeQuestions: [scoredFaqs[0].faq.question, safeMessage]
       });
-      rememberTurn(userId, safeMessage, directReply, MAX_HISTORY_MESSAGES);
+      await rememberTurn(userId, safeMessage, directReply, MAX_HISTORY_MESSAGES);
 
       return sendJson(res, 200, {
         reply: directReply,
@@ -307,12 +307,12 @@ export default async function handler(req, res) {
         : getGeneralContextFaqs(3);
       generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
       geminiContextSource = "general_site_context";
-    } else if (isFollowUpQuestion(safeMessage) && hasPriorMemory(userId)) {
+    } else if (isFollowUpQuestion(safeMessage) && await hasPriorMemory(userId)) {
       relevantFaqs = getGeneralContextFaqs(3);
       generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
       geminiContextSource = "history_followup";
     } else {
-      return sendLocalOffTopicReply(req, res, userId, safeMessage);
+      return await sendLocalOffTopicReply(req, res, userId, safeMessage);
     }
 
     if (!model) {
@@ -336,7 +336,7 @@ export default async function handler(req, res) {
     activeRequests += 1;
 
     try {
-      let history = getUserHistory(userId) || [];
+      let history = await getUserHistory(userId) || [];
       history = history.slice(-MAX_HISTORY_MESSAGES);
 
       const faqContext = buildFaqContext(relevantFaqs);
@@ -381,7 +381,7 @@ export default async function handler(req, res) {
         history = history.slice(-MAX_HISTORY_MESSAGES);
       }
 
-      setUserHistory(userId, history, MAX_HISTORY_MESSAGES);
+      await setUserHistory(userId, history, MAX_HISTORY_MESSAGES);
 
       console.log("BOT_USAGE", {
         userId,
