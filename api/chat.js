@@ -194,6 +194,16 @@ function buildSuggestedQuestions(scoredFaqs, options = {}) {
   return collected.slice(0, MAX_SUGGESTED_QUESTIONS);
 }
 
+function shouldSearchWithAssistantContext(message, assistantContextText) {
+  if (!assistantContextText) return false;
+
+  const normalizedMessage = String(message || "").toLowerCase();
+  const wordCount = normalizedMessage.split(/\s+/).filter(Boolean).length;
+
+  return wordCount <= 6
+    || /(πόσο|ποσο|κοστίζει|κοστιζει|κόστος|κοστος|τιμή|τιμη|δικαιολογητικά|δικαιολογητικα|χαρτιά|χαρτια|πού|που|στέλνω|στελνω|email|mail)/i.test(normalizedMessage);
+}
+
 export default async function handler(req, res) {
   try {
     if (req.method === "OPTIONS") {
@@ -255,7 +265,11 @@ export default async function handler(req, res) {
       return await sendLocalOffTopicReply(req, res, userId, safeMessage);
     }
 
-    const scoredFaqs = searchKnowledgeLocal(safeMessage, {
+    const searchMessage = shouldSearchWithAssistantContext(safeMessage, assistantContextText)
+      ? `${safeMessage}\n${assistantContextText}`
+      : safeMessage;
+
+    const scoredFaqs = searchKnowledgeLocal(searchMessage, {
       limit: MAX_RELEVANT_KNOWLEDGE_RESULTS
     });
     let relevantFaqs = [];

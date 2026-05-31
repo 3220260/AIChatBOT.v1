@@ -57,7 +57,11 @@ async function postChatWithHandler(handler, message, options = {}) {
       "x-forwarded-for": options.ip || "127.0.0.1"
     },
     socket: { remoteAddress: options.ip || "127.0.0.1" },
-    body: { message, userId }
+    body: {
+      message,
+      userId,
+      ...(options.context ? { context: options.context } : {})
+    }
   };
   const res = createResponse();
 
@@ -114,6 +118,42 @@ test("old reply field still works", async () => {
   assert.equal(response.status, 200);
   assert.equal(typeof response.body.reply, "string");
   assert.ok(response.body.reply.length > 0);
+});
+
+test("short contextual price question uses assistant context retrieval", async () => {
+  const response = await postChat("Πόσο κοστίζει;", {
+    debug: true,
+    context: {
+      title: "Νέος αριθμός",
+      provider: "Vodafone CU",
+      processType: "new-number",
+      summary: "Προσφορά κινητής για νέο αριθμό Vodafone CU με 100€ για 12 μήνες."
+    }
+  });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.match(response.body.reply, /Vodafone CU|NOVA Q|προσφορά|100€/);
+  assert.doesNotMatch(response.body.reply, /Μπορώ να βοηθήσω κυρίως|Αυτό είναι λίγο έξω από τον ρόλο μου/);
+});
+
+test("short contextual documents question uses assistant context retrieval", async () => {
+  const response = await postChat("Τι δικαιολογητικά χρειάζονται;", {
+    debug: true,
+    context: {
+      title: "Νέος αριθμός",
+      provider: "Vodafone CU",
+      processType: "new-number",
+      summary: "Προσφορά κινητής για νέο αριθμό Vodafone CU με 100€ για 12 μήνες."
+    }
+  });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.match(response.body.reply, /υπεύθυνη δήλωση|δικαιολογητικά|ταυτότητα|SIM/);
+  assert.doesNotMatch(response.body.reply, /Μπορώ να βοηθήσω κυρίως|Αυτό είναι λίγο έξω από τον ρόλο μου/);
 });
 
 test("γεια answers locally without Gemini", async () => {
