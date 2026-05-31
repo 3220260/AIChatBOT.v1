@@ -204,6 +204,16 @@ function shouldSearchWithAssistantContext(message, assistantContextText) {
     || /(πόσο|ποσο|κοστίζει|κοστιζει|κόστος|κοστος|τιμή|τιμη|δικαιολογητικά|δικαιολογητικα|χαρτιά|χαρτια|πού|που|στέλνω|στελνω|email|mail)/i.test(normalizedMessage);
 }
 
+function shouldForceGeminiForContextualQuestion(message, assistantContextText) {
+  if (!assistantContextText) return false;
+
+  const normalized = String(message || "").toLowerCase();
+  const wordCount = normalized.split(/\s+/).filter(Boolean).length;
+
+  return wordCount <= 6
+    || /πόσο|ποσο|poso|κοστίζει|κοστιζει|kostizei|κόστος|κοστος|kostos|τιμή|τιμη|timi|δικαιολογητικά|δικαιολογητικα|dikaiologitika|χαρτιά|χαρτια|xartia|πού|που|pou|στέλνω|στελνω|stelno|email|mail/i.test(normalized);
+}
+
 export default async function handler(req, res) {
   try {
     if (req.method === "OPTIONS") {
@@ -277,9 +287,14 @@ export default async function handler(req, res) {
     let geminiContextSource = "faq_chunks";
 
     const forceGeminiForTvPackContents = isTvPackContentQuestion(safeMessage);
+    const forceGeminiForContextualQuestion = shouldForceGeminiForContextualQuestion(
+      safeMessage,
+      assistantContextText
+    );
 
     if (
       !forceGeminiForTvPackContents
+      && !forceGeminiForContextualQuestion
       && !shouldUseGeminiForWebsiteAdvice(safeMessage)
       && shouldAnswerDirectly(scoredFaqs)
     ) {
@@ -307,6 +322,12 @@ export default async function handler(req, res) {
         : getGeneralContextFaqs(3);
       generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
       geminiContextSource = "tv_pack_content_question";
+    } else if (forceGeminiForContextualQuestion && hasAssistantContext) {
+      relevantFaqs = scoredFaqs.length
+        ? scoredFaqs.map((item) => item.faq)
+        : getGeneralContextFaqs(3);
+      generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
+      geminiContextSource = "parent_context";
     } else if (scoredFaqs.length && scoredFaqs[0].score >= MIN_RELEVANT_SCORE_FOR_GEMINI) {
       relevantFaqs = scoredFaqs.map((item) => item.faq);
     } else if (hasAssistantContext) {

@@ -120,7 +120,7 @@ test("old reply field still works", async () => {
   assert.ok(response.body.reply.length > 0);
 });
 
-test("short contextual price question uses assistant context retrieval", async () => {
+test("short contextual price question (Greek) routes to Gemini with offer KB context", async () => {
   const response = await postChat("Πόσο κοστίζει;", {
     debug: true,
     context: {
@@ -131,14 +131,57 @@ test("short contextual price question uses assistant context retrieval", async (
     }
   });
 
-  assert.equal(response.status, 200);
-  assert.equal(response.body.source, "direct_faq");
-  assert.equal(response.body.usedGemini, false);
-  assert.match(response.body.reply, /Vodafone CU|NOVA Q|προσφορά|100€/);
-  assert.doesNotMatch(response.body.reply, /Μπορώ να βοηθήσω κυρίως|Αυτό είναι λίγο έξω από τον ρόλο μου/);
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+  assert.equal(response.body.contextSource, "parent_context");
+  assert.ok(Array.isArray(response.body.matchedFaqIds));
+  assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
+  assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
 });
 
-test("short contextual documents question uses assistant context retrieval", async () => {
+test("poso kostizei with Vodafone CU context avoids documents FAQ and routes to Gemini", async () => {
+  const response = await postChat("poso kostizei", {
+    debug: true,
+    context: {
+      title: "Νέος αριθμός",
+      provider: "Vodafone CU",
+      processType: "new-number",
+      summary: "Προσφορά κινητής για νέο αριθμό Vodafone CU με 100€ για 12 μήνες."
+    }
+  });
+
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+  assert.equal(response.body.contextSource, "parent_context");
+  assert.ok(Array.isArray(response.body.matchedFaqIds));
+  assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
+  assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
+  assert.ok(!response.body.matchedFaqIds.includes("vodafone-cu-documents-overview"));
+});
+
+test("short contextual NOVA Q price question routes to Gemini with offer KB context", async () => {
+  const response = await postChat("Πόσο κοστίζει;", {
+    debug: true,
+    context: {
+      title: "Νέος αριθμός",
+      provider: "NOVA Q",
+      processType: "new-number",
+      summary: "Προσφορά κινητής για νέο αριθμό NOVA Q με 100€ για 12 μήνες."
+    }
+  });
+
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+  assert.equal(response.body.contextSource, "parent_context");
+  assert.ok(Array.isArray(response.body.matchedFaqIds));
+  assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
+  assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
+});
+
+test("contextual Vodafone CU documents question routes via Gemini and keeps documents KB", async () => {
   const response = await postChat("Τι δικαιολογητικά χρειάζονται;", {
     debug: true,
     context: {
@@ -149,11 +192,16 @@ test("short contextual documents question uses assistant context retrieval", asy
     }
   });
 
-  assert.equal(response.status, 200);
-  assert.equal(response.body.source, "direct_faq");
-  assert.equal(response.body.usedGemini, false);
-  assert.match(response.body.reply, /υπεύθυνη δήλωση|δικαιολογητικά|ταυτότητα|SIM/);
-  assert.doesNotMatch(response.body.reply, /Μπορώ να βοηθήσω κυρίως|Αυτό είναι λίγο έξω από τον ρόλο μου/);
+  assert.equal(response.status, 500);
+  assert.equal(response.body.source, "gemini_unconfigured");
+  assert.equal(response.body.usedGemini, true);
+  assert.equal(response.body.contextSource, "parent_context");
+  assert.ok(Array.isArray(response.body.matchedFaqIds));
+  assert.ok(
+    response.body.matchedFaqIds.includes("vodafone-cu-documents-overview")
+    || response.body.matchedFaqIds.includes("mobile-new-number-documents-generic")
+  );
+  assert.notEqual(response.body.source, "local_off_topic_playful");
 });
 
 test("γεια answers locally without Gemini", async () => {
