@@ -311,10 +311,6 @@ export default async function handler(req, res) {
       relevantFaqs = getGeneralContextFaqs(3);
       generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
       geminiContextSource = "history_followup";
-    } else if (isFollowUpQuestion(safeMessage) && hasPriorMemory(userId)) {
-      relevantFaqs = getGeneralContextFaqs(3);
-      generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
-      geminiContextSource = "history_followup";
     } else {
       return sendLocalOffTopicReply(req, res, userId, safeMessage);
     }
