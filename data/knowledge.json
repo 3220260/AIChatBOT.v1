@@ -4,7 +4,7 @@
     "category": "Γενικές πληροφορίες Π.Κ.Σ.Α.Α.",
     "source": "FAQ / Πληροφορίες Συνεταιρισμού",
     "question": "Τι είναι ο Π.Κ.Σ.Α.Α.;",
-    "answer": "Ο Π.Κ.Σ.Α.Α. είναι ο Προμηθευτικός και Καταναλωτικός Συνεταιρισμός Αστυνομικών Αττικής. Η ιστοσελίδα συγκεντρώνει επίσημες προσφορές και παροχές για τα μέλη, όπως κινητή, σταθερή, internet, τηλεόραση, υγεία και συνεργαζόμενες υπηρεσίες.",
+    "answer": "Ο Π.Κ.Σ.Α.Α. είναι ο Προμηθευτικός και Καταναλωτικός Συνεταιρισμός Αστυνομικών Αττικής. Η ιστοσελίδα συγκεντρώνει επίσημες προσφορές και παροχές για τα μέλη, όπως κινητή, σταθερή, internet, τηλεόραση και συνεργαζόμενες υπηρεσίες.",
     "keywords": [
       "ΠΚΣΑΑ",
       "Π.Κ.Σ.Α.Α.",
@@ -14,11 +14,17 @@
       "sinetairismos",
       "synetairismos astynomikon",
       "sinetairismos astinomikon",
+      "τι είναι ο συνεταιρισμός αστυνομικών",
+      "τι ειναι ο συνεταιρισμος αστυνομικων",
+      "ti einai o synetairismos astynomikon",
+      "poios einai o synetairismos",
       "τι είναι ο συνεταιρισμός",
       "ti einai o sinetairismos",
       "τι είναι ο ΠΚΣΑΑ",
       "τι ειναι ο ΠΚΣΑΑ",
-      "ti einai o pksaa"
+      "ti einai o pksaa",
+      "pksaa",
+      "synetelas"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -27,7 +33,7 @@
     "category": "Προσφορές",
     "source": "Ενεργές προσφορές / Κεντρική σελίδα",
     "question": "Ποιες προσφορές εμφανίζονται στη σελίδα;",
-    "answer": "Στη σελίδα εμφανίζονται προσφορές για κινητή τηλεφωνία Vodafone CU και NOVA Q, σταθερή και internet Vodafone, Nova 5G Home Internet, EON + Cosmote TV, καθώς και παροχές υγείας/περίθαλψης. Για κάθε προσφορά πατάτε την αντίστοιχη κάρτα ή κουμπί προβολής για να δείτε λεπτομέρειες και δικαιολογητικά.",
+    "answer": "Στη σελίδα εμφανίζονται προσφορές για κινητή τηλεφωνία Vodafone CU και NOVA Q, σταθερή και internet Vodafone, Nova 5G Home Internet και EON + Cosmote TV. Για κάθε προσφορά πατάτε την αντίστοιχη κάρτα ή κουμπί προβολής για να δείτε λεπτομέρειες και δικαιολογητικά.",
     "keywords": [
       "προσφορές",
       "προσφορες",
@@ -36,11 +42,20 @@
       "poies prosfores yparxoun",
       "τι προσφορές έχει",
       "ti prosfores exei",
+      "τι προσφορές έχει η σελίδα",
+      "τι προσφορες εχει η selida",
+      "pws exei prosfores sto site",
+      "pws exei prosfores",
+      "offer list",
+      "offers",
+      "ποιες επιλογές υπάρχουν",
+      "poies epiloges yparxoun",
+      "προσφορές στο site",
+      "prosfores sto site",
       "κινητή",
       "σταθερή",
       "internet",
-      "τηλεόραση",
-      "υγεία"
+      "τηλεόραση"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -49,11 +64,13 @@
     "category": "Προσφορές",
     "source": "Κάρτες προσφορών",
     "question": "Πόσο κάνουν οι προσφορές που φαίνονται στη σελίδα;",
-    "answer": "Στη σελίδα φαίνονται ενδεικτικά: κινητή Vodafone CU/NOVA Q με 100€ για 12 μήνες, Vodafone σταθερή/internet από 16,00€/μήνα, Nova 5G Home Internet 17,90€/μήνα, EON + Cosmote TV Full Pack 20,90€/μήνα και παροχές υγείας με τιμές που εμφανίζονται στην ενότητα Υγεία. Για ακριβείς όρους επιλέξτε την αντίστοιχη προσφορά στη σελίδα.",
+    "answer": "Στη σελίδα φαίνονται ενδεικτικά: κινητή Vodafone CU/NOVA Q με 100€ για 12 μήνες, Vodafone σταθερή/internet από 16,00€/μήνα, Nova 5G Home Internet 17,90€/μήνα και EON + Cosmote TV Full Pack 20,90€/μήνα. Για ακριβείς όρους επιλέξτε την αντίστοιχη προσφορά στη σελίδα.",
     "keywords": [
       "πόσο κάνει η προσφορά",
       "ποσο κανει η προσφορα",
       "poso kanei i prosfora",
+      "πόσο έχουν οι προσφορές",
+      "poso exoun oi prosfores",
       "τιμή προσφοράς",
       "τιμη προσφορας",
       "timi prosforas",
@@ -62,7 +79,9 @@
       "κόστος",
       "kostos",
       "πάγιο",
-      "pagio"
+      "pagio",
+      "offer prices",
+      "price list"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -71,7 +90,7 @@
     "category": "Χρήση ιστοσελίδας",
     "source": "Μενού επιλογών / Κάρτες προσφορών",
     "question": "Πώς χρησιμοποιώ τη σελίδα για να δω μια προσφορά;",
-    "answer": "Πατήστε την κάρτα της προσφοράς που σας ενδιαφέρει ή ανοίξτε το Μενού Επιλογών. Από εκεί επιλέγετε Κινητή Τηλεφωνία, Σταθερή & Internet, Nova & Cosmote TV ή Υγεία & Περίθαλψη. Στα παράθυρα λεπτομερειών εμφανίζονται τα βήματα, τα έντυπα, τα δικαιολογητικά και τα στοιχεία αποστολής.",
+    "answer": "Πατήστε την κάρτα της προσφοράς που σας ενδιαφέρει ή ανοίξτε το Μενού Επιλογών. Από εκεί επιλέγετε Κινητή Τηλεφωνία, Σταθερή & Internet ή Nova & Cosmote TV. Στα παράθυρα λεπτομερειών εμφανίζονται τα βήματα, τα έντυπα, τα δικαιολογητικά και τα στοιχεία αποστολής.",
     "keywords": [
       "πώς χρησιμοποιώ τη σελίδα",
       "πως χρησιμοποιω τη σελιδα",
@@ -83,6 +102,14 @@
       "να δω προσφορα",
       "προβολή προσφοράς",
       "provoli prosforas",
+      "πώς βλέπω τις προσφορές",
+      "pws vlepo tis prosfores",
+      "pws vlepo tis prosfores apo to menu",
+      "pws vlepo prosfores apo menu",
+      "πώς ανοίγω τις προσφορές",
+      "pws anoigo tis prosfores",
+      "πού βλέπω την προσφορά",
+      "apo pou vlepo ti prosfora",
       "μενού επιλογών",
       "menu",
       "prosfores",
@@ -108,7 +135,11 @@
       "ολοκληρώσω αίτηση",
       "olokliroso aitisi",
       "τι κάνω για αίτηση",
-      "ti kano gia aitisi"
+      "ti kano gia aitisi",
+      "πώς υποβάλλω αίτηση",
+      "pws ypovallo aitisi",
+      "βήματα αίτησης",
+      "vhmata aitisis"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -128,6 +159,12 @@
       "poioi einai oi tropoi epikoinonias",
       "τηλέφωνο επικοινωνίας",
       "tilefono epikoinonias",
+      "πώς επικοινωνώ",
+      "pws epikoinonw",
+      "πού σας βρίσκω",
+      "pou sas vrisko",
+      "email επικοινωνίας",
+      "tilefono grafiou",
       "email",
       "διεύθυνση",
       "διευθυνση",
@@ -150,6 +187,10 @@
       "πού είναι ο συνεταιρισμός",
       "που ειναι ο συνεταιρισμος",
       "pou einai o synetairismos",
+      "πού είναι",
+      "pou einai",
+      "πού βρίσκεται ακριβώς",
+      "pou vrisketai",
       "διεύθυνση",
       "διευθυνση",
       "diefthinsi",
@@ -158,6 +199,8 @@
       "χαρτης",
       "xartis",
       "google maps",
+      "google maps pin",
+      "pin location",
       "map",
       "Καρύστου 3"
     ],
@@ -195,6 +238,9 @@
       "cookies",
       "cookie",
       "gdpr",
+      "privacy policy",
+      "cookies policy",
+      "personal data",
       "τι στοιχεία κρατάτε",
       "ti stoixeia kratate"
     ],
@@ -217,7 +263,14 @@
       "xartia",
       "έγγραφα",
       "eggrafa",
-      "checklist"
+      "checklist",
+      "τι χαρτιά θέλει",
+      "τι χαρτια θελει",
+      "ti xartia thelei",
+      "χαρτιά για αίτηση",
+      "xartia gia aitisi",
+      "τι έγγραφα χρειάζονται",
+      "dikaiologitika gia aitisi"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -238,7 +291,16 @@
       "12 μήνες",
       "απεριόριστη ομιλία",
       "ατελείωτα data",
-      "δωρεάν sms"
+      "δωρεάν sms",
+      "προσφορά καρτοκινητής",
+      "prosfora kartokinitis",
+      "kartokiniti prosfora",
+      "vodafone cu nova q",
+      "100 euro gia 12 mines",
+      "vodafone cu prosfora",
+      "nova q prosfora",
+      "pws exei kartokiniti",
+      "kartokiniti offer"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -259,7 +321,14 @@
       "έγγραφα κινητής",
       "eggrafa kinitis",
       "Vodafone CU",
-      "NOVA Q"
+      "NOVA Q",
+      "τι χαρτιά θέλει για κινητό",
+      "ti xartia thelei gia kinito",
+      "χαρτιά για νέο αριθμό",
+      "xartia gia neo arithmo",
+      "δικαιολογητικά sim",
+      "dikaiologitika sim",
+      "δικαιολογητικά για κινητό"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -277,7 +346,15 @@
       "Vodafone CU έγγραφα",
       "Vodafone CU χαρτιά",
       "προσωπικά δεδομένα Vodafone",
-      "αίτημα ενεργοποίησης Vodafone"
+      "αίτημα ενεργοποίησης Vodafone",
+      "δικαιολογητικά για vodafone cu",
+      "dikaiologitika gia vodafone cu",
+      "χαρτιά vodafone cu",
+      "xartia vodafone cu",
+      "νέο αριθμό vodafone cu",
+      "neo arithmo vodafone cu",
+      "φορητότητα vodafone cu",
+      "foritotita vodafone cu"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -292,13 +369,25 @@
       "Vodafone σταθερο",
       "Vodafone internet",
       "σταθερή Vodafone",
+      "vodafone fixed",
       "FTTH",
       "ADSL",
       "FTTC",
       "16,00",
       "18,00",
       "300 Mbps",
-      "2 μήνες δωρεάν"
+      "2 μήνες δωρεάν",
+      "τι έχει για internet",
+      "ti exei gia internet",
+      "σταθερό internet vodafone",
+      "stathero internet",
+      "vodafone internet",
+      "16 euro to mina",
+      "vodafone 16 euro",
+      "vodafone 16,00",
+      "vodafone 18 euro",
+      "vodafone fiber",
+      "vodafone 300 mbps"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -319,7 +408,17 @@
       "exei prosfora gia internet",
       "προσφορά για σταθερό",
       "Vodafone",
-      "Nova"
+      "Nova",
+      "fixed internet",
+      "stathero internet prosfores",
+      "internet epiloges",
+      "pws exei stathero internet",
+      "πώς κάνω αίτηση για internet",
+      "pws kano aitisi gia internet",
+      "πώς κάνω αίτηση για σταθερό",
+      "pws kano aitisi gia stathero",
+      "internet application",
+      "αίτηση internet"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -338,7 +437,21 @@
       "σταθερή αίτηση",
       "σταθερη αιτηση",
       "βήματα για σταθερό",
-      "vhmata gia stathero"
+      "vhmata gia stathero",
+      "πώς υποβάλλω αίτηση για internet",
+      "pws ypovallo aitisi gia internet",
+      "pws ypovallo aitisi gia stathero internet",
+      "pws ypovallo aitisi gia stathero internet gov gr",
+      "pws ypovallo aitisi gia stathero internet kep",
+      "pws kano aitisi gia vodafone internet",
+      "pws kano aitisi gia nova internet",
+      "aitisi gia internet",
+      "application steps",
+      "gov gr",
+      "gov.gr",
+      "kep",
+      "ΚΕΠ",
+      "internet form"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -353,15 +466,23 @@
       "Nova σταθερο",
       "Nova internet",
       "5G Home",
+      "nova 5g home internet",
       "17,90",
+      "17.90",
       "100 Mbps",
       "δωρεάν τέλη",
       "μηδενικό κόστος έναρξης",
-      "nova 5g home internet",
       "5g home internet",
       "5g home internet+",
       "nova 5g home",
-      "100Mbps"
+      "100Mbps",
+      "nova 5g",
+      "5g home",
+      "nova home internet",
+      "nova 17,90",
+      "nova 17.90",
+      "nova 17,90 euro",
+      "nova offer"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -381,30 +502,18 @@
       "Full Pack",
       "2 πάγια δώρο",
       "αθλητικά",
-      "ταινίες"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "health-offer-current",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "Παροχές Υγείας",
-    "question": "Υπάρχει προσφορά υγείας στη σελίδα;",
-    "answer": "Ναι. Η σελίδα εμφανίζει παροχές υγείας/περίθαλψης, όπως ομαδικό συμβόλαιο Interamerican με νοσοκομειακή περίθαλψη 50.000€ ετησίως, παροχή βοήθειας 24ωρο με 20€/έτος για όλα τα μέλη της οικογένειας και κάρτα προνομίων υγείας. Στην ενότητα εμφανίζονται τιμές ανά κατηγορία ασφαλιζόμενου.",
-    "keywords": [
-      "υγεία",
-      "υγεια",
-      "igeia",
-      "περίθαλψη",
-      "perithalpsi",
-      "Interamerican",
-      "ασφάλιση υγείας",
-      "παροχές υγείας",
-      "νοσοκομειακή κάλυψη",
-      "50.000",
-      "32,18",
-      "36,64",
-      "37,40"
+      "ταινίες",
+      "eon tv",
+      "cosmote tv offer",
+      "tv offer",
+      "teleorasi prosfora",
+      "eon+",
+      "eon plus",
+      "eon cosmote tv",
+      "eon tv",
+      "cosmote tv full pack",
+      "full pack",
+      "tv package"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -625,7 +734,16 @@
       "ΔΕΗ",
       "eydap",
       "ΕΥΔΑΠ",
-      "λογαριασμός ΔΕΚΟ"
+      "λογαριασμός ΔΕΚΟ",
+      "eon dikaiologitika",
+      "eon xartia",
+      "dikaiologitika gia eon",
+      "eon tv dikaiologitika",
+      "dikaiologitika eon tv",
+      "eon tv xartia",
+      "eon τηλεόραση δικαιολογητικά",
+      "pou stelno dikaiologitika eon",
+      "eon gov gr"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -651,7 +769,11 @@
       "google maps pin location",
       "coordinates",
       "i dieuthinsi den exei arithmo",
-      "dieuthinsi den exei arithmo"
+      "dieuthinsi den exei arithmo",
+      "eon xwris arithmo",
+      "eon xwris odo",
+      "eon google maps pin",
+      "eon gps"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -671,7 +793,10 @@
       "eon entry",
       "eon plus",
       "adult pack",
-      "τιμές eon"
+      "τιμές eon",
+      "eon programata",
+      "programata eon",
+      "eon packages"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -690,7 +815,14 @@
       "τιμή",
       "eon plus timi",
       "2 pagia doro",
-      "2 πάγια δώρο"
+      "2 πάγια δώρο",
+      "eon 20,90",
+      "eon 20.90",
+      "eon plus 20,90",
+      "20,90 euro",
+      "poso exei eon+",
+      "eon plus 20.90",
+      "eon plus price"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -713,7 +845,12 @@
       "τιμές eon",
       "times eon",
       "eon price list",
-      "eon prices"
+      "eon prices",
+      "eon list prices",
+      "eon entry 18,18",
+      "eon plus 54,55",
+      "eon τιμές",
+      "τιμοκατάλογος eon"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -730,7 +867,13 @@
       "EON",
       "24 mines",
       "diarkeia",
-      "symvolaio"
+      "symvolaio",
+      "24 months",
+      "24 month contract",
+      "contract duration",
+      "eon 24 months",
+      "2 years",
+      "2 year contract"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -752,7 +895,12 @@
       "140",
       "telos diakopis",
       "ritra",
-      "cancellation"
+      "cancellation",
+      "cancellation fee",
+      "termination fee",
+      "telos diakopis eon",
+      "eon cancellation fee",
+      "eon termination fee"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -771,7 +919,13 @@
       "smart box",
       "smartbox",
       "doriforikos",
-      "equipment"
+      "equipment",
+      "eon smart box",
+      "set top box",
+      "satellite equipment",
+      "eon set top box",
+      "eon satellite",
+      "eon equipment"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -787,7 +941,14 @@
       "διεύθυνση",
       "email",
       "sms",
-      "έντυπος"
+      "έντυπος",
+      "billing address",
+      "bill address",
+      "where bill goes",
+      "pou paei o logariasmos",
+      "pou paei o logariasmos eon",
+      "eon billing address",
+      "eon logariasmos"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -806,7 +967,12 @@
       "κανάλια",
       "adult pack",
       "18+",
-      "enilikon"
+      "enilikon",
+      "adult",
+      "adults",
+      "eon adult pack",
+      "adult pack eon",
+      "18+ eon"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -823,6 +989,10 @@
       "νεο νουμερο",
       "thelo neo arithmo",
       "thelo neo noumero",
+      "new number",
+      "neo noumero",
+      "πώς κάνω νέο αριθμό",
+      "pws kano neo arithmo",
       "δικαιολογητικά",
       "δικαιολογητικα",
       "καρτοκινητή",
@@ -834,7 +1004,10 @@
       "neo noumero vodafone cu",
       "neo arithmo nova q",
       "vodafone cu",
-      "nova q"
+      "nova q",
+      "νέο νούμερο vodafone cu",
+      "νέο νούμερο nova q",
+      "neo noumero nova q"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -852,6 +1025,8 @@
       "θέλω να κρατήσω τον αριθμό μου",
       "θελω να κρατησω τον αριθμο μου",
       "thelo na kratiso ton arithmo mou",
+      "πώς κρατάω τον αριθμό μου",
+      "pws kratao ton arithmo mou",
       "δικαιολογητικά",
       "δικαιολογητικα",
       "καρτοκινητή",
@@ -862,7 +1037,10 @@
       "foritotita nova q",
       "metafora arithmou",
       "kratao ton arithmo mou",
-      "retain my number"
+      "retain my number",
+      "φορητότητα αριθμού",
+      "foritotita arithmou",
+      "portability"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -883,9 +1061,16 @@
       "pote vazo tin sim",
       "pote allazo tin sim",
       "pote allazo sim",
+      "πότε βάζω sim",
+      "pote vazw sim",
+      "πότε αλλάζω sim",
+      "pote allazw sim",
       "klisi 1252",
       "klisi 12200",
-      "restart"
+      "restart",
+      "sim activation",
+      "πότε είναι έτοιμη η sim",
+      "pote einai etoimi i sim"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -915,7 +1100,10 @@
       "katathesi 100",
       "pireos",
       "eurobank",
-      "iban katathesis"
+      "iban katathesis",
+      "100 euro katathesi",
+      "πού κάνω την κατάθεση",
+      "pou einai to iban"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -1075,8 +1263,13 @@
       "επανεκκίνηση",
       "pote vazo tin sim nova",
       "pote vazo tin sim nova q",
+      "πότε βάζω sim nova q",
+      "pote vazw sim nova q",
+      "πότε αλλάζω sim nova q",
+      "pote allazw sim nova q",
       "klisi 12200",
-      "nova q sim"
+      "nova q sim",
+      "sim activation"
     ],
     "updatedAt": "2026-06-01"
   },
@@ -1094,6 +1287,10 @@
       "synetelas2011",
       "pou stelno ta dikaiologitika",
       "pou stelno ta eggrafa",
+      "πού στέλνω τα έγγραφα",
+      "pou stelno eggrafa",
+      "που στελνω δικαιολογητικα",
+      "email για δικαιολογητικά",
       "synetelas2025",
       "synetelas2025@gmail.com",
       "stelno dikaiologitika",
@@ -1120,8 +1317,13 @@
       "pote vazo tin sim",
       "pote allazo sim",
       "pote allazo tin sim",
+      "πότε αλλάζω SIM",
+      "pote allazw sim",
+      "πότε μπαίνει η νέα sim",
+      "pote mpainei i nea sim",
       "otan kopsei to sima",
       "foritotita",
+      "sim change",
       "restart"
     ],
     "updatedAt": "2026-06-01"
@@ -1157,359 +1359,6 @@
     "updatedAt": "2026-06-01"
   },
   {
-    "id": "insurance-health-overview",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι καλύπτει η ασφάλιση υγείας;",
-    "answer": "Η ομαδική ασφάλιση Interamerican περιλαμβάνει ενδεικτικά ασφάλεια ζωής 5.000€, νοσοκομειακή περίθαλψη έως 50.000€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο, απαλλασσόμενο ποσό 500€, θέση νοσηλείας Γ’ εντός Ελλάδας, εξωνοσοκομειακές παροχές σε συγκεκριμένα δίκτυα και τηλεφωνικές γραμμές υγείας. Για ερμηνεία όρων ισχύει πάντα το ασφαλιστήριο συμβόλαιο.",
-    "keywords": [
-      "ασφάλιση υγείας",
-      "ασφαλιση υγειας",
-      "καλύπτει",
-      "καλυπτει",
-      "παροχές",
-      "παροχες",
-      "νοσοκομειακή",
-      "νοσοκομειακη",
-      "Interamerican"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-general-not-contract",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Το ενημερωτικό έντυπο της ασφάλισης αντικαθιστά το συμβόλαιο;",
-    "answer": "Όχι. Το έντυπο είναι ενημερωτικό και δεν υποκαθιστά το ασφαλιστήριο συμβόλαιο. Για την ερμηνεία οποιουδήποτε ασφαλιστικού θέματος, ισχύει το συμβόλαιο που έχει υπογραφεί με την INTERAMERICAN.",
-    "keywords": [
-      "ασφάλιση",
-      "Interamerican",
-      "ενημερωτικό",
-      "συμβόλαιο",
-      "όροι"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-life",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Ποιο είναι το ποσό ασφάλειας ζωής;",
-    "answer": "Στον πίνακα παροχών αναφέρεται ασφάλεια ζωής με ασφαλιζόμενο ποσό 5.000€.",
-    "keywords": [
-      "ασφάλεια ζωής",
-      "ζωής",
-      "5000",
-      "Interamerican",
-      "ομαδική ασφάλιση"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-hospital-limit",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Ποιο είναι το όριο νοσοκομειακής περίθαλψης;",
-    "answer": "Το ανώτατο ποσό αναγνωριζόμενων και καταβαλλόμενων εξόδων για νοσοκομειακή περίθαλψη ορίζεται σε 50.000€ για κάθε ασφαλιστικό έτος και για κάθε ασφαλιζόμενο.",
-    "keywords": [
-      "νοσοκομειακή",
-      "κάλυψη",
-      "50000",
-      "50.000",
-      "όριο",
-      "Interamerican"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-deductible",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Υπάρχει απαλλασσόμενο ποσό στη νοσοκομειακή περίθαλψη;",
-    "answer": "Ναι. Από το σύνολο των αναγνωριζόμενων εξόδων εντός νοσοκομείου αφαιρούνται για κάθε ασφαλιστικό έτος και για κάθε ασφαλιζόμενο τα πρώτα 500€.",
-    "keywords": [
-      "απαλλαγή",
-      "απαλλασσόμενο",
-      "500",
-      "νοσοκομείο",
-      "Interamerican"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-room",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι θέση νοσηλείας καλύπτεται;",
-    "answer": "Εντός Ελλάδας καλύπτεται θέση νοσηλείας Γ’ δηλαδή τρίκλινο. Για κάλυψη εκτός Ελλάδας ή σε Μονάδα Εντατικής Παρακολούθησης αναφέρεται ανώτατο ημερήσιο ποσό 600€.",
-    "keywords": [
-      "θέση νοσηλείας",
-      "δωμάτιο",
-      "τρίκλινο",
-      "Γ θέση",
-      "νοσοκομείο"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-attica-athinaiki",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι κάλυψη υπάρχει στην Αθηναϊκή Κλινική;",
-    "answer": "Σε περίπτωση νοσηλείας στην Αθηναϊκή Κλινική, η εταιρία καταβάλλει με απευθείας κάλυψη αποζημίωση ίση με το 100% των αναγνωριζόμενων εξόδων, σύμφωνα με τους όρους του προγράμματος.",
-    "keywords": [
-      "Αθηναϊκή Κλινική",
-      "Athinaiki",
-      "Mediclinic",
-      "100%",
-      "νοσηλεία",
-      "Αττική"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-special-network",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι κάλυψη υπάρχει στα ειδικά συμβεβλημένα νοσοκομεία Αττικής;",
-    "answer": "Στα ειδικά συμβεβλημένα νοσηλευτικά ιδρύματα Αθήνας, χωρίς συμμετοχή άλλου φορέα ασφάλισης η κάλυψη είναι 85%. Αν άλλος φορέας καλύψει το 15% των συνολικών εξόδων, η εταιρία καλύπτει το 100% της διαφοράς. Αν δεν έχει καλυφθεί το 15%, καλύπτει το 85% της διαφοράς.",
-    "keywords": [
-      "ειδικά συμβεβλημένα",
-      "νοσοκομεία",
-      "85%",
-      "100% διαφοράς",
-      "ΕΟΠΥΥ",
-      "Αττική"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-outside-attica",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι ισχύει για νοσηλεία εκτός Αττικής ή εκτός Ελλάδας;",
-    "answer": "Για νοσηλεία εκτός Αττικής και για νοσηλεία εκτός Ελλάδας, η κάλυψη αναφέρεται ως 85% χωρίς συμμετοχή άλλου φορέα. Με συμμετοχή άλλου φορέα που καλύπτει το 15% των εξόδων, καλύπτεται το 100% της διαφοράς. Αν δεν έχει καλυφθεί το 15%, καλύπτεται το 85% της διαφοράς.",
-    "keywords": [
-      "εκτός Αττικής",
-      "εκτός Ελλάδας",
-      "νοσηλεία",
-      "85%",
-      "100% διαφοράς"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-outpatient-athinaiki-medifirst",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι καλύπτεται εξωνοσοκομειακά σε Αθηναϊκή Κλινική και Medifirst;",
-    "answer": "Για εργαστηριακές διαγνωστικές εξετάσεις και ιατρικές πράξεις, κατόπιν έγγραφης γνωμάτευσης, αναφέρεται όριο 1.500€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο. Οι ιατρικές επισκέψεις είναι χωρίς όριο, με συμμετοχή ασφαλισμένου 10€ ανά επίσκεψη. Για διαγνωστικές εξετάσεις και ιατρικές πράξεις η αποζημίωση αναφέρεται στο 85%.",
-    "keywords": [
-      "εξωνοσοκομειακή",
-      "Medifirst",
-      "Αθηναϊκή Κλινική",
-      "διαγνωστικές",
-      "ιατρικές επισκέψεις",
-      "1500",
-      "10 ευρώ"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-euroclinic-children",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι καλύπτεται στην Ευρωκλινική Παίδων;",
-    "answer": "Στην Ευρωκλινική Παίδων, για εργαστηριακές διαγνωστικές εξετάσεις και ιατρικές πράξεις κατόπιν γνωμάτευσης, αναφέρεται όριο 400€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο. Οι ιατρικές επισκέψεις είναι χωρίς όριο, με συμμετοχή 10€ ανά επίσκεψη. Για εξετάσεις και ιατρικές πράξεις η αποζημίωση αναφέρεται στο 85%.",
-    "keywords": [
-      "Ευρωκλινική Παίδων",
-      "παιδιά",
-      "400",
-      "10 ευρώ",
-      "εξετάσεις",
-      "επισκέψεις"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-affidea-outside-attica",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι καλύπτεται στο δίκτυο Affidea;",
-    "answer": "Η κάλυψη μέσω Affidea ισχύει αποκλειστικά εκτός Αττικής. Για εργαστηριακές διαγνωστικές εξετάσεις κατόπιν γνωμάτευσης αναφέρεται όριο 1.500€ ανά ασφαλιστικό έτος και ανά ασφαλιζόμενο. Οι ιατρικές επισκέψεις είναι χωρίς όριο, με συμμετοχή 10€ ανά επίσκεψη. Για διαγνωστικές εξετάσεις η αποζημίωση αναφέρεται στο 85%.",
-    "keywords": [
-      "Affidea",
-      "εκτός Αττικής",
-      "διαγνωστικές",
-      "1500",
-      "85%",
-      "10 ευρώ"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-maternity",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Υπάρχει παροχή μητρότητας;",
-    "answer": "Ναι. Αναφέρεται επίδομα 650€ για φυσιολογικό τοκετό, 650€ για καισαρική τομή και 200€ για αποβολή, εφόσον το περιστατικό συμβεί μετά την πάροδο των πρώτων 10 μηνών από την ημερομηνία ασφάλισης της καλυπτόμενης γυναίκας.",
-    "keywords": [
-      "μητρότητα",
-      "τοκετός",
-      "καισαρική",
-      "αποβολή",
-      "650",
-      "200",
-      "10 μήνες"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-daily-benefit",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Υπάρχει ημερήσιο νοσοκομειακό επίδομα;",
-    "answer": "Ναι. Σε περίπτωση νοσηλείας σε οποιοδήποτε νοσοκομείο εντός Ελλάδας, εφόσον ο ασφαλιζόμενος δεν αποζημιωθεί βάσει εξόδων για την ίδια νοσηλεία, αναφέρεται ημερήσιο επίδομα 60€ με ανώτατο αριθμό 90 ημερών.",
-    "keywords": [
-      "ημερήσιο νοσοκομειακό επίδομα",
-      "60",
-      "90 ημέρες",
-      "νοσηλεία",
-      "ατύχημα",
-      "ασθένεια"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-network-documents",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι πρέπει να έχω μαζί μου για χρήση των προνομίων υγείας;",
-    "answer": "Κατά την προσέλευση σε συμβεβλημένο νοσηλευτικό ίδρυμα ή διαγνωστικό κέντρο, πρέπει να έχετε μαζί σας την αστυνομική ταυτότητα και να αναφέρετε ότι έχετε ομαδικό ασφαλιστήριο INTERAMERICAN, τον αριθμό του και την επωνυμία της εταιρίας σας.",
-    "keywords": [
-      "αστυνομική ταυτότητα",
-      "ομαδικό ασφαλιστήριο",
-      "νοσοκομείο",
-      "διαγνωστικό",
-      "Interamerican"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "insurance-hospital-network",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Ποια νοσοκομεία αναφέρονται στο ειδικό δίκτυο της Interamerican;",
-    "answer": "Στο ειδικό δίκτυο νοσηλευτικών ιδρυμάτων αναφέρονται ενδεικτικά: Αθηναϊκή Mediclinic, Ιατρικό Κέντρο Αθηνών, Ευρωκλινική Αθηνών, Ιατρικό Περιστερίου, Ευρωκλινική Παίδων, Παιδιατρικό Κέντρο Αθηνών και Mediterraneo Hospital.",
-    "keywords": [
-      "νοσοκομεία",
-      "συμβεβλημένα",
-      "Αθηναϊκή Mediclinic",
-      "Ιατρικό",
-      "Ευρωκλινική",
-      "Mediterraneo",
-      "Παίδων"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "health-line-1010",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι είναι η τηλεφωνική γραμμή υγείας 1010;",
-    "answer": "Η γραμμή υγείας 1010 λειτουργεί μέσω του Συντονιστικού Κέντρου Άμεσης Ιατρικής Βοήθειας, στην Ελλάδα, όλο το 24ωρο, 365 ημέρες τον χρόνο και χωρίς περιορισμό κλήσεων. Παρέχει ιατρικές συμβουλές, πληροφορίες για εφημερεύοντα νοσοκομεία και φαρμακεία, καθώς και πληροφορίες για πρόσβαση σε δημόσιες και ιδιωτικές υπηρεσίες υγείας.",
-    "keywords": [
-      "1010",
-      "γραμμή υγείας",
-      "ιατρικές συμβουλές",
-      "εφημερεύοντα",
-      "φαρμακεία",
-      "24ωρο"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "health-line-affidea",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι είναι η γραμμή υγείας Affidea 2160000013;",
-    "answer": "Η τηλεφωνική γραμμή υγείας AFFIDEA 216-0000013 λειτουργεί όλο το 24ωρο, 365 ημέρες τον χρόνο και παρέχει ιατρικές συμβουλές για απρόβλεπτα περιστατικά υγείας, πληροφορίες για εφημερεύοντα νοσοκομεία και φαρμακεία, καθώς και πληροφορίες για διαγνωστικά κέντρα και γιατρούς του δικτύου.",
-    "keywords": [
-      "Affidea",
-      "2160000013",
-      "γραμμή υγείας",
-      "διαγνωστικά",
-      "γιατροί",
-      "24ωρο"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "medical-assistance-services",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Τι υπηρεσίες δίνει η Άμεση Ιατρική Βοήθεια;",
-    "answer": "Η Άμεση Ιατρική Βοήθεια παρέχει ιατρικές συμβουλές και οδηγίες, καθώς και συντονισμό υγειονομικής μεταφοράς με κατάλληλο μέσο, όπως ασθενοφόρο, ελικόπτερο ή αεροπλάνο, προς την πλησιέστερη ενδεδειγμένη νοσηλευτική μονάδα, όπου αυτό προβλέπεται από το πρόγραμμα.",
-    "keywords": [
-      "άμεση ιατρική βοήθεια",
-      "ασθενοφόρο",
-      "ελικόπτερο",
-      "υγειονομική μεταφορά",
-      "1010"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "medical-assistance-phones",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Πώς καλώ την Άμεση Ιατρική Βοήθεια INTERAMERICAN;",
-    "answer": "Για Άμεση Ιατρική Βοήθεια INTERAMERICAN καλείτε στο 1010 από οποιοδήποτε σταθερό ή κινητό τηλέφωνο στην Ελλάδα. Από το εξωτερικό αναφέρεται το +30 210 946 1999. Σε περίπτωση βλάβης σταθερού τηλεφώνου αναφέρεται το +30 6932 237000.",
-    "keywords": [
-      "1010",
-      "2109461999",
-      "6932237000",
-      "τηλέφωνο",
-      "βλάβη σταθερού",
-      "εξωτερικό"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "anytime-discount",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Υπάρχει έκπτωση στην Anytime;",
-    "answer": "Ναι. Αναφέρεται επιπλέον 5% έκπτωση στο ήδη προνομιακό τιμολόγιο της Anytime - INTERAMERICAN για ασφάλιση οχημάτων, δικύκλων και κατοικίας, με χρήση του εκπτωτικού κωδικού 1001065000000018 στην πλατφόρμα anytime.gr.",
-    "keywords": [
-      "Anytime",
-      "έκπτωση",
-      "5%",
-      "κωδικός",
-      "1001065000000018",
-      "όχημα",
-      "δίκυκλο",
-      "κατοικία"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
-    "id": "anytime-who-benefits",
-    "category": "Υγεία / Περίθαλψη",
-    "source": "FAQ / Legacy knowledge",
-    "question": "Ποιοι μπορούν να χρησιμοποιήσουν την έκπτωση Anytime;",
-    "answer": "Στο έντυπο αναφέρεται ότι η εκπτωτική προσφορά ισχύει για αστυνομικούς και στελέχη της Ελληνικής Αστυνομίας και Σωμάτων Ασφαλείας, καθώς και για συνταξιούχους και συγγενείς.",
-    "keywords": [
-      "Anytime",
-      "συνταξιούχοι",
-      "συγγενείς",
-      "αστυνομικοί",
-      "δικαιούχοι",
-      "έκπτωση"
-    ],
-    "updatedAt": "2026-06-01"
-  },
-  {
     "id": "coop-contact",
     "category": "Επικοινωνία",
     "source": "FAQ / Legacy knowledge",
@@ -1527,7 +1376,13 @@
       "διεύθυνση",
       "Καρύστου",
       "6936799908",
-      "synetelas2011"
+      "synetelas2011",
+      "πώς επικοινωνώ",
+      "pws epikoinonw",
+      "τηλέφωνο γραφείου",
+      "tilefono grafiou",
+      "email επικοινωνίας",
+      "viber community"
     ],
     "updatedAt": "2026-06-01"
   },

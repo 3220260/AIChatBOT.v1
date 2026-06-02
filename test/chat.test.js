@@ -82,6 +82,16 @@ async function assertDirectFaq(message, pattern) {
   assert.match(response.body.reply, pattern);
 }
 
+async function assertDirectFaqId(message, expectedFaqId, pattern) {
+  const response = await postChat(message, { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.matchedFaqId, expectedFaqId);
+  assert.match(response.body.reply, pattern);
+}
+
 test("production chat response hides internal debug fields", async () => {
   const response = await postChat("Ποιο είναι το email επικοινωνίας για Vodafone CU;");
 
@@ -252,8 +262,65 @@ test("IBAN answers payment FAQ", async () => {
   await assertDirectFaq("ποιο είναι το IBAN για κατάθεση;", /GR5801720500005050099524664/);
 });
 
-test("υγεία answers from health section instead of scope block", async () => {
-  await assertDirectFaq("υγεία και περίθαλψη", /Interamerican|νοσοκομειακή περίθαλψη|παροχές υγείας/);
+test("Greeklish site offers query routes to the offer overview FAQ", async () => {
+  await assertDirectFaqId("pws exei prosfores sto site", "site-offers-overview", /Vodafone CU.*NOVA Q|NOVA Q.*Vodafone CU/);
+});
+
+test("Greeklish Vodafone fixed offer query routes to the Vodafone offer FAQ", async () => {
+  await assertDirectFaqId("vodafone 16 euro", "vodafone-fixed-offer-current", /16,00€/);
+});
+
+test("Greeklish Nova fixed offer query routes to the Nova offer FAQ", async () => {
+  await assertDirectFaqId("nova 17,90", "nova-fixed-offer-current", /17,90€/);
+});
+
+test("Greeklish EON price query routes to the EON price FAQ", async () => {
+  await assertDirectFaqId("eon 20,90", "eon-price-offer", /20,90€/);
+});
+
+test("Greeklish TV pack query routes to the EON full pack FAQ", async () => {
+  await assertDirectFaqId("cosmote tv full pack", "eon-cosmote-tv-offer-current", /Full Pack|20,90€/);
+});
+
+test("Greeklish fixed internet query routes to the internet offers FAQ", async () => {
+  await assertDirectFaqId("pws exei stathero internet", "fixed-internet-offers-overview", /Vodafone.*Nova|Nova.*Vodafone/);
+});
+
+test("Greeklish short site-use query routes to the page guide FAQ", async () => {
+  await assertDirectFaqId("pws vlepo tis prosfores apo to menu", "site-use-page", /Μενού Επιλογών/);
+});
+
+test("Greeklish internet application query routes to the steps FAQ", async () => {
+  await assertDirectFaqId("pws ypovallo aitisi gia stathero internet gov gr", "fixed-internet-application-steps", /gov\.gr|ΚΕΠ/);
+});
+
+test("Greeklish new number query routes to the generic mobile FAQ", async () => {
+  await assertDirectFaqId("neo noumero", "mobile-new-number-documents-generic", /κατάθεση 100€/);
+});
+
+test("Greeklish portability query routes to the generic portability FAQ", async () => {
+  await assertDirectFaqId("pws kratao ton arithmo mou", "mobile-portability-documents-generic", /έντυπο φορητότητας/);
+});
+
+test("Greeklish SIM change query routes to the generic SIM activation FAQ", async () => {
+  await assertDirectFaqId("pote mpainei i nea sim", "mobile-when-to-change-sim", /κλήση ενεργοποίησης/);
+});
+
+test("Greeklish Nova Q SIM query routes to the Nova activation FAQ", async () => {
+  await assertDirectFaqId("pote vazw sim nova q", "nova-activation", /12200/);
+});
+
+test("email attachment query routes to the send-email FAQ", async () => {
+  await assertDirectFaqId("pou stelno eggrafa", "mobile-submit-email", /synetelas2025@gmail\.com/);
+});
+
+test("υγεία is treated as off-topic after cleanup", async () => {
+  const response = await postChat("υγεία και περίθαλψη", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.source, "local_off_topic_playful");
+  assert.doesNotMatch(response.body.reply, /Interamerican|νοσοκομειακή|παροχές υγείας|υγεία|περίθαλψη/i);
 });
 
 test("cookies answers privacy FAQ", async () => {
@@ -296,13 +363,13 @@ test("website-related question without exact FAQ uses Gemini fallback", async ()
   assert.equal(response.body.contextSource, "faq_chunks");
 });
 
-test("website-related question with no relevant FAQ uses general site context", async () => {
+test("website-related question with no relevant FAQ now keeps FAQ chunks context", async () => {
   const response = await postChat("pos kano kati sto site", { debug: true });
 
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "general_site_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
 });
 
 test("confused offer navigation gets helpful site-use answer", async () => {
@@ -504,7 +571,47 @@ test("IBAN κατάθεσης", async () => {
 });
 
 test("EON TV", async () => {
-  await assertDirectFaq("eon cosmote tv", /20,90€\/μήνα|EON \+ Cosmote TV Full Pack/);
+  await assertDirectFaq("eon cosmote tv", /20,90€\/μήνα|EON \+ Cosmote TV Full Pack|Full Pack/);
+});
+
+test("EON documents question routes to the documents FAQ", async () => {
+  await assertDirectFaqId("eon tv dikaiologitika", "eon-documents-required", /GOV|ΔΕΚΟ/);
+});
+
+test("EON missing-address question routes to the no-street FAQ", async () => {
+  await assertDirectFaqId("eon xwris arithmo", "eon-address-no-street", /GPS|Google Maps|pin/);
+});
+
+test("EON programs question routes to the programs FAQ", async () => {
+  await assertDirectFaqId("eon programata", "eon-programs", /EON Entry|EON\+|Adult Pack/);
+});
+
+test("EON price question routes to the EON+ offer FAQ", async () => {
+  await assertDirectFaqId("eon plus 20.90", "eon-price-offer", /20,90€/);
+});
+
+test("EON price list question routes to the EON list FAQ", async () => {
+  await assertDirectFaqId("eon price list", "eon-list-prices", /18,18€|27,27€|54,55€/);
+});
+
+test("EON contract question routes to the duration FAQ", async () => {
+  await assertDirectFaqId("eon 24 months", "eon-contract-duration", /24 μήνες/);
+});
+
+test("EON cancellation question routes to the fee FAQ", async () => {
+  await assertDirectFaqId("eon cancellation fee", "eon-cancellation-fees", /60€|80€|140€/);
+});
+
+test("EON equipment question routes to the equipment FAQ", async () => {
+  await assertDirectFaqId("eon smart box", "eon-equipment", /Smart Box|δορυφορικός/);
+});
+
+test("EON billing address question routes to the bill address FAQ", async () => {
+  await assertDirectFaqId("pou paei o logariasmos eon", "eon-bill-address", /διεύθυνση αποστολής λογαριασμού|email|sms/);
+});
+
+test("EON adult pack question routes to the adult pack FAQ", async () => {
+  await assertDirectFaqId("eon adult pack", "eon-adult-pack", /18ο έτος|Adult Pack/);
 });
 
 test("διεύθυνση χωρίς αριθμό", async () => {
