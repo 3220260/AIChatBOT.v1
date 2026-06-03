@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import test, { mock } from "node:test";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { UNKNOWN_REPLY } from "../lib/prompt.js";
 
 function createResponse() {
   return {
@@ -22,13 +24,20 @@ function createResponse() {
   };
 }
 
-async function loadHandler({ debug = false } = {}) {
+async function loadHandler({ debug = false, geminiApiKey } = {}) {
   const previousDebug = process.env.DEBUG;
+  const previousGeminiApiKey = process.env.GEMINI_API_KEY;
 
   if (debug) {
     process.env.DEBUG = "true";
   } else {
     process.env.DEBUG = "false";
+  }
+
+  if (geminiApiKey) {
+    process.env.GEMINI_API_KEY = geminiApiKey;
+  } else {
+    delete process.env.GEMINI_API_KEY;
   }
 
   const moduleUrl = new URL(`../api/chat.js?debug=${debug}&t=${Date.now()}-${Math.random()}`, import.meta.url);
@@ -40,11 +49,49 @@ async function loadHandler({ debug = false } = {}) {
     process.env.DEBUG = previousDebug;
   }
 
+  if (previousGeminiApiKey === undefined) {
+    delete process.env.GEMINI_API_KEY;
+  } else {
+    process.env.GEMINI_API_KEY = previousGeminiApiKey;
+  }
+
   return mod.default;
 }
 
+function createGeminiStub(replyText = UNKNOWN_REPLY) {
+  const generateContent = mock.fn(async (request) => {
+    return {
+      response: {
+        text: () => replyText,
+        usageMetadata: {
+          promptTokenCount: 0,
+          candidatesTokenCount: 0,
+          thoughtsTokenCount: 0,
+          totalTokenCount: 0
+        }
+      },
+      request
+    };
+  });
+
+  const getGenerativeModel = mock.method(
+    GoogleGenerativeAI.prototype,
+    "getGenerativeModel",
+    () => ({
+      generateContent
+    })
+  );
+
+  return {
+    generateContent,
+    restore() {
+      getGenerativeModel.mock.restore();
+    }
+  };
+}
+
 async function postChat(message, options = {}) {
-  const handler = await loadHandler({ debug: options.debug });
+  const handler = await loadHandler({ debug: options.debug, geminiApiKey: options.geminiApiKey });
   return postChatWithHandler(handler, message, options);
 }
 
@@ -80,6 +127,25 @@ async function assertDirectFaq(message, pattern) {
   assert.equal(response.body.source, "direct_faq");
   assert.equal(response.body.usedGemini, false);
   assert.match(response.body.reply, pattern);
+}
+
+async function assertDirectFaqId(message, expectedFaqId, pattern) {
+  const response = await postChat(message, { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.matchedFaqId, expectedFaqId);
+  assert.match(response.body.reply, pattern);
+}
+
+async function assertUnknownReply(message) {
+  const response = await postChat(message, { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.source, "local_unknown_reply");
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 }
 
 test("production chat response hides internal debug fields", async () => {
@@ -134,7 +200,7 @@ test("short contextual price question (Greek) routes to Gemini with offer KB con
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
   assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
@@ -154,7 +220,7 @@ test("poso kostizei with Vodafone CU context avoids documents FAQ and routes to 
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
   assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
@@ -175,7 +241,7 @@ test("short contextual NOVA Q price question routes to Gemini with offer KB cont
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
   assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
@@ -195,7 +261,7 @@ test("contextual Vodafone CU documents question routes via Gemini and keeps docu
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(
     response.body.matchedFaqIds.includes("vodafone-cu-documents-overview")
@@ -245,15 +311,192 @@ test("νέος αριθμός answers from FAQ", async () => {
 });
 
 test("πού στέλνω έγγραφα answers email FAQ", async () => {
-  await assertDirectFaq("πού στέλνω έγγραφα", /synetelas2025@gmail\.com/);
+  await assertDirectFaq("πού στέλνω έγγραφα", /synetelas2011@gmail\.com/);
 });
 
 test("IBAN answers payment FAQ", async () => {
   await assertDirectFaq("ποιο είναι το IBAN για κατάθεση;", /GR5801720500005050099524664/);
 });
 
-test("υγεία answers from health section instead of scope block", async () => {
-  await assertDirectFaq("υγεία και περίθαλψη", /Interamerican|νοσοκομειακή περίθαλψη|παροχές υγείας/);
+test("Greeklish site offers query routes to the offer overview FAQ", async () => {
+  await assertDirectFaqId("pws exei prosfores sto site", "site-offers-overview", /Vodafone CU.*NOVA Q|NOVA Q.*Vodafone CU/);
+});
+
+test("Greeklish Vodafone fixed offer query routes to the Vodafone offer FAQ", async () => {
+  await assertDirectFaqId("vodafone 16 euro", "vodafone-fixed-offer-current", /16,00€/);
+});
+
+test("Greeklish Nova fixed offer query routes to the Nova offer FAQ", async () => {
+  await assertDirectFaqId("nova 17,90", "nova-fixed-offer-current", /17,90€/);
+});
+
+test("Greeklish EON price query routes to the EON price FAQ", async () => {
+  await assertDirectFaqId("eon 20,90", "eon-price-offer", /20,90€/);
+});
+
+test("Greeklish TV pack query routes to the EON full pack FAQ", async () => {
+  await assertDirectFaqId("cosmote tv full pack", "eon-cosmote-tv-offer-current", /Full Pack|20,90€/);
+});
+
+test("Greeklish fixed internet query routes to the internet offers FAQ", async () => {
+  await assertDirectFaqId("pws exei stathero internet", "fixed-internet-offers-overview", /Vodafone.*Nova|Nova.*Vodafone/);
+});
+
+test("Greeklish short site-use query routes to the page guide FAQ", async () => {
+  await assertDirectFaqId("pws vlepo tis prosfores apo to menu", "site-use-page", /Μενού Επιλογών/);
+});
+
+test("Greeklish internet application query routes to the steps FAQ", async () => {
+  await assertDirectFaqId("pws ypovallo aitisi gia stathero internet gov gr", "fixed-internet-application-steps", /gov\.gr|ΚΕΠ/);
+});
+
+test("Greeklish new number query routes to the generic mobile FAQ", async () => {
+  await assertDirectFaqId("neo noumero", "mobile-new-number-documents-generic", /κατάθεση 100€/);
+});
+
+test("Greeklish portability query routes to the generic portability FAQ", async () => {
+  await assertDirectFaqId("pws kratao ton arithmo mou", "mobile-portability-documents-generic", /έντυπο φορητότητας/);
+});
+
+test("email queries use the updated sending address and subject", async () => {
+  const queries = [
+    "που στελνω τα δικαιολογητικα",
+    "pou stelno ta xartia",
+    "ποιο email στέλνω τα χαρτιά"
+  ];
+
+  for (const query of queries) {
+    const response = await postChat(query, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, "mobile-submit-email");
+    assert.match(response.body.reply, /synetelas2011@gmail\.com/);
+    assert.match(response.body.reply, /Ονοματεπώνυμο.*Πάροχος.*Είδος αίτησης/);
+    assert.doesNotMatch(response.body.reply, /synetelas2025@gmail\.com/);
+  }
+});
+
+test("new number queries route to the provider-specific FAQs", async () => {
+  const cases = [
+    {
+      message: "neos arithmos vodafone ti xreiazetai",
+      expectedFaqId: "vodafone-new-number-documents",
+      expectedPattern: /υπεύθυνη δήλωση|προσωπικά δεδομένα|SIM/
+    },
+    {
+      message: "νεος αριθμος nova q",
+      expectedFaqId: "nova-new-number-documents",
+      expectedPattern: /υπεύθυνη δήλωση|SIM/
+    }
+  ];
+
+  for (const testCase of cases) {
+    const response = await postChat(testCase.message, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, testCase.expectedFaqId);
+    assert.match(response.body.reply, testCase.expectedPattern);
+  }
+});
+
+test("portability queries keep the applicant-name warning and form details", async () => {
+  const cases = [
+    {
+      message: "τι χαρτιά θέλω για φορητότητα vodafone",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "ti xartia thelo gia foritotita vodafone",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "foritotita vodafone se allo onoma ginetai",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "ο αριθμός είναι στο όνομα της μητέρας μου γίνεται;",
+      expectedFaqId: "mobile-portability-documents-generic",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "φορητότητα nova τι χρειάζεται",
+      expectedFaqId: "nova-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "τι γράφω στο αίτημα φορητότητας",
+      expectedFaqId: "mobile-portability-documents-generic",
+      expectedPattern: /ονοματεπώνυμο συνδρομητή|ΑΦΜ|αριθμό που θα ενεργοποιηθεί/
+    }
+  ];
+
+  for (const testCase of cases) {
+    const response = await postChat(testCase.message, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, testCase.expectedFaqId);
+    assert.match(response.body.reply, testCase.expectedPattern);
+  }
+});
+
+test("gov declaration and SIM photo queries route to the updated FAQs", async () => {
+  const cases = [
+    {
+      message: "ypefthini dilosi gov ti grafo",
+      expectedFaqId: "mobile-gov-kep",
+      expectedPattern: /όνομα πατέρα|όνομα μητέρας|ΑΦΜ|αριθμό κινητού/
+    },
+    {
+      message: "τι γράφω στην υπεύθυνη δήλωση gov.gr",
+      expectedFaqId: "mobile-gov-kep",
+      expectedPattern: /όνομα πατέρα|όνομα μητέρας|ΑΦΜ|αριθμό κινητού/
+    },
+    {
+      message: "fotografia sim ti prepei na fainetai",
+      expectedFaqId: "mobile-sim-photo-details",
+      expectedPattern: /barcode|λογότυπο|αριθμός SIM/
+    }
+  ];
+
+  for (const testCase of cases) {
+    const response = await postChat(testCase.message, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, testCase.expectedFaqId);
+    assert.match(response.body.reply, testCase.expectedPattern);
+  }
+});
+
+test("Greeklish SIM change query routes to the generic SIM activation FAQ", async () => {
+  await assertDirectFaqId("pote mpainei i nea sim", "mobile-when-to-change-sim", /κλήση ενεργοποίησης/);
+});
+
+test("Greeklish Nova Q SIM query routes to the Nova activation FAQ", async () => {
+  await assertDirectFaqId("pote vazw sim nova q", "nova-activation", /12200/);
+});
+
+test("email attachment query routes to the send-email FAQ", async () => {
+  await assertDirectFaqId("pou stelno eggrafa", "mobile-submit-email", /synetelas2011@gmail\.com/);
+});
+
+test("υγεία is treated as off-topic after cleanup", async () => {
+  const response = await postChat("υγεία και περίθαλψη", { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.source, "local_unknown_reply");
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
 test("cookies answers privacy FAQ", async () => {
@@ -264,27 +507,27 @@ test("πες μου ανέκδοτο blocks locally without Gemini", async () =>
   const response = await postChat("πες μου ανέκδοτο", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "local_off_topic_playful");
+  assert.equal(response.body.source, "local_unknown_reply");
   assert.equal(response.body.usedGemini, false);
-  assert.equal(response.body.offTopicCount, 1);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
 test("καιρός αύριο blocks locally without Gemini", async () => {
   const response = await postChat("καιρός αύριο", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "local_off_topic_playful");
+  assert.equal(response.body.source, "local_unknown_reply");
   assert.equal(response.body.usedGemini, false);
-  assert.equal(response.body.offTopicCount, 1);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
-test("medium relevant query is routed to Gemini path when no direct FAQ is clear", async () => {
+test("strong FAQ match answers direct even with nearby alternatives", async () => {
   const response = await postChat("θέλω πληροφορίες για παροχές και δικαιολογητικά", { debug: true });
 
-  assert.equal(response.status, 500);
-  assert.equal(response.body.source, "gemini_unconfigured");
-  assert.equal(response.body.usedGemini, true);
-  assert.match(response.body.error, /GEMINI_API_KEY/);
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.matchedFaqId, "mobile-new-number-documents-generic");
 });
 
 test("website-related question without exact FAQ uses Gemini fallback", async () => {
@@ -296,13 +539,54 @@ test("website-related question without exact FAQ uses Gemini fallback", async ()
   assert.equal(response.body.contextSource, "faq_chunks");
 });
 
-test("website-related question with no relevant FAQ uses general site context", async () => {
-  const response = await postChat("pos kano kati sto site", { debug: true });
+test("website-related question with no relevant FAQ returns UNKNOWN_REPLY locally", async () => {
+  await assertUnknownReply("pos kano kati sto site");
+});
 
-  assert.equal(response.status, 500);
-  assert.equal(response.body.source, "gemini_unconfigured");
-  assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "general_site_context");
+test("empty search results do not call Gemini", async () => {
+  await assertUnknownReply("abc xyz");
+});
+
+test("related but not direct FAQ calls Gemini only with KB context", async () => {
+  const gemini = createGeminiStub(UNKNOWN_REPLY);
+
+  try {
+    const response = await postChat("Πώς μπορώ να κάνω αίτηση;", {
+      debug: true,
+      geminiApiKey: "test-gemini-key"
+    });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "gemini");
+    assert.equal(response.body.usedGemini, true);
+    assert.equal(gemini.generateContent.mock.calls.length, 1);
+
+    const prompt = gemini.generateContent.mock.calls[0].arguments[0].contents[0].parts[0].text;
+    assert.match(prompt, /KB:\n/);
+    assert.doesNotMatch(prompt, /Page context:/);
+    assert.doesNotMatch(prompt, /Η Sofia είναι ψηφιακή βοηθός/);
+  } finally {
+    gemini.restore();
+  }
+});
+
+test("out of knowledge question does not call Gemini", async () => {
+  const gemini = createGeminiStub(UNKNOWN_REPLY);
+
+  try {
+    const response = await postChat("abc xyz", {
+      debug: true,
+      geminiApiKey: "test-gemini-key"
+    });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "local_unknown_reply");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.reply, UNKNOWN_REPLY);
+    assert.equal(gemini.generateContent.mock.calls.length, 0);
+  } finally {
+    gemini.restore();
+  }
 });
 
 test("confused offer navigation gets helpful site-use answer", async () => {
@@ -330,12 +614,12 @@ test("unrelated but not explicitly blocked wording stays local scope reply", asy
   const response = await postChat("τι είναι η κβαντική φυσική;", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "local_off_topic_playful");
+  assert.equal(response.body.source, "local_unknown_reply");
   assert.equal(response.body.usedGemini, false);
-  assert.equal(response.body.offTopicCount, 1);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
-test("off-topic questions use five playful redirects then the firm redirect", async () => {
+test("off-topic questions return UNKNOWN_REPLY locally", async () => {
   const handler = await loadHandler({ debug: true });
   const options = {
     userId: "off-topic-sequence",
@@ -358,32 +642,20 @@ test("off-topic questions use five playful redirects then the firm redirect", as
 
   responses.forEach((response, index) => {
     assert.equal(response.status, 200);
-    assert.equal(response.body.source, "local_off_topic_playful");
+    assert.equal(response.body.source, "local_unknown_reply");
     assert.equal(response.body.usedGemini, false);
-    assert.equal(response.body.offTopicCount, index + 1);
+    assert.equal(response.body.reply, UNKNOWN_REPLY);
   });
-
-  const firstFiveReplies = responses.slice(0, 5).map((response) => response.body.reply);
-  assert.equal(new Set(firstFiveReplies).size, 5);
-  assert.match(responses[0].body.reply, /Καλή ερώτηση/);
-  assert.match(responses[1].body.reply, /Για ποια προσφορά ενδιαφέρεστε/);
-  assert.match(responses[2].body.reply, /έξω από τον ρόλο μου/);
-  assert.match(responses[3].body.reply, /Δεν θέλω να σας δώσω άσχετη/);
-  assert.match(responses[4].body.reply, /πρακτικό κομμάτι/);
-  assert.equal(
-    responses[5].body.reply,
-    "Μπορώ να βοηθήσω κυρίως με πληροφορίες για τις προσφορές, τα δικαιολογητικά, τις διαδικασίες και την ιστοσελίδα του Συνεταιρισμού."
-  );
 });
 
-test("off-topic production response hides playful debug metadata", async () => {
+test("off-topic production response hides debug metadata", async () => {
   const response = await postChat("Πες μου ένα ανέκδοτο");
 
   assert.equal(response.status, 200);
   assert.equal(response.body.usedGemini, false);
   assert.equal(response.body.source, undefined);
   assert.equal(response.body.offTopicCount, undefined);
-  assert.match(response.body.reply, /Καλή ερώτηση/);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
 
@@ -450,10 +722,10 @@ test("short Greeklish follow-up uses previous FAQ history", async () => {
 
   const second = await postChatWithHandler(handler, "einai idia?", options);
 
-  assert.equal(second.status, 500);
-  assert.equal(second.body.source, "gemini_unconfigured");
-  assert.equal(second.body.usedGemini, true);
-  assert.equal(second.body.contextSource, "history_followup");
+  assert.equal(second.status, 200);
+  assert.equal(second.body.source, "local_unknown_reply");
+  assert.equal(second.body.usedGemini, false);
+  assert.equal(second.body.reply, UNKNOWN_REPLY);
 });
 
 
@@ -473,10 +745,10 @@ test("Greeklish follow-up difference question uses previous direct FAQ history",
 
   const second = await postChatWithHandler(handler, "ti diafora exoun", options);
 
-  assert.equal(second.status, 500);
-  assert.equal(second.body.source, "gemini_unconfigured");
-  assert.equal(second.body.usedGemini, true);
-  assert.equal(second.body.contextSource, "history_followup");
+  assert.equal(second.status, 200);
+  assert.equal(second.body.source, "local_unknown_reply");
+  assert.equal(second.body.usedGemini, false);
+  assert.equal(second.body.reply, UNKNOWN_REPLY);
 });
 
 test("Greeklish νέο Vodafone απαντά ελληνικά", async () => {
@@ -504,7 +776,47 @@ test("IBAN κατάθεσης", async () => {
 });
 
 test("EON TV", async () => {
-  await assertDirectFaq("eon cosmote tv", /20,90€\/μήνα|EON \+ Cosmote TV Full Pack/);
+  await assertDirectFaq("eon cosmote tv", /20,90€\/μήνα|EON \+ Cosmote TV Full Pack|Full Pack/);
+});
+
+test("EON documents question routes to the documents FAQ", async () => {
+  await assertDirectFaqId("eon tv dikaiologitika", "eon-documents-required", /GOV|ΔΕΚΟ/);
+});
+
+test("EON missing-address question routes to the no-street FAQ", async () => {
+  await assertDirectFaqId("eon xwris arithmo", "eon-address-no-street", /GPS|Google Maps|pin/);
+});
+
+test("EON programs question routes to the programs FAQ", async () => {
+  await assertDirectFaqId("eon programata", "eon-programs", /EON Entry|EON\+|Adult Pack/);
+});
+
+test("EON price question routes to the EON+ offer FAQ", async () => {
+  await assertDirectFaqId("eon plus 20.90", "eon-price-offer", /20,90€/);
+});
+
+test("EON price list question routes to the EON list FAQ", async () => {
+  await assertDirectFaqId("eon price list", "eon-list-prices", /18,18€|27,27€|54,55€/);
+});
+
+test("EON contract question routes to the duration FAQ", async () => {
+  await assertDirectFaqId("eon 24 months", "eon-contract-duration", /24 μήνες/);
+});
+
+test("EON cancellation question routes to the fee FAQ", async () => {
+  await assertDirectFaqId("eon cancellation fee", "eon-cancellation-fees", /60€|80€|140€/);
+});
+
+test("EON equipment question routes to the equipment FAQ", async () => {
+  await assertDirectFaqId("eon smart box", "eon-equipment", /Smart Box|δορυφορικός/);
+});
+
+test("EON billing address question routes to the bill address FAQ", async () => {
+  await assertDirectFaqId("pou paei o logariasmos eon", "eon-bill-address", /διεύθυνση αποστολής λογαριασμού|email|sms/);
+});
+
+test("EON adult pack question routes to the adult pack FAQ", async () => {
+  await assertDirectFaqId("eon adult pack", "eon-adult-pack", /18ο έτος|Adult Pack/);
 });
 
 test("διεύθυνση χωρίς αριθμό", async () => {
@@ -526,8 +838,8 @@ test("Greeklish follow-up same question uses previous direct FAQ history", async
   await postChatWithHandler(handler, "ποιες προσφορές υπάρχουν;", options);
   const second = await postChatWithHandler(handler, "einai idia?", options);
 
-  assert.equal(second.status, 500);
-  assert.equal(second.body.source, "gemini_unconfigured");
-  assert.equal(second.body.usedGemini, true);
-  assert.equal(second.body.contextSource, "history_followup");
+  assert.equal(second.status, 200);
+  assert.equal(second.body.source, "local_unknown_reply");
+  assert.equal(second.body.usedGemini, false);
+  assert.equal(second.body.reply, UNKNOWN_REPLY);
 });
