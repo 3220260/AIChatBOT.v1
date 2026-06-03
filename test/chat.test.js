@@ -90,6 +90,27 @@ function createGeminiStub(replyText = UNKNOWN_REPLY) {
   };
 }
 
+function createFailingGeminiStub(error = new Error("Gemini request failed")) {
+  const generateContent = mock.fn(async () => {
+    throw error;
+  });
+
+  const getGenerativeModel = mock.method(
+    GoogleGenerativeAI.prototype,
+    "getGenerativeModel",
+    () => ({
+      generateContent
+    })
+  );
+
+  return {
+    generateContent,
+    restore() {
+      getGenerativeModel.mock.restore();
+    }
+  };
+}
+
 async function postChat(message, options = {}) {
   const handler = await loadHandler({ debug: options.debug, geminiApiKey: options.geminiApiKey });
   return postChatWithHandler(handler, message, options);
@@ -389,6 +410,16 @@ test("new number queries route to the provider-specific FAQs", async () => {
       message: "νεος αριθμος nova q",
       expectedFaqId: "nova-new-number-documents",
       expectedPattern: /υπεύθυνη δήλωση|SIM/
+    },
+    {
+      message: "τι χαρτιά θέλω για νέο αριθμό Vodafone",
+      expectedFaqId: "vodafone-new-number-documents",
+      expectedPattern: /υπεύθυνη δήλωση|προσωπικά δεδομένα|SIM/
+    },
+    {
+      message: "τι δικαιολογητικά θέλω για νέο αριθμό Nova",
+      expectedFaqId: "nova-new-number-documents",
+      expectedPattern: /υπεύθυνη δήλωση|SIM/
     }
   ];
 
@@ -403,10 +434,37 @@ test("new number queries route to the provider-specific FAQs", async () => {
   }
 });
 
+test("price on new number queries stays on the mobile offer FAQ", async () => {
+  const cases = [
+    "πόσο κοστίζει ο νέος αριθμός;",
+    "poso kostizi o neos aritimos"
+  ];
+
+  for (const message of cases) {
+    const response = await postChat(message, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, "mobile-offer-summary");
+    assert.match(response.body.reply, /100€|100 ευρώ/);
+  }
+});
+
 test("portability queries keep the applicant-name warning and form details", async () => {
   const cases = [
     {
       message: "τι χαρτιά θέλω για φορητότητα vodafone",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "μεταφορά αριθμού Vodafone",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "metafora arithmou vodafone",
       expectedFaqId: "vodafone-portability-documents",
       expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
     },
@@ -427,6 +485,11 @@ test("portability queries keep the applicant-name warning and form details", asy
     },
     {
       message: "φορητότητα nova τι χρειάζεται",
+      expectedFaqId: "nova-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "κρατάω τον αριθμό μου Nova",
       expectedFaqId: "nova-portability-documents",
       expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
     },
@@ -565,6 +628,25 @@ test("related but not direct FAQ calls Gemini only with KB context", async () =>
     assert.match(prompt, /KB:\n/);
     assert.doesNotMatch(prompt, /Page context:/);
     assert.doesNotMatch(prompt, /Η Sofia είναι ψηφιακή βοηθός/);
+  } finally {
+    gemini.restore();
+  }
+});
+
+test("Gemini request failures fall back to UNKNOWN_REPLY locally", async () => {
+  const gemini = createFailingGeminiStub();
+
+  try {
+    const response = await postChat("Πώς μπορώ να κάνω αίτηση;", {
+      debug: true,
+      geminiApiKey: "test-gemini-key"
+    });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "local_unknown_reply");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.reply, UNKNOWN_REPLY);
+    assert.equal(gemini.generateContent.mock.calls.length, 1);
   } finally {
     gemini.restore();
   }

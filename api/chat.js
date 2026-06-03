@@ -374,10 +374,17 @@ export default async function handler(req, res) {
         }
       ];
 
-      const result = await model.generateContent({
-        contents: currentChat,
-        generationConfig: GEMINI_GENERATION_CONFIG
-      });
+      let result;
+      try {
+        result = await model.generateContent({
+          contents: currentChat,
+          generationConfig: GEMINI_GENERATION_CONFIG
+        });
+      } catch (error) {
+        console.error("Gemini request failed:", error);
+        return sendLocalUnknownReply(res, safeMessage, scoredFaqs);
+      }
+
       const reply = cleanReply(result.response.text()) || UNKNOWN_REPLY;
       const suggestedQuestions = buildSuggestedQuestions(scoredFaqs, {
         excludeQuestions: [safeMessage]
