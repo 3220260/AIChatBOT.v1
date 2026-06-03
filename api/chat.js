@@ -1,12 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
   buildFaqContext,
-  buildGeneralSiteContext,
   getGeneralContextFaqs,
   getLocalSmallTalkReply,
-  isFollowUpQuestion,
   isTvPackContentQuestion,
-  isWebsiteRelatedQuestion,
   shouldAnswerDirectly,
   shouldBlockForScope,
   shouldUseGeminiForWebsiteAdvice
@@ -26,7 +23,6 @@ import {
 import {
   DEFAULT_MAX_HISTORY_MESSAGES,
   getUserHistory,
-  hasPriorMemory,
   rememberTurn,
   setUserHistory
 } from "../lib/memory.js";
@@ -39,7 +35,7 @@ const MAX_MESSAGE_LENGTH = 500;
 const MAX_ACTIVE_REQUESTS = 20;
 const MAX_HISTORY_MESSAGES = DEFAULT_MAX_HISTORY_MESSAGES;
 const MAX_OFF_TOPIC_PLAYFUL_REPLIES = 5;
-const MIN_RELEVANT_SCORE_FOR_GEMINI = 2;
+const MIN_RELEVANT_SCORE_FOR_GEMINI = 5;
 const MAX_RELEVANT_KNOWLEDGE_RESULTS = 5;
 const MIN_SUGGESTED_QUESTIONS = 2;
 const MAX_SUGGESTED_QUESTIONS = 4;
@@ -116,6 +112,21 @@ async function sendLocalOffTopicReply(req, res, userId, message, source = "local
   }, {
     source,
     offTopicCount: count
+  });
+}
+
+function sendLocalUnknownReply(res, message, scoredFaqs = []) {
+  return sendJson(res, 200, {
+    reply: UNKNOWN_REPLY,
+    usedGemini: false,
+    suggestedQuestions: buildSuggestedQuestions(scoredFaqs, {
+      excludeQuestions: [message]
+    })
+  }, {
+    source: "local_unknown_reply",
+    estimatedTokensUsed: 0,
+    matchedFaqIds: scoredFaqs.map((item) => item.faq.id),
+    score: scoredFaqs[0]?.score || 0
   });
 }
 
@@ -272,7 +283,7 @@ export default async function handler(req, res) {
     }
 
     if (shouldBlockForScope(safeMessage) && !hasAssistantContext) {
-      return await sendLocalOffTopicReply(req, res, userId, safeMessage);
+      return sendLocalUnknownReply(res, safeMessage, []);
     }
 
     const searchMessage = shouldSearchWithAssistantContext(safeMessage, assistantContextText)
@@ -282,9 +293,12 @@ export default async function handler(req, res) {
     const scoredFaqs = searchKnowledgeLocal(searchMessage, {
       limit: MAX_RELEVANT_KNOWLEDGE_RESULTS
     });
-    let relevantFaqs = [];
-    let generalContext = "";
     let geminiContextSource = "faq_chunks";
+    const relevantFaqs = scoredFaqs.length
+      ? scoredFaqs.map((item) => item.faq)
+      : [];
+    const hasRelevantFaqsForGemini = relevantFaqs.length > 0
+      && scoredFaqs[0].score >= MIN_RELEVANT_SCORE_FOR_GEMINI;
 
     const forceGeminiForTvPackContents = isTvPackContentQuestion(safeMessage);
     const forceGeminiForContextualQuestion = shouldForceGeminiForContextualQuestion(
@@ -316,38 +330,8 @@ export default async function handler(req, res) {
       });
     }
 
-    if (forceGeminiForTvPackContents) {
-      relevantFaqs = scoredFaqs.length
-        ? scoredFaqs.map((item) => item.faq)
-        : getGeneralContextFaqs(3);
-      generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
-      geminiContextSource = "tv_pack_content_question";
-    } else if (forceGeminiForContextualQuestion && hasAssistantContext) {
-      relevantFaqs = scoredFaqs.length
-        ? scoredFaqs.map((item) => item.faq)
-        : getGeneralContextFaqs(3);
-      generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
-      geminiContextSource = "parent_context";
-    } else if (scoredFaqs.length && scoredFaqs[0].score >= MIN_RELEVANT_SCORE_FOR_GEMINI) {
-      relevantFaqs = scoredFaqs.map((item) => item.faq);
-    } else if (hasAssistantContext) {
-      relevantFaqs = scoredFaqs.length
-        ? scoredFaqs.map((item) => item.faq)
-        : getGeneralContextFaqs(3);
-      generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
-      geminiContextSource = "parent_context";
-    } else if (isWebsiteRelatedQuestion(safeMessage)) {
-      relevantFaqs = scoredFaqs.length
-        ? scoredFaqs.map((item) => item.faq)
-        : getGeneralContextFaqs(3);
-      generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
-      geminiContextSource = "general_site_context";
-    } else if (isFollowUpQuestion(safeMessage) && await hasPriorMemory(userId)) {
-      relevantFaqs = getGeneralContextFaqs(3);
-      generalContext = buildGeneralSiteContext(UNKNOWN_REPLY);
-      geminiContextSource = "history_followup";
-    } else {
-      return await sendLocalOffTopicReply(req, res, userId, safeMessage);
+    if (!hasRelevantFaqsForGemini) {
+      return sendLocalUnknownReply(res, safeMessage, scoredFaqs);
     }
 
     if (!model) {
@@ -378,7 +362,6 @@ export default async function handler(req, res) {
       const historyContext = buildHistoryContext(history, safeMessage);
       const contextMessage = buildGeminiPrompt({
         faqContext,
-        generalContext,
         historyContext,
         assistantContext: assistantContextText,
         message: safeMessage

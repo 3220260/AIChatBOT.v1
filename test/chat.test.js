@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import test, { mock } from "node:test";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { UNKNOWN_REPLY } from "../lib/prompt.js";
 
 function createResponse() {
   return {
@@ -22,13 +24,20 @@ function createResponse() {
   };
 }
 
-async function loadHandler({ debug = false } = {}) {
+async function loadHandler({ debug = false, geminiApiKey } = {}) {
   const previousDebug = process.env.DEBUG;
+  const previousGeminiApiKey = process.env.GEMINI_API_KEY;
 
   if (debug) {
     process.env.DEBUG = "true";
   } else {
     process.env.DEBUG = "false";
+  }
+
+  if (geminiApiKey) {
+    process.env.GEMINI_API_KEY = geminiApiKey;
+  } else {
+    delete process.env.GEMINI_API_KEY;
   }
 
   const moduleUrl = new URL(`../api/chat.js?debug=${debug}&t=${Date.now()}-${Math.random()}`, import.meta.url);
@@ -40,11 +49,49 @@ async function loadHandler({ debug = false } = {}) {
     process.env.DEBUG = previousDebug;
   }
 
+  if (previousGeminiApiKey === undefined) {
+    delete process.env.GEMINI_API_KEY;
+  } else {
+    process.env.GEMINI_API_KEY = previousGeminiApiKey;
+  }
+
   return mod.default;
 }
 
+function createGeminiStub(replyText = UNKNOWN_REPLY) {
+  const generateContent = mock.fn(async (request) => {
+    return {
+      response: {
+        text: () => replyText,
+        usageMetadata: {
+          promptTokenCount: 0,
+          candidatesTokenCount: 0,
+          thoughtsTokenCount: 0,
+          totalTokenCount: 0
+        }
+      },
+      request
+    };
+  });
+
+  const getGenerativeModel = mock.method(
+    GoogleGenerativeAI.prototype,
+    "getGenerativeModel",
+    () => ({
+      generateContent
+    })
+  );
+
+  return {
+    generateContent,
+    restore() {
+      getGenerativeModel.mock.restore();
+    }
+  };
+}
+
 async function postChat(message, options = {}) {
-  const handler = await loadHandler({ debug: options.debug });
+  const handler = await loadHandler({ debug: options.debug, geminiApiKey: options.geminiApiKey });
   return postChatWithHandler(handler, message, options);
 }
 
@@ -90,6 +137,15 @@ async function assertDirectFaqId(message, expectedFaqId, pattern) {
   assert.equal(response.body.usedGemini, false);
   assert.equal(response.body.matchedFaqId, expectedFaqId);
   assert.match(response.body.reply, pattern);
+}
+
+async function assertUnknownReply(message) {
+  const response = await postChat(message, { debug: true });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.source, "local_unknown_reply");
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 }
 
 test("production chat response hides internal debug fields", async () => {
@@ -144,7 +200,7 @@ test("short contextual price question (Greek) routes to Gemini with offer KB con
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
   assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
@@ -164,7 +220,7 @@ test("poso kostizei with Vodafone CU context avoids documents FAQ and routes to 
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
   assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
@@ -185,7 +241,7 @@ test("short contextual NOVA Q price question routes to Gemini with offer KB cont
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(response.body.matchedFaqIds.includes("mobile-offer-summary"));
   assert.ok(response.body.matchedFaqIds.includes("site-offer-prices-summary"));
@@ -205,7 +261,7 @@ test("contextual Vodafone CU documents question routes via Gemini and keeps docu
   assert.equal(response.status, 500);
   assert.equal(response.body.source, "gemini_unconfigured");
   assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "parent_context");
+  assert.equal(response.body.contextSource, "faq_chunks");
   assert.ok(Array.isArray(response.body.matchedFaqIds));
   assert.ok(
     response.body.matchedFaqIds.includes("vodafone-cu-documents-overview")
@@ -319,8 +375,8 @@ test("υγεία is treated as off-topic after cleanup", async () => {
 
   assert.equal(response.status, 200);
   assert.equal(response.body.usedGemini, false);
-  assert.equal(response.body.source, "local_off_topic_playful");
-  assert.doesNotMatch(response.body.reply, /Interamerican|νοσοκομειακή|παροχές υγείας|υγεία|περίθαλψη/i);
+  assert.equal(response.body.source, "local_unknown_reply");
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
 test("cookies answers privacy FAQ", async () => {
@@ -331,27 +387,27 @@ test("πες μου ανέκδοτο blocks locally without Gemini", async () =>
   const response = await postChat("πες μου ανέκδοτο", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "local_off_topic_playful");
+  assert.equal(response.body.source, "local_unknown_reply");
   assert.equal(response.body.usedGemini, false);
-  assert.equal(response.body.offTopicCount, 1);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
 test("καιρός αύριο blocks locally without Gemini", async () => {
   const response = await postChat("καιρός αύριο", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "local_off_topic_playful");
+  assert.equal(response.body.source, "local_unknown_reply");
   assert.equal(response.body.usedGemini, false);
-  assert.equal(response.body.offTopicCount, 1);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
-test("medium relevant query is routed to Gemini path when no direct FAQ is clear", async () => {
+test("strong FAQ match answers direct even with nearby alternatives", async () => {
   const response = await postChat("θέλω πληροφορίες για παροχές και δικαιολογητικά", { debug: true });
 
-  assert.equal(response.status, 500);
-  assert.equal(response.body.source, "gemini_unconfigured");
-  assert.equal(response.body.usedGemini, true);
-  assert.match(response.body.error, /GEMINI_API_KEY/);
+  assert.equal(response.status, 200);
+  assert.equal(response.body.source, "direct_faq");
+  assert.equal(response.body.usedGemini, false);
+  assert.equal(response.body.matchedFaqId, "mobile-new-number-documents-generic");
 });
 
 test("website-related question without exact FAQ uses Gemini fallback", async () => {
@@ -363,13 +419,54 @@ test("website-related question without exact FAQ uses Gemini fallback", async ()
   assert.equal(response.body.contextSource, "faq_chunks");
 });
 
-test("website-related question with no relevant FAQ now keeps FAQ chunks context", async () => {
-  const response = await postChat("pos kano kati sto site", { debug: true });
+test("website-related question with no relevant FAQ returns UNKNOWN_REPLY locally", async () => {
+  await assertUnknownReply("pos kano kati sto site");
+});
 
-  assert.equal(response.status, 500);
-  assert.equal(response.body.source, "gemini_unconfigured");
-  assert.equal(response.body.usedGemini, true);
-  assert.equal(response.body.contextSource, "faq_chunks");
+test("empty search results do not call Gemini", async () => {
+  await assertUnknownReply("abc xyz");
+});
+
+test("related but not direct FAQ calls Gemini only with KB context", async () => {
+  const gemini = createGeminiStub(UNKNOWN_REPLY);
+
+  try {
+    const response = await postChat("Πώς μπορώ να κάνω αίτηση;", {
+      debug: true,
+      geminiApiKey: "test-gemini-key"
+    });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "gemini");
+    assert.equal(response.body.usedGemini, true);
+    assert.equal(gemini.generateContent.mock.calls.length, 1);
+
+    const prompt = gemini.generateContent.mock.calls[0].arguments[0].contents[0].parts[0].text;
+    assert.match(prompt, /KB:\n/);
+    assert.doesNotMatch(prompt, /Page context:/);
+    assert.doesNotMatch(prompt, /Η Sofia είναι ψηφιακή βοηθός/);
+  } finally {
+    gemini.restore();
+  }
+});
+
+test("out of knowledge question does not call Gemini", async () => {
+  const gemini = createGeminiStub(UNKNOWN_REPLY);
+
+  try {
+    const response = await postChat("abc xyz", {
+      debug: true,
+      geminiApiKey: "test-gemini-key"
+    });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "local_unknown_reply");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.reply, UNKNOWN_REPLY);
+    assert.equal(gemini.generateContent.mock.calls.length, 0);
+  } finally {
+    gemini.restore();
+  }
 });
 
 test("confused offer navigation gets helpful site-use answer", async () => {
@@ -397,12 +494,12 @@ test("unrelated but not explicitly blocked wording stays local scope reply", asy
   const response = await postChat("τι είναι η κβαντική φυσική;", { debug: true });
 
   assert.equal(response.status, 200);
-  assert.equal(response.body.source, "local_off_topic_playful");
+  assert.equal(response.body.source, "local_unknown_reply");
   assert.equal(response.body.usedGemini, false);
-  assert.equal(response.body.offTopicCount, 1);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
-test("off-topic questions use five playful redirects then the firm redirect", async () => {
+test("off-topic questions return UNKNOWN_REPLY locally", async () => {
   const handler = await loadHandler({ debug: true });
   const options = {
     userId: "off-topic-sequence",
@@ -425,32 +522,20 @@ test("off-topic questions use five playful redirects then the firm redirect", as
 
   responses.forEach((response, index) => {
     assert.equal(response.status, 200);
-    assert.equal(response.body.source, "local_off_topic_playful");
+    assert.equal(response.body.source, "local_unknown_reply");
     assert.equal(response.body.usedGemini, false);
-    assert.equal(response.body.offTopicCount, index + 1);
+    assert.equal(response.body.reply, UNKNOWN_REPLY);
   });
-
-  const firstFiveReplies = responses.slice(0, 5).map((response) => response.body.reply);
-  assert.equal(new Set(firstFiveReplies).size, 5);
-  assert.match(responses[0].body.reply, /Καλή ερώτηση/);
-  assert.match(responses[1].body.reply, /Για ποια προσφορά ενδιαφέρεστε/);
-  assert.match(responses[2].body.reply, /έξω από τον ρόλο μου/);
-  assert.match(responses[3].body.reply, /Δεν θέλω να σας δώσω άσχετη/);
-  assert.match(responses[4].body.reply, /πρακτικό κομμάτι/);
-  assert.equal(
-    responses[5].body.reply,
-    "Μπορώ να βοηθήσω κυρίως με πληροφορίες για τις προσφορές, τα δικαιολογητικά, τις διαδικασίες και την ιστοσελίδα του Συνεταιρισμού."
-  );
 });
 
-test("off-topic production response hides playful debug metadata", async () => {
+test("off-topic production response hides debug metadata", async () => {
   const response = await postChat("Πες μου ένα ανέκδοτο");
 
   assert.equal(response.status, 200);
   assert.equal(response.body.usedGemini, false);
   assert.equal(response.body.source, undefined);
   assert.equal(response.body.offTopicCount, undefined);
-  assert.match(response.body.reply, /Καλή ερώτηση/);
+  assert.equal(response.body.reply, UNKNOWN_REPLY);
 });
 
 
@@ -517,10 +602,10 @@ test("short Greeklish follow-up uses previous FAQ history", async () => {
 
   const second = await postChatWithHandler(handler, "einai idia?", options);
 
-  assert.equal(second.status, 500);
-  assert.equal(second.body.source, "gemini_unconfigured");
-  assert.equal(second.body.usedGemini, true);
-  assert.equal(second.body.contextSource, "history_followup");
+  assert.equal(second.status, 200);
+  assert.equal(second.body.source, "local_unknown_reply");
+  assert.equal(second.body.usedGemini, false);
+  assert.equal(second.body.reply, UNKNOWN_REPLY);
 });
 
 
@@ -540,10 +625,10 @@ test("Greeklish follow-up difference question uses previous direct FAQ history",
 
   const second = await postChatWithHandler(handler, "ti diafora exoun", options);
 
-  assert.equal(second.status, 500);
-  assert.equal(second.body.source, "gemini_unconfigured");
-  assert.equal(second.body.usedGemini, true);
-  assert.equal(second.body.contextSource, "history_followup");
+  assert.equal(second.status, 200);
+  assert.equal(second.body.source, "local_unknown_reply");
+  assert.equal(second.body.usedGemini, false);
+  assert.equal(second.body.reply, UNKNOWN_REPLY);
 });
 
 test("Greeklish νέο Vodafone απαντά ελληνικά", async () => {
@@ -633,8 +718,8 @@ test("Greeklish follow-up same question uses previous direct FAQ history", async
   await postChatWithHandler(handler, "ποιες προσφορές υπάρχουν;", options);
   const second = await postChatWithHandler(handler, "einai idia?", options);
 
-  assert.equal(second.status, 500);
-  assert.equal(second.body.source, "gemini_unconfigured");
-  assert.equal(second.body.usedGemini, true);
-  assert.equal(second.body.contextSource, "history_followup");
+  assert.equal(second.status, 200);
+  assert.equal(second.body.source, "local_unknown_reply");
+  assert.equal(second.body.usedGemini, false);
+  assert.equal(second.body.reply, UNKNOWN_REPLY);
 });

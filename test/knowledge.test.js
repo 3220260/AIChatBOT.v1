@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { faqs } from "../faqs.js";
+import { shouldAnswerDirectly } from "../lib/faq-search.js";
 
 const KNOWLEDGE_PATH = new URL("../data/knowledge.json", import.meta.url);
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -97,4 +98,22 @@ test("knowledge categories stay within the expected set", () => {
   for (const category of EXPECTED_CATEGORIES) {
     assert.equal(seenCategories.has(category), true, `Missing expected knowledge category: ${category}`);
   }
+});
+
+test("shouldAnswerDirectly accepts a very strong top score", () => {
+  assert.equal(shouldAnswerDirectly([
+    { score: 16 },
+    { score: 15 }
+  ]), true);
+});
+
+test("shouldAnswerDirectly still requires a gap for medium scores", () => {
+  assert.equal(shouldAnswerDirectly([
+    { score: 10 },
+    { score: 9 }
+  ]), false);
+  assert.equal(shouldAnswerDirectly([
+    { score: 10 },
+    { score: 7 }
+  ]), true);
 });
