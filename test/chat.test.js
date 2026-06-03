@@ -311,7 +311,7 @@ test("νέος αριθμός answers from FAQ", async () => {
 });
 
 test("πού στέλνω έγγραφα answers email FAQ", async () => {
-  await assertDirectFaq("πού στέλνω έγγραφα", /synetelas2025@gmail\.com/);
+  await assertDirectFaq("πού στέλνω έγγραφα", /synetelas2011@gmail\.com/);
 });
 
 test("IBAN answers payment FAQ", async () => {
@@ -358,6 +358,126 @@ test("Greeklish portability query routes to the generic portability FAQ", async 
   await assertDirectFaqId("pws kratao ton arithmo mou", "mobile-portability-documents-generic", /έντυπο φορητότητας/);
 });
 
+test("email queries use the updated sending address and subject", async () => {
+  const queries = [
+    "που στελνω τα δικαιολογητικα",
+    "pou stelno ta xartia",
+    "ποιο email στέλνω τα χαρτιά"
+  ];
+
+  for (const query of queries) {
+    const response = await postChat(query, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, "mobile-submit-email");
+    assert.match(response.body.reply, /synetelas2011@gmail\.com/);
+    assert.match(response.body.reply, /Ονοματεπώνυμο.*Πάροχος.*Είδος αίτησης/);
+    assert.doesNotMatch(response.body.reply, /synetelas2025@gmail\.com/);
+  }
+});
+
+test("new number queries route to the provider-specific FAQs", async () => {
+  const cases = [
+    {
+      message: "neos arithmos vodafone ti xreiazetai",
+      expectedFaqId: "vodafone-new-number-documents",
+      expectedPattern: /υπεύθυνη δήλωση|προσωπικά δεδομένα|SIM/
+    },
+    {
+      message: "νεος αριθμος nova q",
+      expectedFaqId: "nova-new-number-documents",
+      expectedPattern: /υπεύθυνη δήλωση|SIM/
+    }
+  ];
+
+  for (const testCase of cases) {
+    const response = await postChat(testCase.message, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, testCase.expectedFaqId);
+    assert.match(response.body.reply, testCase.expectedPattern);
+  }
+});
+
+test("portability queries keep the applicant-name warning and form details", async () => {
+  const cases = [
+    {
+      message: "τι χαρτιά θέλω για φορητότητα vodafone",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "ti xartia thelo gia foritotita vodafone",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "foritotita vodafone se allo onoma ginetai",
+      expectedFaqId: "vodafone-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "ο αριθμός είναι στο όνομα της μητέρας μου γίνεται;",
+      expectedFaqId: "mobile-portability-documents-generic",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "φορητότητα nova τι χρειάζεται",
+      expectedFaqId: "nova-portability-documents",
+      expectedPattern: /όνομα του αιτούντος|αλλαγή κατόχου/
+    },
+    {
+      message: "τι γράφω στο αίτημα φορητότητας",
+      expectedFaqId: "mobile-portability-documents-generic",
+      expectedPattern: /ονοματεπώνυμο συνδρομητή|ΑΦΜ|αριθμό που θα ενεργοποιηθεί/
+    }
+  ];
+
+  for (const testCase of cases) {
+    const response = await postChat(testCase.message, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, testCase.expectedFaqId);
+    assert.match(response.body.reply, testCase.expectedPattern);
+  }
+});
+
+test("gov declaration and SIM photo queries route to the updated FAQs", async () => {
+  const cases = [
+    {
+      message: "ypefthini dilosi gov ti grafo",
+      expectedFaqId: "mobile-gov-kep",
+      expectedPattern: /όνομα πατέρα|όνομα μητέρας|ΑΦΜ|αριθμό κινητού/
+    },
+    {
+      message: "τι γράφω στην υπεύθυνη δήλωση gov.gr",
+      expectedFaqId: "mobile-gov-kep",
+      expectedPattern: /όνομα πατέρα|όνομα μητέρας|ΑΦΜ|αριθμό κινητού/
+    },
+    {
+      message: "fotografia sim ti prepei na fainetai",
+      expectedFaqId: "mobile-sim-photo-details",
+      expectedPattern: /barcode|λογότυπο|αριθμός SIM/
+    }
+  ];
+
+  for (const testCase of cases) {
+    const response = await postChat(testCase.message, { debug: true });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.source, "direct_faq");
+    assert.equal(response.body.usedGemini, false);
+    assert.equal(response.body.matchedFaqId, testCase.expectedFaqId);
+    assert.match(response.body.reply, testCase.expectedPattern);
+  }
+});
+
 test("Greeklish SIM change query routes to the generic SIM activation FAQ", async () => {
   await assertDirectFaqId("pote mpainei i nea sim", "mobile-when-to-change-sim", /κλήση ενεργοποίησης/);
 });
@@ -367,7 +487,7 @@ test("Greeklish Nova Q SIM query routes to the Nova activation FAQ", async () =>
 });
 
 test("email attachment query routes to the send-email FAQ", async () => {
-  await assertDirectFaqId("pou stelno eggrafa", "mobile-submit-email", /synetelas2025@gmail\.com/);
+  await assertDirectFaqId("pou stelno eggrafa", "mobile-submit-email", /synetelas2011@gmail\.com/);
 });
 
 test("υγεία is treated as off-topic after cleanup", async () => {
