@@ -42,13 +42,14 @@ test("memory remembers turns and keeps max history window", async () => {
   await rememberTurn(userId, "q1", "a1", DEFAULT_MAX_HISTORY_MESSAGES);
   await rememberTurn(userId, "q2", "a2", DEFAULT_MAX_HISTORY_MESSAGES);
   await rememberTurn(userId, "q3", "a3", DEFAULT_MAX_HISTORY_MESSAGES);
+  await rememberTurn(userId, "q4", "a4", DEFAULT_MAX_HISTORY_MESSAGES);
 
   const history = await getUserHistory(userId);
 
   assert.equal(history.length, DEFAULT_MAX_HISTORY_MESSAGES);
   assert.deepEqual(
     history.map((item) => item.parts?.[0]?.text),
-    ["q2", "a2", "q3", "a3"]
+    ["q2", "a2", "q3", "a3", "q4", "a4"]
   );
   assert.equal(await hasPriorMemory(userId), true);
 });
